@@ -1,72 +1,46 @@
-<!-- <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Users
+<ion-header [translucent]="true"class="ion-no-border">
+  <ion-toolbar mode="md">
+    <ion-title text-center>
+     <img class="logo" src="../../assets/logo.png" alt=""> Hooked
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header></ion-header> 
-
-  <ion-card *ngFor="let user of users$ | async">
-    <img [src]="user?.picture" />
-    <ion-card-header>
-      <ion-title>
-        {{user?.name}}
-      </ion-title>
-      <ion-card-subtitle>
-        {{user?.age}}
-      </ion-card-subtitle>
-    </ion-card-header>
-  </ion-card>
- 
-
-</ion-content> -->
-
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Users
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header></ion-header> 
-
-<ion-content>
-  <div class="user-card">
-    <ion-card *ngFor="let user of users$ | async">
-      <div class="picture">
-        <img  [src]="user.picture" />
+<ion-content> 
+  <div class="user-card-container" *ngIf="(count$ | async) > 0; else emptyTemplate">
+    <ion-card class="user-card" *ngFor="let user of users; let i =index"  id="{{'card-' + user.id}}">
+      <img [src]="user.picture" />
+      <div class="user-info">
+        <h1>{{user.name}}, {{user.age}}</h1>
+        <p>
+          <ion-icon name="home-outline"></ion-icon>
+          Lives in {{user.location}} </p>
+        <p>
+          <ion-icon name="location-outline"></ion-icon>
+          {{user.distance}}km away</p>
       </div>
-
-      <div class="bottom">
-        <div class="user-info">
-          <div class="name">
-            {{user.name}}, <span class="age">{{user.age}}</span>
-          </div>
-          <div class="location">Lives in {{user.location}}</div>
-          <div class="distance">{{user.distance}} KM away</div>
-        </div>
-
-        <div class="controls">
-          <ion-grid [fixed]="true">
-            <ion-row>
-              <ion-col>
-                <ion-icon class="hate" name="close"></ion-icon>
-              </ion-col>
-              <ion-col>
-                <ion-icon class="super-like" name="sparkles"></ion-icon>
-              </ion-col>
-              <ion-col>
-                <ion-icon class="like" name="heart"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-      </div>
+      <!-- <div class="controls">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="dislike">          
+              <ion-icon name="close-circle-outline"></ion-icon>
+            </ion-col>
+            <ion-col class="super-like">
+              <ion-icon name="heart-outline"></ion-icon>
+            </ion-col>
+            <ion-col class="like">
+              <ion-icon name="checkmark-circle-outline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div> -->
     </ion-card>
   </div>
+
+  <ng-template #emptyTemplate>
+    <div class="no-swipes">
+      <h1>That's all for you!</h1>
+      <p>Change your filter and expand your distance settings to see more people.</p>
+    </div>
+  </ng-template>
 </ion-content>

@@ -6,7 +6,7 @@ import {
   ViewChildren,
   AfterViewInit,
 } from "@angular/core";
-import { GestureCtrlService } from "src/app/providers/gestureCtrl-service/gesture-ctrl.service";
+import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
 import { IonCard } from "@ionic/angular";
 
 @Component({

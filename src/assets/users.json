@@ -10,7 +10,7 @@
     },
     {
         "id": 1,
-        "picture": "../../assets/users/user2.jpg",
+        "picture": "../../assets/users/user1.jpg",
         "age": 28,
         "name": "Simba Potter",
         "gender": "female",
@@ -19,7 +19,7 @@
     },
     {
         "id": 2,
-        "picture": "../../assets/users/user3.jpg",
+        "picture": "../../assets/users/user1.jpg",
         "age": 31,
         "name": "Kamo Mphela",
         "gender": "female",
@@ -28,7 +28,7 @@
     },
     {
         "id": 3,
-        "picture": "../../assets/users/user4.jpg",
+        "picture": "../../assets/users/user1.jpg",
         "age": 21,
         "name": "Thato Seku",
         "gender": "female",
@@ -37,7 +37,7 @@
     },
     {
         "id": 4,
-        "picture": "../../assets/users/user5.jpg",
+        "picture": "../../assets/users/user1.jpg",
         "age": 27,
         "name": "Vivia Mbabo",
         "gender": "female",
@@ -46,7 +46,7 @@
     },
     {
         "id": 5,
-        "picture": "../../assets/users/user6.jpg",
+        "picture": "../../assets/users/user1.jpg",
         "age": 19,
         "name": "Zanele Mnisi",
         "gender": "female",

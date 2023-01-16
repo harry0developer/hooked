@@ -1,62 +1,84 @@
-ion-header {
-    display: none;
+::-webkit-scrollbar {
+  display: none;
 }
 
-ion-card {
-  background-color: rgb(240, 240, 240);
-  margin: 0 auto;
-  display: block;
-  position: absolute;
-  height: 100%;
-  width: 100%;
+.logo {
+  width: 30px;
+  vertical-align: middle;
 }
- 
 
-.user-card {
-  .picture {
-    height: 80%;
-    overflow: hidden;
+.user-card-container {
+  position: relative;
+  height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .user-card { 
+    position: absolute;
+    border-radius: 8px;
+    height: 75vh;
+    width: 95vw;
+
     img {
-      width: 460px;
+      width: 100vw;
+      border-radius: 8px;
+      object-fit: center;
+      object-position: top;
+      mask-image: linear-gradient(to bottom, #000, #000, transparent);
     }
-  }
-  .bottom {
-    position: relative;
-    bottom: 120px;
     .user-info {
-      padding: 20px;
-      .name {
-        font-size: 22px;
+      position: absolute;
+      bottom: 20px; //change this to 80px to controller
+      color: #292929;
+      text-align: center;
+      width: 100%;
+      h1 {
+        font-size: x-large;
         font-weight: bold;
-        color: rgb(201, 63, 86);
+        
+      }
+      p {
+        font-size: 16px;
+      }
+      h1, p {
+        padding: 0;
+        margin: 0;
       }
     }
-
-    .controls {
-      ion-row {
-        background-color: rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        border-radius: 4px;
-      }
-      ion-col {
-        text-align: center;
-      }
-      ion-icon {
-        font-size: 28px;
-        border: 2px solid;
-        border-radius: 100%;
-        padding: 10px;
-        &.hate {
-          background-color: orange;
-        }
-        &.super-like {
-          background-color: pink;
-        }
-        &.like {
-          background-color: green;
-        }
-      }
-    }
+    // .controls {
+    //   text-align: center;
+    //   align-items: center;
+    //   position: absolute;
+    //   width: 100%;
+    //   bottom: 4px;
+    //   ion-icon {
+    //     font-size: 54px;
+        
+    //   }
+    //   .dislike {
+    //     color: red;
+    //   }
+    //   .super-like {
+    //     color: orange;
+    //   }
+    //   .like {
+    //     color: green;
+    //   }
+    // }
+ 
   }
+ 
 }
 
+.no-swipes {
+  text-align: center;
+  height: 50vh;
+  margin-top: 25vh;
+  padding: 20px;
+  
+  h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}

@@ -7,7 +7,6 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 import { HttpClientModule } from "@angular/common/http";
 
 import { UsersPageRoutingModule } from './users-routing.module';
-import { CardComponent } from '../components/card/card.component';
 
 @NgModule({
   imports: [
@@ -19,7 +18,7 @@ import { CardComponent } from '../components/card/card.component';
     HttpClientModule
     
   ],
-  declarations: [UsersPage, CardComponent],
+  declarations: [UsersPage],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class UsersPageModule {}

@@ -1,28 +1,31 @@
 import { Injectable, NgZone } from "@angular/core";
 import { GestureController, Platform } from "@ionic/angular";
+import { DataService } from "./data.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class GestureCtrlService {
+ 
   constructor(
     private gestureCtrl: GestureController,
     private zone: NgZone,
-    private platform: Platform
+    private platform: Platform,
+    private dataProvider: DataService
   ) {}
 
   useSwiperGesture(cardArray: string | any[]) {
     for (let i = 0; i < cardArray.length; i++) {
       const card = cardArray[i];
-      // console.log("card", card);
 
+      console.log(card);
+      
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,
         threshold: 15,
-        gestureName: "swipte",
+        gestureName: "swipe",
         onStart: (ev) => {},
         onMove: (ev) => {
-          // console.log("ev : ", ev);
           card.nativeElement.style.transform = `translateX(${
             ev.deltaX
           }px) rotate(${ev.deltaX / 10}deg)`;
@@ -38,12 +41,18 @@ export class GestureCtrlService {
             card.nativeElement.style.transform = `translateX(${
               +this.platform.width() * 2
             }px) rotate(${ev.deltaX / 2}deg)`;
+
+            // this.dataProvider.setItem(const.LIKED, )
+            this.dataProvider.addLikedUser(card.nativeElement.id);
+            
           }
           // Left Side Move
           else if (ev.deltaX < -150) {
             card.nativeElement.style.transform = `translateX(-${
               +this.platform.width() * 2
             }px) rotate(${ev.deltaX / 2}deg)`;
+            this.dataProvider.addDisLikedUser(card.nativeElement.id);
+
           }
           // When No move or if small move back to original
           else {
@@ -56,7 +65,7 @@ export class GestureCtrlService {
   }
 
   // STYLE OF CARD WHEN GESTURE START
-  setCardColor(x: number, element: { style: { background: string; }; }) {
+  setCardColor(x: any, element: any) {
     let color = "";
     const abs = Math.abs(x);
     const min = Math.trunc(Math.min(16 * 16 - abs, 16 * 16));
@@ -83,19 +92,3 @@ export class GestureCtrlService {
     return hex;
   }
 }
-
-////////////////////////////////////////////////////////////////////////
-/**
- *
- * USE THIS IN ANY TS FILE
- */
-/* @ViewChildren(IonCard, { read: ElementRef }) cards: QueryList<ElementRef>;
-
-  constructor(private gestureCtrlService: GestureCtrlService) {}
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    const cardArray = this.cards.toArray();
-    this.gestureCtrlService.useTinderSwipe(cardArray);
-  } */
