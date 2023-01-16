@@ -1,0 +1,41 @@
+.container {
+    .top {
+        background-color: rgb(250, 240, 250);
+        height: 40vh;
+        padding-top: 20px;
+
+        .user-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            img { 
+                width: 150px;
+                object-fit:contain;
+                object-position: center;
+            }
+        }
+
+        .user-info {
+            padding-top: 20px;
+            text-align: center;
+            h1 {
+                font-size: large;
+                font-weight: bold;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+
+    .bottom {
+        background-color: rgb(241, 241, 241);
+
+        .photo-grid {
+            img {
+                border-radius: 8px;
+            }
+        }
+    }
+}

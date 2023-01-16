@@ -1,0 +1,36 @@
+<ion-header [translucent]="true"class="ion-no-border">
+  <ion-toolbar mode="md">
+    <ion-title text-center>
+      Profile
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <div class="top">
+      <div class="user-avatar">
+        <img [src]="user?.picture" alt="">
+      </div>
+      <div class="user-info">
+        <h1>{{user?.name}}, {{user?.age}}</h1>
+        <ion-button shape="round">Edit Profile</ion-button>
+      </div>
+
+    </div>
+    <div class="bottom">
+      <ion-grid class="photo-grid">
+        <ion-row>
+          <ion-col size="4" *ngFor="let p of [1,2,3,4,5,6]">
+            <img [src]="user?.picture" alt="">
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

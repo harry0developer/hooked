@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscribable, Subscription } from 'rxjs';
+import { BehaviorSubject} from 'rxjs';
 import { User } from '../models/User';
 
 @Injectable()
@@ -74,9 +74,6 @@ export class DataService {
     this.userCount.next(--this.count);
   }
 
-  getCount(){
-    return this.userCount$;
-  }
   getUser(id: string): User {
     return this.users.filter(u => this.getId(u.id) === id)[0];
   }

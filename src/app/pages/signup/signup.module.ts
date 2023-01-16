@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SwiperGesturePageRoutingModule } from './swiper-gesture-routing.module';
+import { SignupPageRoutingModule } from './signup-routing.module';
 
-import { SwiperGesturePage } from './swiper-gesture.page';
+import { SignupPage } from './signup.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SwiperGesturePageRoutingModule
+    SignupPageRoutingModule
   ],
-  declarations: [SwiperGesturePage]
+  declarations: [SignupPage]
 })
-export class SwiperGesturePageModule {}
+export class SignupPageModule {}

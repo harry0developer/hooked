@@ -3,19 +3,17 @@ import {
   OnInit,
   ElementRef,
   QueryList,
-  ViewChildren,
-  AfterViewInit,
-  ViewChild,
+  ViewChildren, 
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from "@angular/core";
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
 import { IonCard } from "@ionic/angular";
-import { DataService } from "../providers/data.service";
-import { Subject, Subscription } from 'rxjs';
+import { DataService } from "../../providers/data.service";
+import { Subscription } from 'rxjs';
 
-import { User } from '../models/User';
-import { lastValueFrom, Observable, of } from "rxjs";
+import { User } from '../../models/User';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-users',
@@ -63,11 +61,9 @@ export class UsersPage implements OnInit {
     disLikeUsers: User[] = [];
     liked$!: Subscription;
     disLiked$!: Subscription;
-    userCount$!: Subscription;
 
     count$!: Observable<Number>;
 
-    count = new Subject();
     constructor(
       private gestureCtrlService: GestureCtrlService,
       public dataService: DataService,
@@ -90,16 +86,11 @@ export class UsersPage implements OnInit {
       this.dataService.userCount$.subscribe(c => {
         this.cd.detectChanges()
       });
-      
-
-      
     }
     
     ngOnDestroy() {
       this.liked$.unsubscribe();
       this.disLiked$.unsubscribe();
-      this.userCount$.unsubscribe();
-
     }
   
     ngAfterViewInit() {

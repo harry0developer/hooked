@@ -1,0 +1,51 @@
+.content {
+    background-color: #fa2a97;
+    height: 100%;
+    .logo {
+        width: 80px;
+        margin: 20px auto;
+        padding-top: 40px;
+        img {
+            width: 100px;
+        }
+    }
+    
+    .login-form {
+        padding-top: 20px;
+        .or {
+            text-align: center;
+            padding: 10px;
+        }
+    }
+
+    .social {
+        width: 50%;
+        text-align: center;
+        font-size: 24px;
+        color: #fa2a97;
+
+    }
+    .link {
+        text-align: center;
+        padding-bottom: 20px;
+        a {
+            color: #fa2a97;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+    }
+}
+
+ion-item.item-input.item-lines-none {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 8px 0;
+}
+
+ion-button {
+    --background: #fa2a97;
+    --background-hover: #fa2a97;
+    --background-activated: #fa2a97;
+    --background-focused: #fa2a97;
+}
