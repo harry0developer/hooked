@@ -11,7 +11,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { DataService } from './providers/data.service';
 import { AuthService } from './providers/auth.service';
 
-//IMPORT OFFICIAL ANGULAR FIRE AND THE ENVIRONMENT TO LOAD FIREBASE.
+//https://github.com/ivylaboratory/angular-gallery
+import {IvyGalleryModule} from 'angular-gallery';
+
 import { environment } from 'src/environments/environment';
  
 // Firebase 
@@ -29,7 +31,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     AppRoutingModule, 
     ReactiveFormsModule,
     HttpClientModule,
-
+    IvyGalleryModule,
+ 
     AngularFireModule.initializeApp(environment.firebaseConfig),  
     AngularFireAuthModule,
     AngularFirestoreModule,

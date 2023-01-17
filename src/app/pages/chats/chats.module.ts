@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatsPage } from './chats.page';
-import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 
 import { ChatsPageRoutingModule } from './chats-routing.module';
 
@@ -12,8 +11,7 @@ import { ChatsPageRoutingModule } from './chats-routing.module';
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
-    ChatsPageRoutingModule
+    ChatsPageRoutingModule, 
   ],
   declarations: [ChatsPage]
 })

@@ -1,6 +1,6 @@
 export interface User {
     id: string;
-    picture: string;
+    images: string[];
     age: number;
     name: string;
     gender: string;

@@ -15,7 +15,7 @@
   <div class="container">
     <div class="top">
       <div class="user-avatar">
-        <img [src]="user?.picture" alt="">
+        <img [src]="user?.images[0]" alt="">
       </div>
       <div class="user-info">
         <h1>{{user?.name}}, {{user?.age}}</h1>
@@ -26,8 +26,8 @@
     <div class="bottom">
       <ion-grid class="photo-grid">
         <ion-row>
-          <ion-col size="4" *ngFor="let p of [1,2,3,4,5,6]">
-            <img [src]="user?.picture" alt="">
+          <ion-col size="4" *ngFor="let u of user.images; let i=index">
+            <img [src]="u" alt="" (click)="showGallery(i)">
           </ion-col> 
         </ion-row>
       </ion-grid>

@@ -6,20 +6,16 @@ import { User } from '../models/User';
 @Injectable()
 export class DataService {
 
-  user: User = {
-    id: "",
-    picture: "",
-    age: 0,
-    name: "",
-    gender: "",
-    distance: "",
-    location: ""
-  };
-
- users: User[] = [
+ 
+  users: User[] = [
     {
       "id": "0",
-      "picture": "../../assets/users/user2.jpg",
+      "images": [
+        "../../assets/users/user1/1.jpg",
+        "../../assets/users/user1/2.jpg",
+        "../../assets/users/user1/3.jpg",
+        "../../assets/users/user1/4.jpg"
+      ],
       "age": 23,
       "name": "Amanda Du Pont",
       "gender": "female",
@@ -28,7 +24,12 @@ export class DataService {
     },
     {
         "id": "1",
-        "picture": "../../assets/users/user6.jpg",
+        "images": [
+          "../../assets/users/user2/1.jpg",
+          "../../assets/users/user2/2.jpg",
+          "../../assets/users/user2/3.jpg",
+          "../../assets/users/user2/4.jpg"
+        ],
         "age": 28,
         "name": "Simba Potter",
         "gender": "female",
@@ -36,15 +37,49 @@ export class DataService {
         "distance": "12"
     },
     {
-        "id":"2",
-        "picture": "../../assets/users/user5.jpg",
-        "age": 31,
-        "name": "Kamo Mphela",
-        "gender": "female",
-        "location": "Pretoria",
-        "distance": "52"
+      "id": "2",
+      "images": [
+        "../../assets/users/user3/1.jpg",
+        "../../assets/users/user3/2.jpg",
+        "../../assets/users/user3/3.jpg",
+        "../../assets/users/user3/4.jpg"
+      ],
+      "age": 27,
+      "name": "Kamo Mphela",
+      "gender": "female",
+      "location": "Pretoria",
+      "distance": "30"
+    },
+    {
+      "id": "4",
+      "images": [
+        "../../assets/users/user3/1.jpg",
+        "../../assets/users/user3/2.jpg",
+        "../../assets/users/user3/3.jpg",
+        "../../assets/users/user3/4.jpg"
+      ],
+      "age": 24,
+      "name": "Nadia Lou",
+      "gender": "female",
+      "location": "Daveyton",
+      "distance": "62"
+    },
+    {
+      "id": "5",
+      "images": [
+        "../../assets/users/user5/1.jpg",
+        "../../assets/users/user5/2.jpg",
+        "../../assets/users/user5/3.jpg",
+        "../../assets/users/user5/4.jpg"
+      ],
+      "age": 21,
+      "name": "Lucy Smith",
+      "gender": "female",
+      "location": "Pretoria",
+      "distance": "39"
     }];
- 
+
+  user: User = this.users[0];
   private count: number = this.users.length;
   private likedUsers = new BehaviorSubject( this.user );
   private disLikedUser = new BehaviorSubject( this.user );

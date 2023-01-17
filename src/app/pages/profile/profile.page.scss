@@ -1,9 +1,16 @@
+ 
+::ng-deep .carousel-container {
+    background-color: #000 !important;
+    img {
+        object-fit: cover !important;
+    }
+}
 .container {
     .top {
         background-color: rgb(250, 240, 250);
         height: 40vh;
         padding-top: 20px;
-
+        border-bottom: 1px solid #ddd;
         .user-avatar {
             width: 150px;
             height: 150px;
@@ -31,7 +38,8 @@
 
     .bottom {
         background-color: rgb(241, 241, 241);
-
+        height: 45vh;
+        padding-top: 10px;
         .photo-grid {
             img {
                 border-radius: 8px;
