@@ -13,7 +13,18 @@
     </ion-toolbar>
   </ion-header>
 
-  <img src="../../assets/users/user01.jpg" (click)="showGallery(0)">
-
-
+  <div class="container">
+    <ion-list lines="none">
+      <ion-item *ngFor="let user of users; let i = index">
+        <ion-avatar slot="start" >
+          <img [alt]="user?.name" [src]="user?.images[0]" />
+        </ion-avatar>  
+        <p slot="end">12:35</p>
+        <ion-label>
+          {{user?.name}}
+          <p>last message</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

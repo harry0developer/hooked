@@ -44,19 +44,19 @@ export class DataService {
         "../../assets/users/user3/3.jpg",
         "../../assets/users/user3/4.jpg"
       ],
-      "age": 27,
-      "name": "Kamo Mphela",
+      "age": 24,
+      "name": "Thato Seku",
       "gender": "female",
       "location": "Pretoria",
-      "distance": "30"
+      "distance": "9"
     },
     {
       "id": "4",
       "images": [
-        "../../assets/users/user3/1.jpg",
-        "../../assets/users/user3/2.jpg",
-        "../../assets/users/user3/3.jpg",
-        "../../assets/users/user3/4.jpg"
+        "../../assets/users/user4/1.jpg",
+        "../../assets/users/user4/2.jpg",
+        "../../assets/users/user4/3.jpg",
+        "../../assets/users/user4/4.jpg"
       ],
       "age": 24,
       "name": "Nadia Lou",
@@ -115,6 +115,10 @@ export class DataService {
 
   getId(id: string): string{
     return 'card-'+id;
+  }
+
+  getUsers(): User[] {
+    return this.users;
   }
 
 }
