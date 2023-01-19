@@ -3,6 +3,7 @@
     <ion-title text-center>
       Chats
     </ion-title>
+    
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +16,7 @@
 
   <div class="container">
     <ion-list lines="none">
-      <ion-item *ngFor="let user of users; let i = index">
+      <ion-item *ngFor="let user of users; let i = index" (click)="navigate(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.images[0]" />
         </ion-avatar>  

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { DataService } from 'src/app/providers/data.service';
 
@@ -10,8 +11,15 @@ import { DataService } from 'src/app/providers/data.service';
 export class ChatsPage {
 
   users!: User[];
-  constructor(private dataService: DataService) {
+  user!: User;
+  constructor(private dataService: DataService, private router: Router) {
     this.users = this.dataService.getUsers();
+    this.user = this.users[0];
+  }
+
+
+  navigate(user) {
+    this.router.navigate(['chat', user.id, {user: JSON.stringify(user)}])
   }
 
 }
