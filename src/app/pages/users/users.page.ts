@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from '../../models/User';
 import { Observable } from "rxjs";
+var moment = require('moment'); // require
 
 @Component({
   selector: 'app-users',
@@ -25,92 +26,29 @@ import { Observable } from "rxjs";
 
 export class UsersPage implements OnInit {
  
-  users: User[] = [
-    {
-      "id": "0",
-      "images": [
-        "../../assets/users/user1/1.jpg",
-        "../../assets/users/user1/2.jpg",
-        "../../assets/users/user1/3.jpg",
-        "../../assets/users/user1/4.jpg"
-      ],
-      "age": 23,
-      "name": "Amanda Du Pont",
-      "gender": "female",
-      "location": "Midrand",
-      "distance": "22"
-    },
-    {
-        "id": "1",
-        "images": [
-          "../../assets/users/user2/1.jpg",
-          "../../assets/users/user2/2.jpg",
-          "../../assets/users/user2/3.jpg",
-          "../../assets/users/user2/4.jpg"
-        ],
-        "age": 28,
-        "name": "Simba Potter",
-        "gender": "female",
-        "location": "Sandton",
-        "distance": "12"
-    },
-    {
-      "id": "2",
-      "images": [
-        "../../assets/users/user3/1.jpg",
-        "../../assets/users/user3/2.jpg",
-        "../../assets/users/user3/3.jpg",
-        "../../assets/users/user3/4.jpg"
-      ],
-      "age": 24,
-      "name": "Thato Seku",
-      "gender": "female",
-      "location": "Pretoria",
-      "distance": "9"
-    },
-    {
-      "id": "4",
-      "images": [
-        "../../assets/users/user4/1.jpg",
-        "../../assets/users/user4/2.jpg",
-        "../../assets/users/user4/3.jpg",
-        "../../assets/users/user4/4.jpg"
-      ],
-      "age": 24,
-      "name": "Nadia Lou",
-      "gender": "female",
-      "location": "Daveyton",
-      "distance": "62"
-    },
-    {
-      "id": "5",
-      "images": [
-        "../../assets/users/user5/1.jpg",
-        "../../assets/users/user5/2.jpg",
-        "../../assets/users/user5/3.jpg",
-        "../../assets/users/user5/4.jpg"
-      ],
-      "age": 21,
-      "name": "Lucy Smith",
-      "gender": "female",
-      "location": "Pretoria",
-      "distance": "39"
-    }];
- 
-  
-    @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
-  
-    likeUsers: User[] = [];
-    disLikeUsers: User[] = [];
-    liked$!: Subscription;
-    disLiked$!: Subscription;
+  users!: User[];
 
-    count$!: Observable<Number>;
 
-    constructor(
-      private gestureCtrlService: GestureCtrlService,
-      public dataService: DataService,
-      private cd: ChangeDetectorRef) {}
+  @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
+
+  likeUsers: User[] = [];
+  disLikeUsers: User[] = [];
+  liked$!: Subscription;
+  disLiked$!: Subscription;
+
+  count$!: Observable<Number>;
+
+  constructor(
+    private gestureCtrlService: GestureCtrlService,
+    public dataService: DataService,
+    private cd: ChangeDetectorRef) {
+      this.users = this.dataService.getUsers();
+    }
+
+    getUserAge(user: User) : string{
+      return  moment().diff(user.dob, 'years');
+
+    }
   
     ngOnInit() {
       this.liked$ = this.dataService.likedUser$.subscribe(user => {

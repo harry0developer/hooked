@@ -18,13 +18,13 @@
     <ion-card class="user-card" *ngFor="let user of users; let i =index"  id="{{'card-' + user.id}}">
       <img [src]="user.images[0]" />
       <div class="user-info">
-        <h1>{{user.name}}, {{user.age}}</h1>
+        <h1>{{user.name}}, {{getUserAge(user)}}</h1>
         <p>
           <ion-icon name="home-outline"></ion-icon>
-          Lives in {{user.location}} </p>
+          Lives in {{user.location.address}} </p>
         <p>
           <ion-icon name="location-outline"></ion-icon>
-          {{user.distance}}km away</p>
+          12km away</p>
       </div>
       <!-- <div class="controls">
         <ion-grid>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/User';
+import { User } from '../../models/User';
 import { DataService } from 'src/app/providers/data.service';
 
 @Component({

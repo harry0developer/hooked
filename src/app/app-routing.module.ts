@@ -15,7 +15,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'chat/:id',
+    path: 'chat/:uid',
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
   }
 ];

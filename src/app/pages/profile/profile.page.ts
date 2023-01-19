@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/models/User';
+import { User } from '../../models/User';
 import { Gallery } from 'angular-gallery';
+var moment = require('moment'); // require
 
 @Component({
   selector: 'app-profile',
@@ -9,20 +10,33 @@ import { Gallery } from 'angular-gallery';
 })
 export class ProfilePage {
 
-  user: User =  {
-    "id": "4",
-    "images": [
+  user:User = {
+    uid: "UUID-000-004",
+    email: "user4@test.com",
+    phone: "+27739993000",
+    name: "Thato Seku",
+    dob: "05/15/1996", //moment().format('L');    // 01/19/2023
+    gender: "female",
+    images: [
       "../../assets/users/user3/1.jpg",
       "../../assets/users/user3/2.jpg",
-      "../../assets/users/user3/3.jpg"
+      "../../assets/users/user3/3.jpg",
+      "../../assets/users/user3/4.jpg"
     ],
-    "age": 24,
-    "name": "Thato Seku",
-    "gender": "female",
-    "location": "Daveyton",
-    "distance": "62"
+    location: {
+        address: "Mpumalanga",
+        geo: {
+            lat: 10.000,
+            lng: -85.00
+        }
+    },
+    dateCreated: moment().format()
   };
   constructor(private gallery: Gallery) {}
+
+  getUserAge(): string {
+    return moment().diff(this.user.dob, 'years');
+  }
   
   showGallery(index: number) {
     let prop = {

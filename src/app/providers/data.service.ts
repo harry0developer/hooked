@@ -2,81 +2,151 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject} from 'rxjs';
 import { User } from '../models/User';
+var moment = require('moment'); // require
 
 @Injectable()
 export class DataService {
 
  
   users: User[] = [
+
     {
-      "id": "0",
-      "images": [
+      id: "1",
+      uid: "UUID-001-001",
+      email: "user1@test.com",
+      phone: "+27821002000",
+      name: "Amanda Du Pont",
+      dob: "01/25/1995", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
         "../../assets/users/user1/1.jpg",
         "../../assets/users/user1/2.jpg",
         "../../assets/users/user1/3.jpg",
         "../../assets/users/user1/4.jpg"
       ],
-      "age": 23,
-      "name": "Amanda Du Pont",
-      "gender": "female",
-      "location": "Midrand",
-      "distance": "22"
+      location: {
+          address: "Midrand",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
     },
     {
-        "id": "1",
-        "images": [
-          "../../assets/users/user2/1.jpg",
-          "../../assets/users/user2/2.jpg",
-          "../../assets/users/user2/3.jpg",
-          "../../assets/users/user2/4.jpg"
-        ],
-        "age": 28,
-        "name": "Simba Potter",
-        "gender": "female",
-        "location": "Sandton",
-        "distance": "12"
+      id: "2",
+      uid: "UUID-000-002",
+      email: "user2@test.com",
+      phone: "+27821003000",
+      name: "Simba Potter",
+      dob: "01/25/1999", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
+        "../../assets/users/user2/1.jpg",
+        "../../assets/users/user2/2.jpg",
+        "../../assets/users/user2/3.jpg",
+        "../../assets/users/user2/4.jpg"
+      ],
+      location: {
+          address: "Daveyton",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
     },
     {
-      "id": "2",
-      "images": [
+      id: "3",
+      uid: "UUID-000-003",
+      email: "user3@test.com",
+      phone: "+27821003000",
+      name: "Thato Seku",
+      dob: "01/25/1999", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
         "../../assets/users/user3/1.jpg",
         "../../assets/users/user3/2.jpg",
         "../../assets/users/user3/3.jpg",
         "../../assets/users/user3/4.jpg"
       ],
-      "age": 24,
-      "name": "Thato Seku",
-      "gender": "female",
-      "location": "Pretoria",
-      "distance": "9"
+      location: {
+          address: "Diepsloot",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
     },
     {
-      "id": "4",
-      "images": [
+      id: "4",
+      uid: "UUID-000-004",
+      email: "user4@test.com",
+      phone: "+27739993000",
+      name: "Thato Seku",
+      dob: "05/15/1996", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
+        "../../assets/users/user3/1.jpg",
+        "../../assets/users/user3/2.jpg",
+        "../../assets/users/user3/3.jpg",
+        "../../assets/users/user3/4.jpg"
+      ],
+      location: {
+          address: "Mpumalanga",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
+    },
+    {
+      id: "5",
+      uid: "UUID-000-005",
+      email: "user5@test.com",
+      phone: "+27737776000",
+      name: "Nadia Sexy",
+      dob: "01/19/2000", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
         "../../assets/users/user4/1.jpg",
         "../../assets/users/user4/2.jpg",
         "../../assets/users/user4/3.jpg",
         "../../assets/users/user4/4.jpg"
       ],
-      "age": 24,
-      "name": "Nadia Lou",
-      "gender": "female",
-      "location": "Daveyton",
-      "distance": "62"
+      location: {
+          address: "Mpumalanga",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
     },
     {
-      "id": "5",
-      "images": [
+      id: "6",
+      uid: "UUID-000-005",
+      email: "user5@test.com",
+      phone: "+27739090000",
+      name: "Skyler White",
+      dob: "01/19/2000", //moment().format('L');    // 01/19/2023
+      gender: "female",
+      images: [
         "../../assets/users/user5/1.jpg",
         "../../assets/users/user5/2.jpg",
         "../../assets/users/user5/3.jpg",
         "../../assets/users/user5/4.jpg"
       ],
-      "age": 21,
-      "name": "Lucy Smith",
-      "gender": "female",
-      "location": "Pretoria",
-      "distance": "39"
+      location: {
+          address: "Pretoria",
+          geo: {
+              lat: 10.000,
+              lng: -85.00
+          }
+      },
+      dateCreated: moment().format()
     }];
 
   user: User = this.users[0];
@@ -109,8 +179,8 @@ export class DataService {
     this.userCount.next(--this.count);
   }
 
-  getUser(id: string): User {
-    return this.users.filter(u => this.getId(u.id) === id)[0];
+  getUser(uid: string): User {
+    return this.users.filter(u => this.getId(u.uid) === uid)[0];
   }
 
   getId(id: string): string{

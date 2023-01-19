@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { FirebaseUser } from '../models/FirebaseUser';
+import { User } from '../models/User';
 
 @Injectable({
   providedIn: 'root'
@@ -108,10 +108,10 @@ export class AuthService {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    const userData: FirebaseUser = {
+    const userData = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      displayName: user.name,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
     };
@@ -119,6 +119,9 @@ export class AuthService {
       merge: true,
     });
   }
+
+ 
+
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {

@@ -1,9 +1,19 @@
 export interface User {
-    id: string;
-    images: string[];
-    age: number;
+    id?: string;
+    uid: string;
+    email: string;
+    phone: string;
     name: string;
+    dob: string;
     gender: string;
-    distance: string;
-    location: string;
+    images: string[],
+    location: {
+        address: string;
+        geo: {
+            lat: number;
+            lng: number;
+        }
+    },
+    dateCreated: string;
 }
+ 

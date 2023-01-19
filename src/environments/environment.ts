@@ -5,13 +5,12 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyByCpDl7cYydDAAvS4ZVqN2-wjXsWEiphQ",
-    authDomain: "hooked-84fc7.firebaseapp.com",
-    projectId: "hooked-84fc7",
-    storageBucket: "hooked-84fc7.appspot.com",
-    messagingSenderId: "358242484478",
-    appId: "1:358242484478:web:d338c4ab122a78e34ca5af",
-    measurementId: "G-ZV64BGR5SR"
+    apiKey: "AIzaSyBxn6qi-FmUAxIVUnG6Op8DHVbTGvTp-yM",
+    authDomain: "hooked-6caae.firebaseapp.com",
+    projectId: "hooked-6caae",
+    storageBucket: "hooked-6caae.appspot.com",
+    messagingSenderId: "877532725845",
+    appId: "1:877532725845:web:70e2d9d2ca39b9acab4adc"
   }
 };
 

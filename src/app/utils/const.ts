@@ -14,3 +14,4 @@ export const AUTH_TYPE = {
     phone: 'phone',
     apple: 'apple',
 }
+

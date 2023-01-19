@@ -6,7 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { DataService } from './providers/data.service';
 import { AuthService } from './providers/auth.service';
@@ -27,6 +27,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
   declarations: [AppComponent],
   imports: [
     BrowserModule, 
+    FormsModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(), 
     AppRoutingModule, 
     ReactiveFormsModule,
