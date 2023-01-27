@@ -30,12 +30,17 @@
       </ng-container>
     </div>
     <div class="btn">
-      <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Log In</ion-button>
+      <ion-button shape="round" class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Log In</ion-button>
     </div>
-    <label class="error-message">{{errorMessage}}</label>
+    <div class="validation-errors">
+      <label class="error-message">{{errorMessage}}</label>
+    </div>
   </form>
   
   <p class="not-registered">
     No account yet? <a (click)="goToSignupPage()">Create an account.</a>
+  </p>
+  <p class="reset-password">
+    Or <a (click)="goToResetPassword()">Reset Password.</a>
   </p>
 </ion-content>

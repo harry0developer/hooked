@@ -6,11 +6,14 @@
     <img src="../../../assets/logo.png" alt="">
   </div>
 
-  <form class="form" [formGroup]="validations_form" (ngSubmit)="trySignup(validations_form.value)">
-    <ion-list>
-      <ion-item mode="ios" lines="none" class="form-item">
-        <ion-label position="stacked" color="primary">Name</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
+  <div class="container" *ngIf="activeStep == 0">
+    <h1 class="label">What's your name?</h1>
+    <p>This is the name which others will see.</p>
+ 
+    <form class="item" [formGroup]="validations_form" (ngSubmit)="submit(validations_form.value)">
+      <ion-item mode="ios" lines="none" class="item-info">
+        <!-- <ion-label position="stacked" color="primary">Name</ion-label> -->
+        <ion-input class="custom" type="text" formControlName="name"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.name">
@@ -20,50 +23,82 @@
         </ng-container>
       </div>
 
-      <ion-item mode="ios" lines="none" class="form-item select-label">
-        <ion-label position="stacked" color="primary">Gender</ion-label>
-        <ion-select interface="action-sheet" formControlName="gender">
-          <ion-select-option value="male">Male</ion-select-option>
-          <ion-select-option value="female">Female</ion-select-option>
-        </ion-select>
-      </ion-item>
+      <ion-button shape="round" (click)="next()">Next</ion-button>
+
+    </form>
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 1">
+    <h1 class="label">What's your date of birth</h1>
+    <p>Others will only see your age.</p>
+
+    <!-- <input type="date" min="2005-01-01" /> -->
+
+    <div class="chosen-date">
+      <h1>{{ myDate | date: 'dd/MM/yyyy' }}</h1>
+    </div>
+
+    <ion-item>
+      <ion-datetime
+        value="2006-01-01T00:00:00"
+        max="2006-01-01T00:00:00"
+        presentation="date" 
+        [(ngModel)]="myDate"></ion-datetime>
+    </ion-item>
+
+    <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+    <ion-button shape="round" (click)="next()">Next</ion-button>
+
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 2">
+    <h1 class="label">What's your gender?</h1>
+    <p>This help us find the right match for you</p>
  
 
-      <ion-item mode="ios" lines="none" class="form-item">
-        <ion-label position="stacked" color="primary">Email</ion-label>
-        <ion-input type="text" formControlName="email"></ion-input>
+    <form class="item" [formGroup]="validations_form" (ngSubmit)="submit(validations_form.value)">
+     
+      <ion-list>
+        <ion-item>
+          <ion-select interface="action-sheet" placeholder="Select gender">
+            <ion-select-option value="male">Male</ion-select-option>
+            <ion-select-option value="female">Female</ion-select-option>
+            <ion-select-option value="transgender">Transgender</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+      <ion-button shape="round" (click)="next()">Next</ion-button>
+
+
+    </form>
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 3">
+    <h1 class="label">What's your sexual orientation?</h1>
+    <p>This help us find the right match for you</p>
+
+    <ion-list>
+      <ion-item>
+        <ion-select interface="action-sheet" placeholder="Select sexual orientation">
+          <ion-select-option value="straight">Straight</ion-select-option>
+          <ion-select-option value="gay">Gay</ion-select-option>
+          <ion-select-option value="lesbian">Lesbian</ion-select-option>
+          <ion-select-option value="bisexual">Bisexual</ion-select-option>
+          <ion-select-option value="asexual">Asexual</ion-select-option>
+          <ion-select-option value="demisexual">Demisexual</ion-select-option>
+          <ion-select-option value="pansexual">Pensexual</ion-select-option>
+          <ion-select-option value="queer">Queer</ion-select-option>
+        </ion-select>
       </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.email">
-          <div class="error-message" *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-
-      <ion-item mode="ios" class="no-padding" lines="none" class="form-item">
-        <ion-label position="stacked" color="primary">Password</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
-      </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.password">
-          <div class="error-message" *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-
-
-      <div class="btn">
-        <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Sign Up</ion-button>
-      </div>
-
-
-      <label class="error-message">{{errorMessage}}</label>
     </ion-list>
-  </form>
-  
-  <p class="not-registered">
-    Already have an account? <a (click)="goLoginPage()">Sign In.</a>
-  </p>
+
+
+    <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+    <ion-button shape="round" (click)="next()">Next</ion-button>
+
+ 
+  </div> 
+ 
 </ion-content>

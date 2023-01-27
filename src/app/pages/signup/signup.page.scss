@@ -9,52 +9,61 @@
       width: 60px;
     }
   }
-  
-  ion-item {
-    --padding-start: 0;
-  }
-  
-  .form {
-    padding: 20px;
-    ion-item {
-      --inner-padding-end:0
-    }
-    .form-item {
-      ion-input, ion-select {
-        border: 2px solid #3f093885;
-        --padding-start: 10px;
-        border-radius: 6px;
-      }
-
-      ion-select {
-        width: 100%;
-        // margin-top: 20px;
-      }
-    }
-  
-    .validation-errors {
-      .error-message {
-        font-size: 14px;
-        color: rgb(175, 4, 4);
-        padding-top: 6px;
-      }
-    }
    
-  }
 
-  ion-label {
-    --padding-bottom: 20px;
-  }
-  
-  .select-label {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
 
-  .not-registered {
+  //modal
+  .container {
+    padding: 20px;
     text-align: center;
-  }
+    h1 {
+      font-size: 21px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 14px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .item {
+      padding: 20px;
+      ion-item {
+        --inner-padding-end:0
+      }
+      .item-info {
+        ion-input, ion-select {
+          border-bottom: 2px solid #3f093885;
+          // --padding-start: 10px;
+          // border-radius: 6px;
+        }
   
-  .btn {
+        ion-select {
+          width: 100%;
+          // margin-top: 20px;
+        }
+      }
+    }
+
+    .chosen-date {
+      border-bottom: 2px solid #3f093885;
+      padding: 5px;
+      height: 60px;
+      margin: 20px 80px;
+      
+    }
+    
+  }
+
+  .validation-errors {
+    .error-message {
+      font-size: 14px;
+      color: rgb(175, 4, 4);
+      padding-top: 6px;
+    }
+  }
+
+  ion-button {
     margin-top: 20px;
   }
+ 

@@ -18,7 +18,7 @@ export class GestureCtrlService {
     for (let i = 0; i < cardArray.length; i++) {
       const card = cardArray[i];
 
-      console.log(card);
+      // console.log(card);
       
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,

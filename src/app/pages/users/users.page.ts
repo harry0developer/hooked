@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 
 import { User } from '../../models/User';
 import { Observable } from "rxjs";
+import { FirebaseService } from "../services/firebase.service";
 var moment = require('moment'); // require
 
 @Component({
@@ -41,6 +42,7 @@ export class UsersPage implements OnInit {
   constructor(
     private gestureCtrlService: GestureCtrlService,
     public dataService: DataService,
+    private firebaseService: FirebaseService,
     private cd: ChangeDetectorRef) {
       this.users = this.dataService.getUsers();
     }
@@ -51,22 +53,41 @@ export class UsersPage implements OnInit {
     }
   
     ngOnInit() {
-      this.liked$ = this.dataService.likedUser$.subscribe(user => {
-        console.log(user);
-        this.likeUsers.push(user);
-      });
-      this.disLiked$ = this.dataService.disLikedUser$.subscribe(user => {
-        console.log(user);
-        this.disLikeUsers.push(user);
+
+        
+      
+
+      this.firebaseService.afAuth.authState.subscribe((user) => {
+        if (user) {
+          console.log(user.multiFactor['user']);
+          
+          // this.userData = user;
+          // localStorage.setItem('user', JSON.stringify(user));
+          // JSON.parse(localStorage.getItem('user')!);
+        } else {
+          console.log("No user");
+  
+          // localStorage.setItem('user', 'null');
+          // JSON.parse(localStorage.getItem('user')!);
+        }
       });
 
-      this.count$ = this.dataService.userCount$;
+      // this.liked$ = this.dataService.likedUser$.subscribe(user => {
+      //   console.log(user);
+      //   this.likeUsers.push(user);
+      // });
+      // this.disLiked$ = this.dataService.disLikedUser$.subscribe(user => {
+      //   console.log(user);
+      //   this.disLikeUsers.push(user);
+      // });
 
-      this.cd.detectChanges()
+      // this.count$ = this.dataService.userCount$;
 
-      this.dataService.userCount$.subscribe(c => {
-        this.cd.detectChanges()
-      });
+      // this.cd.detectChanges()
+
+      // this.dataService.userCount$.subscribe(c => {
+      //   this.cd.detectChanges()
+      // });
     }
 
     filterUsers() {

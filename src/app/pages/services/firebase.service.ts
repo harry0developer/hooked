@@ -7,8 +7,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-import { User } from '../models/User';
-import { COLLECTION } from '../utils/const';
+import { User } from '../../models/User';
+import { COLLECTION, STORAGE } from '../../utils/const';
 
 var moment = require('moment'); // require
 
@@ -25,6 +25,45 @@ export class FirebaseService {
   ){}
 
 
+  setItem(key: string, value: any) {
+    localStorage.setItem(key, JSON.stringify(value));
+  } 
+
+  getItem(key: string) {
+    return JSON.parse(localStorage.getItem(key));
+  }
+
+ 
+ 
+
+  // sendEmailVerification(email: string) {
+  //   //const auth = getAuth();
+  //   const actionCodeSettings = {
+  //     // URL you want to redirect back to. The domain (www.example.com) for this
+  //     // URL must be in the authorized domains list in the Firebase Console.
+  //     url: '',
+  //     // This must be true.
+  //     handleCodeInApp: true,
+  //     iOS: {
+  //       bundleId: 'com.example.ios'
+  //     },
+  //     android: {
+  //       packageName: 'com.example.android',
+  //       installApp: true,
+  //       minimumVersion: '12'
+  //     },
+  //     dynamicLinkDomain: 'example.page.link'
+  //   };
+  //   this.afAuth.sendSignInLinkToEmail(email,actionCodeSettings).then(user => {
+  //     console.log(user);
+      
+  //   }).catch(err => {
+  //     console.log(err);
+      
+  //   })
+
+     
+  // }
   
   createUser(user: User){
     return new Promise<any>((resolve, reject) => {
@@ -69,7 +108,7 @@ export class FirebaseService {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.user.subscribe(currentUser => {
         if(currentUser){
-          this.snapshotChangesSubscription = this.afs.doc<any>('people/' + currentUser.uid + '/tasks/' + taskId).valueChanges()
+          this.snapshotChangesSubscription = this.afs.doc<any>('users/' + currentUser.uid + '/tasks/' + taskId).valueChanges()
           .subscribe(snapshots => {
             resolve(snapshots);
           }, err => {

@@ -17,6 +17,18 @@ const routes: Routes = [
   {
     path: 'chat/:uid',
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'verify-email',
+    loadChildren: () => import('./verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+  },
+  {
+    path: 'signup-info',
+    loadChildren: () => import('./signup-info/signup-info.module').then( m => m.SignupInfoPageModule)
   }
 ];
 @NgModule({
