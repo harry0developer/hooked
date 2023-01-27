@@ -27,21 +27,20 @@ export class SignupPage implements OnInit {
   activeStep: number = 0;
 
   validation_messages = {
-  //  'email': [
-  //    { type: 'required', message: 'Email is required.' },
-  //    { type: 'pattern', message: 'Enter a valid email.' }
-  //  ],
    'name': [
-    { type: 'required', message: 'Name is required.' },
-    { type: 'minlength', message: 'Name must be at least 4 characters long.' }
-  ],
-  //  'password': [
-  //    { type: 'required', message: 'Password is required.' },
-  //    { type: 'minlength', message: 'Password must be at least 6 characters long.' }
-  //  ]
+      { type: 'required', message: 'Name is required.' },
+      { type: 'minlength', message: 'Name must be at least 4 characters long.' }
+    ],
+   'gender': [
+      { type: 'required', message: 'Gender is required.' }
+    ],
+   'dob': [
+      { type: 'required', message: 'Gender is required.' }
+    ],
+    'orientation': [
+      { type: 'required', message: 'Sexual Orientation is required.' }
+    ]
   };
-
-
 
   constructor(
     private authService: AuthService,
@@ -59,18 +58,16 @@ export class SignupPage implements OnInit {
         Validators.required,
         Validators.minLength(4)
       ])),
-      // gender: new FormControl('', Validators.compose([
-      //   Validators.required
-      // ])),
-      // email: new FormControl('', Validators.compose([
-      //   Validators.required,
-      //   Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      // ])),
-     
-      // password: new FormControl('', Validators.compose([
-      //   Validators.minLength(6),
-      //   Validators.required
-      // ])),
+      gender: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      dob: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      orientation: new FormControl('', Validators.compose([
+        Validators.required
+      ]))
+       
     });
   }
 
@@ -79,7 +76,7 @@ export class SignupPage implements OnInit {
         return new Date(dateString);
     }
     return null;
-}
+  }
 
   trySignup(user) {
     this.fbService.SignUp(user).then(result => {
@@ -89,14 +86,7 @@ export class SignupPage implements OnInit {
       }).catch(err => {
         console.log(err);
         this.errorMessage = FIREBASE_ERROR.VERIFICATION
-      })
-
-      // this.fbService.SetUserData(result.user, user.name).then(res => {
-      //   console.log("User stored", res);
-      // }).catch(err => {
-      //   console.log("Could not store user", err);
-      //   this.errorMessage = FIREBASE_ERROR.GENERIC_STORE_DATA;
-      // })
+      }) 
       
     }).catch(err => {
       console.log(err.message);
@@ -123,9 +113,6 @@ export class SignupPage implements OnInit {
     this.router.navigate(['/signup-info']);
   }
 
- 
-  submit(e) {}
-
   back() {
     if(this.activeStep > 0) {
       --this.activeStep;
@@ -133,10 +120,11 @@ export class SignupPage implements OnInit {
   }
   next() {
     ++this.activeStep;
+    console.log(this.validations_form.value);
   }
 
-  selectChange(e) {
-    console.log(e);
+  submit() {
+    console.log(this.validations_form.value);
   }
   
   // trySignup(value){

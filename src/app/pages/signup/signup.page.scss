@@ -4,9 +4,9 @@
   
   .logo {
     text-align: center;
-    margin-top: 100px;
+    margin-top: 60px;
     img {
-      width: 60px;
+      width: 40px;
     }
   }
    
@@ -16,32 +16,31 @@
   .container {
     padding: 20px;
     text-align: center;
-    h1 {
+    h1.title {
       font-size: 21px;
       font-weight: bold;
+      margin-bottom: 0;
     }
-    p {
+    p.sub-title {
       font-size: 14px;
       margin: 0;
       padding: 0;
     }
 
     .item {
-      padding: 20px;
-      ion-item {
-        --inner-padding-end:0
-      }
+      margin: 20px 0;
       .item-info {
-        ion-input, ion-select {
-          border-bottom: 2px solid #3f093885;
-          // --padding-start: 10px;
-          // border-radius: 6px;
-        }
-  
-        ion-select {
-          width: 100%;
-          // margin-top: 20px;
-        }
+        border-bottom: 2px solid #3f093885;
+        text-align: center;
+        // --padding-start: 10px;
+        // border-radius: 6px;
+      }
+
+      ion-select {
+        width: 100%;
+        text-align: center;
+
+        // margin-top: 20px;
       }
     }
 
@@ -49,17 +48,18 @@
       border-bottom: 2px solid #3f093885;
       padding: 5px;
       height: 60px;
-      margin: 20px 80px;
-      
+      margin: 0 20px;
+      p {
+        margin-bottom: 0;
+        font-size: 16px !important;
+      }
     }
     
   }
 
   .validation-errors {
     .error-message {
-      font-size: 14px;
       color: rgb(175, 4, 4);
-      padding-top: 6px;
     }
   }
 
@@ -67,3 +67,21 @@
     margin-top: 20px;
   }
  
+  .summary {
+    .item {
+      border: 2px solid #3f093885;
+      border-radius: 8px;
+      .gender {
+        padding-right: 16px;
+        font-size: 30px;
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      p {
+        font-size: 16px;
+
+      }
+    }
+  }
