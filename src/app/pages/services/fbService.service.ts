@@ -38,6 +38,16 @@ export class fbService {
     });
   }
 
+
+
+  setStorage(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(data));
+  } 
+
+  getStorage(key: string) {
+    return JSON.parse(localStorage.getItem(key));
+  }
+
   findInString(message: string, str: string): boolean {
     console.log(message);
     console.log(str);
@@ -59,9 +69,9 @@ export class fbService {
       });
   }
   // Sign up with email/password
-  SignUp(user: any) {
+  SignUp(email: string, password: string) {
     return new Promise<any>((resolve, reject) => {
-        firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+        firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(
             res => resolve(res),
             err => reject(err))

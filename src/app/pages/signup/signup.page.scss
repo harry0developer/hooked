@@ -1,87 +1,60 @@
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 100px;
+  img {
+    width: 60px;
   }
-  
-  .logo {
-    text-align: center;
-    margin-top: 60px;
-    img {
-      width: 40px;
+}
+
+ion-item {
+  --padding-start: 0;
+}
+
+ion-button {
+  min-width: 40%;
+  margin-top: 20px;
+}
+
+.form {
+  padding: 20px;
+  ion-item {
+    --inner-padding-end:0
+  }
+  .form-item {
+    ion-input {
+      border: 2px solid #3f093885;
+      --padding-start: 10px;
+      border-radius: 6px;
     }
   }
-   
 
 
-  //modal
-  .container {
-    padding: 20px;
-    text-align: center;
-    h1.title {
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 0;
-    }
-    p.sub-title {
-      font-size: 14px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .item {
-      margin: 20px 0;
-      .item-info {
-        border-bottom: 2px solid #3f093885;
-        text-align: center;
-        // --padding-start: 10px;
-        // border-radius: 6px;
-      }
-
-      ion-select {
-        width: 100%;
-        text-align: center;
-
-        // margin-top: 20px;
-      }
-    }
-
-    .chosen-date {
-      border-bottom: 2px solid #3f093885;
-      padding: 5px;
-      height: 60px;
-      margin: 0 20px;
-      p {
-        margin-bottom: 0;
-        font-size: 16px !important;
-      }
-    }
-    
-  }
 
   .validation-errors {
     .error-message {
+      font-size: 14px;
       color: rgb(175, 4, 4);
+      padding-top: 6px;
     }
-  }
-
-  ion-button {
-    margin-top: 20px;
   }
  
-  .summary {
-    .item {
-      border: 2px solid #3f093885;
-      border-radius: 8px;
-      .gender {
-        padding-right: 16px;
-        font-size: 30px;
-      }
-      h1 {
-        font-size: 18px;
-        font-weight: bold;
-      }
-      p {
-        font-size: 16px;
+}
 
-      }
-    }
+.not-registered, .reset-password {
+  text-align: center;
+}
+
+ 
+
+.container {
+  text-align: center;
+  padding: 20px;
+  .title {
+    font-weight: bold;
+    margin: 0;
   }
+} 

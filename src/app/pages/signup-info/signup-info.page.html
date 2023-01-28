@@ -1,0 +1,165 @@
+<ion-header></ion-header>
+
+
+<ion-content padding class="form-content">
+
+  <div class="slider-container" *ngIf="activeStep == 0">
+    <div class="top">
+      <div class="logo">
+        <img src="../../../assets/logo.png" alt="">
+      </div>
+      <h1>Hello, {{data.name}}</h1>
+    </div>
+    <ion-slides pager="true">
+      <ion-slide class="step step-one">
+        <ion-icon name="checkbox-outline"></ion-icon>
+        <h1>Complete your profile</h1>
+        <p>It only takes few steps then you should be good to go.</p>
+      </ion-slide>
+  
+      <ion-slide class="step step-two">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <h1>Verify your account</h1>
+        <p>We will send you a link to the email address you have registerd with.</p>
+      </ion-slide>
+  
+      <ion-slide class="step step-three">
+        <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+        <h1>Hook up</h1>
+        <p>Swipe, swipe and start chatting.</p> 
+        <ion-button (click)="next()">FINISH TUTORIAL!</ion-button>
+      </ion-slide>
+    </ion-slides>
+
+    <!-- <ion-button shape="round" [disabled]="!validations_form.get('name').valid" (click)="next()" >Next</ion-button> -->
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 1">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </div>
+    <h1 class="title">What's your date of birth</h1>
+    <p class="sub-title">Others will only see your age.</p>
+
+    <div class="chosen-date">
+      <p>{{ validations_form.get('dob').value | date: 'dd/MM/yyyy' }}</p> 
+    </div>
+
+    <form class="item" [formGroup]="validations_form">
+      <ion-item lines="none" class="date">
+        <ion-datetime
+          preferWheel = "true"
+          value="2006-01-01T00:00:00"
+          max="2006-01-01T00:00:00"
+          presentation="date" 
+          formControlName="dob"
+          placeholder="Select date of birth"></ion-datetime>
+      </ion-item>
+      <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+      <ion-button shape="round" [disabled]="!validations_form.get('dob').valid" (click)="next()">Next</ion-button>
+    </form>
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 2">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </div>
+
+    <h1 class="title">What's your gender?</h1>
+    <p class="sub-title">This help us find the right match for you</p>
+ 
+
+    <form class="item" [formGroup]="validations_form">
+      <ion-item class="item-choose"> 
+        <ion-select 
+          formControlName="gender"
+          interface="action-sheet" 
+          placeholder="Select gender">
+            <ion-select-option value="male">Male</ion-select-option>
+            <ion-select-option value="female">Female</ion-select-option>
+            <ion-select-option value="transgender">Transgender</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+      <ion-button shape="round" [disabled]="!validations_form.get('gender').valid" (click)="next()">Next</ion-button>
+    </form>
+  </div> 
+
+  <div class="container" *ngIf="activeStep == 3">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </div>
+    <h1 class="title">What's your sexual orientation?</h1>
+    <p class="sub-title">This help us find the right match for you</p>
+
+    <form class="item" [formGroup]="validations_form">
+      <ion-item  class="item-choose">
+        <ion-select
+          formControlName="orientation"
+          interface="action-sheet"
+          placeholder="Select sexual orientation">
+            <ion-select-option value="straight">Straight</ion-select-option>
+            <ion-select-option value="gay">Gay</ion-select-option>
+            <ion-select-option value="lesbian">Lesbian</ion-select-option>
+            <ion-select-option value="bisexual">Bisexual</ion-select-option>
+            <ion-select-option value="asexual">Asexual</ion-select-option>
+            <ion-select-option value="demisexual">Demisexual</ion-select-option>
+            <ion-select-option value="pansexual">Pensexual</ion-select-option>
+            <ion-select-option value="queer">Queer</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+      <ion-button shape="round" [disabled]="!validations_form.get('orientation').valid" (click)="next()">Next</ion-button>
+    </form>
+  </div> 
+
+
+  <div class="container" *ngIf="activeStep == 4">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </div>
+    <h1 class="title">All done</h1>
+    <p class="sub-title">Does everything look good?</p>
+
+    <ion-list class="summary">
+      <ion-item>
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>
+          <h1>Name</h1>
+          <p>{{ data?.name }}</p>
+        </ion-label>
+      </ion-item>
+       
+      <ion-item>
+        <ion-icon slot="start" name="calendar-clear-outline"></ion-icon>
+        <ion-label>
+          <h1>Date of birth</h1>
+          <p>{{ validations_form.get('dob').value | date: 'dd/MM/yyyy' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon class="gender" name="man-outline" *ngIf="validations_form.get('gender').value == 'male' "></ion-icon>
+        <ion-icon class="gender" name="woman-outline" *ngIf="validations_form.get('gender').value == 'female' "></ion-icon>
+        <ion-label>
+          <h1>Gender</h1>
+          <p>{{ validations_form.get('gender').value }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="transgender-outline"></ion-icon>
+        <ion-label>
+          <h1>Sexual Orientation</h1>
+          <p>{{ validations_form.get('orientation').value }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+     
+    <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+    <ion-button shape="round" [disabled]="!validations_form.valid" (click)="submit()">Complete</ion-button>
+    
+  </div> 
+ 
+
+</ion-content>

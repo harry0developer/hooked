@@ -1,0 +1,153 @@
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+ 
+//modal
+.container {
+    padding: 20px;
+    text-align: center;
+    .logo {
+        text-align: center;
+        margin-top: 60px;
+
+        img {
+          width: 80px;
+        }
+    }
+    h1.title {
+        font-size: 21px;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    h3 {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    p.sub-title {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .item {
+        .item-info {
+            border: 2px solid #3f093885;
+            text-align: center;
+            border-radius: 8px;
+            margin: 60px 20px 10px 20px;
+
+        }
+
+        ion-select {
+            width: 100%;
+            text-align: center; 
+        }
+    }
+
+    .item-choose {
+        border: 2px solid #3f093885;
+        text-align: center;
+        border-radius: 8px;
+        margin: 60px 20px 10px 20px;
+
+    }
+    ion-button {
+        margin-top: 20px;
+        width: 40%;
+    }
+
+    .chosen-date { 
+        height: 50px;
+        p {
+            margin-bottom: 0;
+            font-size: 16px !important;
+            }
+        }
+
+    }
+
+    .validation-errors {
+        .error-message {
+            color: rgb(175, 4, 4);
+        }
+    }
+
+
+    .summary {
+        margin-top: 30px;
+        .item {
+            border: 2px solid #3f093885;
+            border-radius: 8px;
+            margin: 10px 0;
+            .gender {
+                padding-right: 16px;
+                font-size: 30px;
+            }
+            h1 {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            p {
+                font-size: 16px;
+            }
+        }
+    }
+
+
+
+ion-slide {
+    height: 100vh;
+    flex-direction: column;
+}
+ 
+
+.step-one {
+    background: #fafafa;
+    color: #292929;
+}
+
+.step-two {
+    background: #fafafa;
+    color: #292929;
+}
+
+.step-three {
+    background: #fafafa;
+    color: #292929;
+}
+
+
+.top {
+    height: 35vh;
+    text-align: center;
+    color: #292929;
+    padding: 0 20px;
+
+    .logo {
+        text-align: center;
+        margin-top: 60px;
+
+        img {
+          width: 80px;
+        }
+    }
+    h1 {
+        font-size: 36px;
+        font-weight: bold;
+    }
+    p {
+        font-size: 16px;
+
+    }
+}
+.step {
+    height: 56vh;
+    padding: 20px 40px;
+    background-color: #3f093885;
+    ion-icon {
+        font-size: 77px;
+    }
+}
+ 
