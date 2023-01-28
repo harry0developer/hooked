@@ -1,19 +1,21 @@
+
 export interface User {
-    id?: string;
     uid: string;
-    email: string;
-    phone: string;
     name: string;
-    dob: string;
+    email: string;
     gender: string;
-    images: string[],
+    dob: string;
+    phone?: string;
+    orientation: string;
+    images: string[];
+    profile_picture: string;
+    isVerified: boolean;
+    dateCreated?: string;
     location: {
         address: string;
         geo: {
             lat: number;
-            lng: number;
+            lng: number
         }
-    },
-    dateCreated: string;
-}
- 
+    }
+ }

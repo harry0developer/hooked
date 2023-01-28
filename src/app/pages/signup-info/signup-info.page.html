@@ -46,15 +46,14 @@
     </div>
 
     <form class="item" [formGroup]="validations_form">
-      <ion-item lines="none" class="date">
         <ion-datetime
           preferWheel = "true"
           value="2006-01-01T00:00:00"
           max="2006-01-01T00:00:00"
           presentation="date" 
           formControlName="dob"
+          size="cover"
           placeholder="Select date of birth"></ion-datetime>
-      </ion-item>
       <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
       <ion-button shape="round" [disabled]="!validations_form.get('dob').valid" (click)="next()">Next</ion-button>
     </form>
@@ -115,7 +114,7 @@
 
 
   <div class="container" *ngIf="activeStep == 4">
-    <div class="logo">
+    <div class="summary-logo">
       <img src="../../../assets/logo.png" alt="">
     </div>
     <h1 class="title">All done</h1>
@@ -157,7 +156,7 @@
     </ion-list>
      
     <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
-    <ion-button shape="round" [disabled]="!validations_form.valid" (click)="submit()">Complete</ion-button>
+    <ion-button shape="round" (click)="submit()">Complete</ion-button>
     
   </div> 
  

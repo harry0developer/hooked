@@ -17,6 +17,8 @@ export class ProfilePage {
     name: "Thato Seku",
     dob: "05/15/1996", //moment().format('L');    // 01/19/2023
     gender: "female",
+    profile_picture: "",
+    orientation: "",
     images: [
       "../../assets/users/user3/1.jpg",
       "../../assets/users/user3/2.jpg",
@@ -30,7 +32,8 @@ export class ProfilePage {
             lng: -85.00
         }
     },
-    dateCreated: moment().format()
+    dateCreated: moment().format(),
+    isVerified: false
   };
   constructor(private gallery: Gallery) {}
 

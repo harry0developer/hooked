@@ -4,14 +4,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
+import { User } from 'src/app/models/User';
 
-export interface User {
-    uid: string;
-    email: string;
-    displayName: string;
-    photoURL: string;
-    emailVerified: boolean;
- }
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +56,7 @@ export class fbService {
         this.ngZone.run(() => {
           this.router.navigate(['/tabs/users']);
         });
-        this.SetUserData(result.user);
+        // this.setUserData(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -117,25 +111,43 @@ export class fbService {
         this.ngZone.run(() => {
           this.router.navigate(['dashboard']);
         });
-        this.SetUserData(result.user);
+        //this.setUserData(result.user);
       })
       .catch((error) => {
         window.alert(error);
       });
   }
+
+
+  userExist(user) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );
+  }
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  SetUserData(user: any, name?: string) {
+  storeUserOnFirebase(firebaseUser: any, user?: any) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
     const userData: User = {
-      uid: user.uid,
+      uid: firebaseUser.uid,
       email: user.email,
-      displayName: !!name ? name : user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
+      name: user.name,
+      gender: user.gender,
+      dob: user.dob,
+      orientation: user.orientation,
+      profile_picture: user.profile_picture,
+      images: user.images,
+      isVerified: user.emailVerified,
+      location: {
+        address: "",
+        geo: {
+          lat: 0,
+          lng: 0
+        }
+      }
     };
     return userRef.set(userData, {
       merge: true,

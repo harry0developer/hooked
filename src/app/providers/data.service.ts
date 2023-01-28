@@ -8,7 +8,7 @@ var moment = require('moment'); // require
 export class DataService {
 
  
-  users: User[] = [
+  users: any[] = [
 
     {
       id: "1",

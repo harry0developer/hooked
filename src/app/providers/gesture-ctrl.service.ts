@@ -43,7 +43,7 @@ export class GestureCtrlService {
             }px) rotate(${ev.deltaX / 2}deg)`;
 
             // this.dataProvider.setItem(const.LIKED, )
-            this.dataProvider.addLikedUser(card.nativeElement.id);
+            this.dataProvider.addLikedUser(card.nativeElement.uid);
             
           }
           // Left Side Move

@@ -75,27 +75,26 @@ export class SignupInfoPage implements OnInit {
     });
   }
 
-  trySignup(user) {
-    this.fbService.SignUp(user.email, user.password).then(result => {
-      console.log(result);
-      this.fbService.SendVerificationMail().then(user => {
-        this.router.navigate(["/verify-email"]);
-      }).catch(err => {
-        console.log(err);
-        this.errorMessage = FIREBASE_ERROR.VERIFICATION
-      }) 
-    }).catch(err => {
-      console.log(err.message);
-      if(this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
-        this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
-      }
-      else if(this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
-        this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
-      }else {
-        this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP
-      }
+  createAccountOnFirebase() {
+    const storageData = this.fbService.getStorage(STORAGE.USER);
+    let user: User = this.validations_form.value;
+    user.email = storageData.email;
+    user.name = storageData.name;
+
+    this.fbService.setStorage(STORAGE.USER, user);
+    this.fbService.storeUserOnFirebase(user).then(res => {
+      console.log(res);
+      this.router.navigate(['/tabs/users']).then(() => {
+        //hide spinner
+      }).catch(() => {
+        //hide spinner;
+      })
       
+    }).catch(err => {
+      console.log(err);
     })
+
+    
   }
   
   goLoginPage(){
@@ -118,11 +117,14 @@ export class SignupInfoPage implements OnInit {
   }
 
   submit() {
-    const email = "test@email.com";
-    const password = "P@ssword";
-    this.fbService.SignUp(email, password).then(user => {
-      console.log(user);
-      
-    })
+
+    // this.fbService.SignUp(this.validations_form.value).then(user => {
+    //   console.log(user);
+    //   this.fbService.setUserData(user, this.validations_form.value).then(res => {
+    //     console.log(res);
+    //   }).catch(err => {
+    //     console.log(err);
+    //   })
+    // })
   }
 }

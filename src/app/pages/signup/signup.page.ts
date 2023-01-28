@@ -60,9 +60,45 @@ export class SignupPage implements OnInit {
   }
 
   createAccount() {
-    // console.log(this.validations_form.value);
-    this.fbService.setStorage(STORAGE.USER, this.validations_form.value);
-    this.router.navigate(['/signup-info'])
+    const u = this.validations_form.value;
+    let user: User = {
+      uid: "",
+      name: u.name,
+      email: u.email,
+      dob: "",
+      gender: "",
+      orientation: "",
+      images: [],
+      profile_picture: "",
+      isVerified: false,
+      location: {
+        address: "",
+        geo: {
+          lat: 0,
+          lng: 0
+        }
+      }
+    }
+    this.fbService.SignUp(u.email, u.password).then(res => {
+      console.log(res);
+      user.uid = res.uid,
+      user.isVerified = res.verified;
+  
+      this.fbService.setStorage(STORAGE.USER, user);
+      this.router.navigate(['/signup-info'])
+      
+    }).catch(err => {
+      console.log(err.message);
+      if(this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
+        this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
+      }
+      else if(this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
+        this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
+      }else {
+        this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP
+      }
+      
+    })
   }
   goToSignInPage() {
     this.router.navigate(['/signin'])
