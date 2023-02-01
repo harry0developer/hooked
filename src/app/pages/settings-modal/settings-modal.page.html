@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  
+  <div class="container">
+    <ion-list class="summary">
+      <h1 class="title">Profile</h1>
+
+      <ion-item  lines="none">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label>
+          <h3>Name</h3>
+          <p>{{ user?.name  }}</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item lines="none">
+        <ion-icon slot="start" name="calendar-clear-outline"></ion-icon>
+        <ion-label>
+          <h3>Date of birth</h3>
+          <p>{{ user?.dob | date: 'dd/MM/yyyy' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item  lines="none">
+        <ion-icon class="gender" name="man-outline" *ngIf="user?.gender == 'male' "></ion-icon>
+        <ion-icon class="gender" name="woman-outline" *ngIf="user?.gender == 'female' "></ion-icon>
+        <ion-label>
+          <h3>Gender</h3>
+          <p>{{ user?.gender }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item  lines="none">
+        <ion-icon slot="start" name="transgender-outline"></ion-icon>
+        <ion-label>
+          <h3>Sexual Orientation</h3>
+          <p>{{ user?.orientation }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+
+    <div class="settings">
+
+      <h1 class="title">Settings</h1>
+      <ion-item detail="true">
+        <ion-label>
+          <h3>Deactivate Account</h3>
+          <p>Others will not see your profile</p>
+        </ion-label>
+      </ion-item>
+      <ion-item detail="true">
+        <ion-label>
+          <h3>Deactivate Account</h3>
+          <p>Others will not see your profile</p>
+        </ion-label>
+      </ion-item>
+      <ion-item detail="true">
+        <ion-label>
+          <h3>Deactivate Account</h3>
+          <p>Others will not see your profile</p>
+        </ion-label>
+      </ion-item>
+      <div class="btn">
+        <ion-button shape="round" fill="outline" (click)="signout()">Log out</ion-button>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

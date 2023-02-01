@@ -4,9 +4,9 @@ import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
-import { FirebaseService } from '../services/firebase.service';
-import { fbService } from '../services/fbService.service';
-import { FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
+import { FirebaseService } from '../services/old-firebase.service';
+import { FbService } from '../services/fbService.service';
+import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
  
 
 var moment = require('moment'); // require
@@ -47,15 +47,18 @@ export class SignupInfoPage implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
-    private fbService: fbService,
+    private fbService: FbService,
     private router: Router,
     private activeRoute: ActivatedRoute,
 
-  ) { }
+  ) { 
+       
+  }
 
  
   ngOnInit() {
     this.data = this.fbService.getStorage(STORAGE.USER);
+    console.log(this.data);
     
     this.validations_form = this.formBuilder.group({
       name: new FormControl('', Validators.compose([
@@ -76,24 +79,36 @@ export class SignupInfoPage implements OnInit {
   }
 
   createAccountOnFirebase() {
-    const storageData = this.fbService.getStorage(STORAGE.USER);
-    let user: User = this.validations_form.value;
-    user.email = storageData.email;
-    user.name = storageData.name;
+    let user: any = this.validations_form.value;
+    const firebaseUser = this.fbService.getStorage(STORAGE.FIREBASE_USER);
+    console.log(firebaseUser);
+    
+    let userData: User = {
+      uid: firebaseUser.user.uid,
+      email: firebaseUser.user.email,
+      name: user.name,
+      gender: user.gender,
+      dob: user.dob,
+      orientation: user.orientation,
+      profile_picture: "",
+      images: [],
+      isVerified: false,
+      location: {
+        address: "",
+        geo: {
+          lat: 0,
+          lng: 0
+        }
+      }
+    }; 
+    this.fbService.setStorage(STORAGE.USER, userData);
 
-    this.fbService.setStorage(STORAGE.USER, user);
-    this.fbService.storeUserOnFirebase(user).then(res => {
-      console.log(res);
-      this.router.navigate(['/tabs/users']).then(() => {
-        //hide spinner
-      }).catch(() => {
-        //hide spinner;
-      })
-      
+    this.fbService.addItem(COLLECTION.users, userData, userData.uid).then(() => {
+      console.log('User added successfully');
+      this.router.navigate(["/tabs/users"]);
     }).catch(err => {
       console.log(err);
-    })
-
+    });
     
   }
   
@@ -114,6 +129,11 @@ export class SignupInfoPage implements OnInit {
   next() {
     ++this.activeStep;
     console.log(this.validations_form.value);
+  }
+
+  cancel() {
+    this.fbService.setStorage(STORAGE.USER, null);
+    this.router.navigate(['/signin']);
   }
 
   submit() {

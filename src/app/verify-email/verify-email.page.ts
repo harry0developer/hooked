@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { fbService } from '../pages/services/fbService.service';
+import { FbService } from '../pages/services/fbService.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -11,7 +11,7 @@ export class VerifyEmailPage implements OnInit {
 
   user: any;
   constructor(
-    private fbService: fbService,
+    private fbService: FbService,
     private router: Router
     ) { }
 

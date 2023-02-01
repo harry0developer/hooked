@@ -1,11 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
-import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
-import { FirebaseService } from '../services/firebase.service';
-import { fbService } from '../services/fbService.service';
+import { FirebaseService } from '../services/old-firebase.service';
+import { FbService } from '../services/fbService.service';
 import { FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
  
 
@@ -22,38 +21,38 @@ export class SignupPage implements OnInit {
   errorMessage: string = '';
 
   validation_messages = {
-   'name': [
-     { type: 'required', message: 'Name is required.' },
-     { type: 'minlength', message: 'Name must be at least 5 characters long.' }
-   ],
+  //  'name': [
+  //    { type: 'required', message: 'Name is required.' },
+  //    { type: 'minlength', message: 'Name must be at least 4 characters long.' }
+  //  ],
    'email': [
     { type: 'required', message: 'Email is required.' },
     { type: 'pattern', message: 'Please enter a valid email.' }
   ],
    'password': [
      { type: 'required', message: 'Password is required.' },
-     { type: 'minlength', message: 'Password must be at least 5 characters long.' }
+     { type: 'minlength', message: 'Password must be at least 6 characters long.' }
    ]
  };
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
-    private fbService: fbService,
+    private fbService: FbService,
     private router: Router
   ) { }
   ngOnInit() {
     this.validations_form = this.formBuilder.group({
-      name: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(5)
-      ])),
+      // name: new FormControl('', Validators.compose([
+      //   Validators.required,
+      //   Validators.minLength(4)
+      // ])),
       email: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
         Validators.required
       ])),
     });
@@ -61,38 +60,17 @@ export class SignupPage implements OnInit {
 
   createAccount() {
     const u = this.validations_form.value;
-    let user: User = {
-      uid: "",
-      name: u.name,
-      email: u.email,
-      dob: "",
-      gender: "",
-      orientation: "",
-      images: [],
-      profile_picture: "",
-      isVerified: false,
-      location: {
-        address: "",
-        geo: {
-          lat: 0,
-          lng: 0
-        }
-      }
-    }
+   
     this.fbService.SignUp(u.email, u.password).then(res => {
-      console.log(res);
-      user.uid = res.uid,
-      user.isVerified = res.verified;
-  
-      this.fbService.setStorage(STORAGE.USER, user);
-      this.router.navigate(['/signup-info'])
+      this.fbService.setStorage(STORAGE.FIREBASE_USER, res);
+      this.router.navigate(['/signup-info']);
       
     }).catch(err => {
-      console.log(err.message);
-      if(this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
+      console.log(err);
+      if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
         this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
       }
-      else if(this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
+      else if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
         this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
       }else {
         this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP

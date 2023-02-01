@@ -22,7 +22,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { fbService } from './pages/services/fbService.service';
+import { FbService } from './pages/services/fbService.service';
 // import { StateStepperModule } from 'state-stepper';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -48,7 +48,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   providers: [
     DataService,
     AuthService,
-    fbService,
+    FbService,
     {
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 

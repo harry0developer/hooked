@@ -8,7 +8,7 @@
       <div class="logo">
         <img src="../../../assets/logo.png" alt="">
       </div>
-      <h1>Hello, {{data.name}}</h1>
+      <h1>Hello</h1>
     </div>
     <ion-slides pager="true">
       <ion-slide class="step step-one">
@@ -27,14 +27,39 @@
         <ion-icon name="chatbox-ellipses-outline"></ion-icon>
         <h1>Hook up</h1>
         <p>Swipe, swipe and start chatting.</p> 
-        <ion-button (click)="next()">FINISH TUTORIAL!</ion-button>
+        <!-- <ion-button shape="round" fill="outline" (click)="cancel()">Cancel</ion-button> -->
+        <ion-button shape="round" (click)="next()">Next</ion-button>
       </ion-slide>
     </ion-slides>
 
     <!-- <ion-button shape="round" [disabled]="!validations_form.get('name').valid" (click)="next()" >Next</ion-button> -->
   </div> 
 
-  <div class="container" *ngIf="activeStep == 1">
+  <div class="container" *ngIf="activeStep === 1">
+    <div class="logo">
+      <img src="../../../assets/logo.png" alt="">
+    </div>
+    <h1 class="title">What's your name?</h1>
+    <p class="sub-title">This is what others will see.</p>
+
+    <form class="item" [formGroup]="validations_form">
+
+      <ion-item lines="none" class="item-info">
+        <ion-input placeholder="Enter your name" type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.name">
+          <div class="error-message"
+            *ngIf="validations_form.get('name').hasError(validation.type) && (validations_form.get('name').dirty || validations_form.get('name').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <ion-button shape="round" [disabled]="!validations_form.get('name').valid" (click)="next()">Next</ion-button>
+    </form>
+  </div>
+
+  <div class="container" *ngIf="activeStep === 2">
     <div class="logo">
       <img src="../../../assets/logo.png" alt="">
     </div>
@@ -59,7 +84,7 @@
     </form>
   </div> 
 
-  <div class="container" *ngIf="activeStep == 2">
+  <div class="container" *ngIf="activeStep == 3">
     <div class="logo">
       <img src="../../../assets/logo.png" alt="">
     </div>
@@ -84,7 +109,7 @@
     </form>
   </div> 
 
-  <div class="container" *ngIf="activeStep == 3">
+  <div class="container" *ngIf="activeStep == 4">
     <div class="logo">
       <img src="../../../assets/logo.png" alt="">
     </div>
@@ -113,7 +138,7 @@
   </div> 
 
 
-  <div class="container" *ngIf="activeStep == 4">
+  <div class="container" *ngIf="activeStep === 5">
     <div class="summary-logo">
       <img src="../../../assets/logo.png" alt="">
     </div>
@@ -125,7 +150,7 @@
         <ion-icon slot="start" name="person-outline"></ion-icon>
         <ion-label>
           <h1>Name</h1>
-          <p>{{ data?.name }}</p>
+          <p>{{ validations_form.get('name').value  }}</p>
         </ion-label>
       </ion-item>
        
@@ -156,9 +181,18 @@
     </ion-list>
      
     <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
-    <ion-button shape="round" (click)="submit()">Complete</ion-button>
+    <ion-button shape="round" (click)="createAccountOnFirebase()">Complete</ion-button>
     
   </div> 
  
 
 </ion-content>
+<!-- 
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>
+      <ion-button expand="full" fill="outline">Cancel Sign Up</ion-button>
+
+    </ion-title>
+  </ion-toolbar>
+</ion-footer> -->

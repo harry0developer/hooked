@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { FIREBASE_ERROR } from 'src/app/utils/const';
  
 @Component({
   selector: 'app-signin',
@@ -45,9 +46,11 @@ export class SigninPage implements OnInit {
 
   tryLogin(value){
     this.authService.doLogin(value).then(res => {
-      this.router.navigate(["/tabs/users"]);
+      // this.router.navigate(["/tabs/users"]);      
+      this.router.navigate(["/tabs/profile"]);
+
     }, err => {
-      this.errorMessage = "Invalid username or password, please signup or reset password."//err.message;
+      this.errorMessage = FIREBASE_ERROR.SIGNIN_USERNAME_PASSWORD//err.message;
       console.log(err)
     })
   }

@@ -5,12 +5,13 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { User } from 'src/app/models/User';
+import { STORAGE } from 'src/app/utils/const';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class fbService {
+export class FbService {
   userData: any; // Save logged in user data
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
@@ -18,18 +19,7 @@ export class fbService {
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
-      }
-    });
+ 
   }
 
 
@@ -43,10 +33,9 @@ export class fbService {
   }
 
   findInString(message: string, str: string): boolean {
-    console.log(message);
-    console.log(str);
-
-    return message.search(str) > 1;
+    if(!!message)
+      return message.search(str) > 1;
+    return false;
   }
   // Sign in with email/password
   SignIn(email: string, password: string) {
@@ -64,13 +53,8 @@ export class fbService {
   }
   // Sign up with email/password
   SignUp(email: string, password: string) {
-    return new Promise<any>((resolve, reject) => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(
-            res => resolve(res),
-            err => reject(err))
-        })
-  }
+    return firebase.auth().createUserWithEmailAndPassword(email, password);
+}
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
     return this.afAuth.currentUser
@@ -127,37 +111,48 @@ export class fbService {
   /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  storeUserOnFirebase(firebaseUser: any, user?: any) {
+  storeUserOnFirebase(user: User) {
+    console.log("My User", user);
+
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    const userData: User = {
-      uid: firebaseUser.uid,
-      email: user.email,
-      name: user.name,
-      gender: user.gender,
-      dob: user.dob,
-      orientation: user.orientation,
-      profile_picture: user.profile_picture,
-      images: user.images,
-      isVerified: user.emailVerified,
-      location: {
-        address: "",
-        geo: {
-          lat: 0,
-          lng: 0
-        }
-      }
-    };
-    return userRef.set(userData, {
+    
+    return userRef.set(user, {
       merge: true,
     });
   }
   // Sign out
-  SignOut() {
+  signOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.removeStorageItem(STORAGE.USER);
+      this.removeStorageItem(STORAGE.FIREBASE_USER);
     });
+  }
+
+  removeStorageItem(key: string) {
+    localStorage.removeItem(key);
+  }
+
+
+
+  getItemById(collectionName: string, id: string) {
+    return this.afs.collection(collectionName).doc<User>(id).valueChanges();
+  }
+
+  updateItem(collectionName: string, data: User, id: string) {
+    console.log(collectionName);
+    console.log(data);
+    console.log(id);
+
+    return this.afs.collection(collectionName).doc<User>(id).update(data);
+  }
+
+  addItem(collectionName: string, data: User, id: string): Promise<any> {
+    return this.afs.collection(collectionName).doc< User>(id).set(data, {merge: true});
+  }
+
+  removeItem(collectionName: string, id: string) {
+    return this.afs.collection(collectionName).doc< User>(id).delete();
   }
 }

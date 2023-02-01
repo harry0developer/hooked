@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { DataService } from 'src/app/providers/data.service';
-import { FirebaseService } from '../services/firebase.service';
+import { FirebaseService } from '../services/old-firebase.service';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 @Component({

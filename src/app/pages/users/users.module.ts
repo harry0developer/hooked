@@ -3,19 +3,20 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsersPage } from './users.page';
-import { ExploreContainerComponentModule } from '../../explore-container/explore-container.module';
 import { HttpClientModule } from "@angular/common/http";
 
 import { UsersPageRoutingModule } from './users-routing.module';
+import { FilterPageModule } from '../filter/filter.module';
+import { FilterPage } from '../filter/filter.page';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
     UsersPageRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FilterPageModule,
     
   ],
   declarations: [UsersPage],

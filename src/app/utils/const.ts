@@ -20,10 +20,14 @@ export const FIREBASE_ERROR = {
     PASSWORD_TOO_SHORT: "Password should be at least 6 characters",
     GENERIC_SIGNINP: "An error has occured while creating an account, please try again",
     VERIFICATION: "An error has occured while sending a veification email, please try again",
-    GENERIC_STORE_DATA: "An error has occured while storing data, please try again."
+    GENERIC_STORE_DATA: "An error has occured while storing data, please try again.",
+    SIGNIN_USERNAME_PASSWORD: "Invalid username or password, please signup or reset password."
+    
 }
+
 
 export const STORAGE = {
     USER: 'user',
+    FIREBASE_USER: "firebase-user"
     
 }

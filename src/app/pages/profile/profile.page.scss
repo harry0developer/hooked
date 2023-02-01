@@ -8,7 +8,7 @@
 .container {
     .top {
         background-color: rgb(250, 240, 250);
-        height: 40vh;
+        height: 45vh;
         padding-top: 20px;
         border-bottom: 1px solid #ddd;
         .user-avatar {
@@ -44,6 +44,16 @@
             img {
                 border-radius: 8px;
             }
+        }
+    }
+    .placeholder {
+        background-color: rgb(167, 68, 125);
+        width: 150px;
+        height: 150px;
+        text-align: center;
+        ion-icon {
+            font-size: 88px;
+            padding-top: 20px;
         }
     }
 }
