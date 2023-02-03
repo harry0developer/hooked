@@ -1,0 +1,80 @@
+
+ion-content {
+    --ion-background-color: #ff3d7c;
+  }
+  
+  
+  
+  .intro {
+  
+    .logo {
+      text-align: center;
+      margin-top: 40px;
+      img {
+        width: 160px;
+      }
+    }
+  
+  
+    ion-slide {
+      height: 70vh;
+      flex-direction: column;
+      // color: #fff;
+      .top-info {
+        height: 35vh;
+        img {
+          width: 250px;
+        }
+      }
+      .info {
+  
+        padding: 0 40px;
+  
+        
+        h1 {
+          font-size: 40px;
+          font-weight: bold;
+          line-height: 1;
+        }
+        p {
+          line-height: 1;
+          font-size: 18px;
+          padding: 0;
+          margin: 0;
+        }
+      }
+      
+    }
+  
+
+  }
+  
+   
+  ::ng-deep .swiper-pagination-bullet {
+    width: 50px;
+    height: 2px;
+  }
+  
+  .top {
+    height: 35vh;
+    text-align: center;
+    color: #292929;
+    padding: 0 20px;
+  
+    .logo {
+        text-align: center;
+        margin-top: 40px;
+  
+        img {
+          width: 60px;
+        }
+    }
+    h1 {
+        font-size: 26px;
+        font-weight: bold;
+    }
+    p {
+        font-size: 16px;
+  
+    }
+  }

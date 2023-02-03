@@ -1,28 +1,246 @@
-<ion-header></ion-header>
+<ion-header> </ion-header>
 
-<ion-content padding class="form-content">
+<ion-content class="ion-padding">
 
-  <div class="logo">
-    <img src="../../../assets/logo.png" alt="">
+  <div class="signup-intro">
+    <div class="logo">
+      <img src="../../../assets/logo_secondary.png" alt="">
+    </div>
+ 
+    <div class="main">
+      <img src="../../../assets/intro/create.svg">
+    </div>
+
+    <div class="bottom">
+      <h1>Lets get started</h1>
+      <p>Complete few steps and you should be good to go</p>
+      <ion-button fill="solid" expand="block" id="open-modal">Create Account</ion-button>
+    </div>
   </div>
 
-  <div class="container">
+  <ion-modal #modal 
+  [initialBreakpoint]="1"
+  [breakpoints]="[0, 1]"
+    trigger="open-modal">
+    <ng-template>
+      <ion-content> 
+        <div class="counter">Step {{activeStep + 1}}/6</div>
+
+
+        <!-- Step one  -->
+        <div class="container" *ngIf="activeStep == 0">
+          <div class="title">
+            <h1>Sign up</h1>
+            <p>Use your personal email and create a password</p>
+          </div>
+          <form class="modal-form" [formGroup]="validations_form">
+            <ion-item mode="ios" lines="none">
+              <ion-label position="stacked" color="primary">Email</ion-label>
+              <ion-input type="text" formControlName="email"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.email">
+                <div class="error-message"
+                  *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+      
+            <ion-item mode="ios" lines="none">
+              <ion-label position="stacked" color="primary">Password</ion-label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.password">
+                <div class="error-message" 
+                  *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <div class="btn-group">
+              <ion-button  shape="round" type="submit" [disabled]="!validations_form.valid" (click)="next()">Next</ion-button>
+            </div>
+            <div class="validation-errors">
+              <label class="error-message">{{errorMessage}}</label>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Step 2 -->
+        <div class="container" *ngIf="activeStep == 1">
+          <div class="title">
+            <h1>What's your name?</h1>
+            <p>This is what others will see.</p>
+          </div>
+      
+          <form class="modal-form" [formGroup]="signup_form">
+            <ion-item  mode="ios" lines="none">
+              <ion-input placeholder="Enter your name" type="text" formControlName="name"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+              <ng-container *ngFor="let validation of validation_messages.name">
+                <div class="error-message"
+                  *ngIf="signup_form.get('name').hasError(validation.type) && (signup_form.get('name').dirty || signup_form.get('name').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+            <div class="btn-group" >
+              <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+              <ion-button shape="round" [disabled]="!signup_form.get('name').valid" (click)="next()">Next</ion-button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Step 3 -->
+        <div class="container" *ngIf="activeStep == 2">
+          <div class="title">
+            <h1>What's your date of birth</h1>
+            <p>Others will only see your age.</p>
+          </div> 
+      
+          <form class="modal-form" [formGroup]="signup_form">
+            <ion-datetime
+              preferWheel = "true"
+              value="2006-01-01T00:00:00"
+              max="2006-01-01T00:00:00"
+              presentation="date" 
+              formControlName="dob"
+              size="cover"
+              placeholder="Select date of birth"></ion-datetime>
+            <div class="btn-group">
+              <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+              <ion-button shape="round" [disabled]="!signup_form.get('dob').valid" (click)="next()">Next</ion-button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="container" *ngIf="activeStep == 3">
+          <div class="title">
+            <h1>What's your gender?</h1>
+            <p>This help us find the right match for you</p>
+          </div>
+      
+          <form class="modal-form" [formGroup]="signup_form">
+            <ion-item class="item-choose"> 
+              <ion-select 
+                formControlName="gender"
+                interface="action-sheet" 
+                placeholder="Select gender">
+                  <ion-select-option value="male">Male</ion-select-option>
+                  <ion-select-option value="female">Female</ion-select-option>
+                  <ion-select-option value="transgender">Transgender</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="btn-group" >
+              <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+              <ion-button shape="round" [disabled]="!signup_form.get('gender').valid" (click)="next()">Next</ion-button>
+            </div>
+          </form>
+        </div>
+ 
+
+        <!-- Step 5 -->
+        <div class="container" *ngIf="activeStep == 4">
+          <div class="title">
+            <h1>What's your sexual orientation?</h1>
+            <p>This help us find the right match for you</p>
+          </div>
+      
+          <form class="modal-form" [formGroup]="signup_form">
+            <ion-item class="item-choose"> 
+              <ion-select
+                formControlName="orientation"
+                interface="action-sheet"
+                placeholder="Select sexual orientation">
+                  <ion-select-option value="straight">Straight</ion-select-option>
+                  <ion-select-option value="gay">Gay</ion-select-option>
+                  <ion-select-option value="lesbian">Lesbian</ion-select-option>
+                  <ion-select-option value="bisexual">Bisexual</ion-select-option>
+                  <ion-select-option value="asexual">Asexual</ion-select-option>
+                  <ion-select-option value="demisexual">Demisexual</ion-select-option>
+                  <ion-select-option value="pansexual">Pensexual</ion-select-option>
+                  <ion-select-option value="queer">Queer</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div class="btn-group" >
+              <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+              <ion-button shape="round" [disabled]="!signup_form.get('orientation').valid" (click)="next()">Next</ion-button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- Validation/Summary  -->
+        <div class="container" *ngIf="activeStep === 5">
+          <div class="title">
+            <h1>All done</h1>
+          </div> 
+          <ion-list class="summary">
+            <ion-item>
+              <ion-icon slot="start" name="person-outline"></ion-icon>
+              <ion-label>
+                <h1>Name</h1>
+                <p>{{ signup_form.get('name').value  }}</p>
+              </ion-label>
+            </ion-item>
+             
+            <ion-item>
+              <ion-icon slot="start" name="calendar-clear-outline"></ion-icon>
+              <ion-label>
+                <h1>Date of birth</h1>
+                <p>{{ signup_form.get('dob').value | date: 'dd/MM/yyyy' }}</p>
+              </ion-label>
+            </ion-item>
+      
+            <ion-item>
+              <ion-icon class="gender" name="man-outline" *ngIf="signup_form.get('gender').value == 'male' "></ion-icon>
+              <ion-icon class="gender" name="woman-outline" *ngIf="signup_form.get('gender').value == 'female' "></ion-icon>
+              <ion-label>
+                <h1>Gender</h1>
+                <p>{{ signup_form.get('gender').value }}</p>
+              </ion-label>
+            </ion-item>
+      
+            <ion-item>
+              <ion-icon slot="start" name="transgender-outline"></ion-icon>
+              <ion-label>
+                <h1>Sexual Orientation</h1>
+                <p>{{ signup_form.get('orientation').value }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+           
+
+            <div class="summary btn-group">
+              <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+              <ion-button shape="round" (click)="createAccountOnFirebase()">Complete</ion-button>
+            </div>
+        </div> 
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+</ion-content>
+
+
+
+ 
+
+
+
+
+
+  <!-- <div class="container">
     <h1 class="title">Sign Up</h1>
 
     <form class="form" [formGroup]="validations_form">
-      <!-- <ion-item mode="ios" lines="none" class="form-item">
-        <ion-label position="stacked" color="primary">Name</ion-label>
-        <ion-input class="custom" type="text" formControlName="name"></ion-input>
-      </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.name">
-          <div class="error-message"
-            *ngIf="validations_form.get('name').hasError(validation.type) && (validations_form.get('name').dirty || validations_form.get('name').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div> -->
-
       <ion-item mode="ios" lines="none" class="form-item">
         <ion-label position="stacked" color="primary">Email</ion-label>
         <ion-input class="custom" type="text" formControlName="email"></ion-input>
@@ -59,6 +277,5 @@
     <p class="not-registered">
       Already have an account? <a (click)="goToSignInPage()">Sign In.</a>
     </p>  
-  </div>
+  </div> -->
   
-</ion-content>
