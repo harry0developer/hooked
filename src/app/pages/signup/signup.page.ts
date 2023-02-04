@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { User } from 'src/app/models/User';
 import { FirebaseService } from '../services/old-firebase.service';
 import { FbService } from '../services/fbService.service';
 import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
+import { IonModal } from '@ionic/angular';
  
 
 var moment = require('moment'); // require
@@ -15,7 +16,7 @@ var moment = require('moment'); // require
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
 })
-export class SignupPage implements OnInit {
+export class SignupPage implements OnInit, AfterViewInit {
 
   validations_form: FormGroup;
   signup_form: FormGroup;
@@ -39,6 +40,8 @@ export class SignupPage implements OnInit {
  };
 
 
+ @ViewChild('modal') modal: IonModal;
+
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
@@ -46,9 +49,18 @@ export class SignupPage implements OnInit {
     private fbService: FbService,
     private router: Router
   ) { }
+
+
+  ngAfterViewInit(): void {
+    // console.log(this.modal);
+
+  }
+  
+
   ngOnInit() {
+    console.log(this.modal);
 
-
+    
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -76,28 +88,9 @@ export class SignupPage implements OnInit {
       ]))
     });
   }
+ 
 
-  createAccount() {
-    const u = this.validations_form.value;
-   
-    this.fbService.SignUp(u.email, u.password).then(res => {
-      this.fbService.setStorage(STORAGE.FIREBASE_USER, res);
-      this.router.navigate(['/signup-info']);
-      
-    }).catch(err => {
-      console.log(err);
-      if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
-        this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
-      }
-      else if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
-        this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
-      }else {
-        this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP
-      }
-      
-    })
-  }
-
+  
 
   back() {
     if(this.activeStep > 0) {
@@ -112,18 +105,19 @@ export class SignupPage implements OnInit {
 
 
 
-  createAccountOnFirebase() {
-    let user: any = this.validations_form.value;
+  addUserToFirebaseDataStore() {
+    let formData: any = this.signup_form.value;
+
     const firebaseUser = this.fbService.getStorage(STORAGE.FIREBASE_USER);
     console.log(firebaseUser);
     
-    let userData: User = {
+    let user: User = {
       uid: firebaseUser.user.uid,
       email: firebaseUser.user.email,
-      name: user.name,
-      gender: user.gender,
-      dob: user.dob,
-      orientation: user.orientation,
+      name: formData.name,
+      gender: formData.gender,
+      dob: formData.dob,
+      orientation: formData.orientation,
       profile_picture: "",
       images: [],
       isVerified: false,
@@ -135,24 +129,42 @@ export class SignupPage implements OnInit {
         }
       }
     }; 
-    this.fbService.setStorage(STORAGE.USER, userData);
+    this.fbService.setStorage(STORAGE.USER, user);
 
-    this.fbService.addItem(COLLECTION.users, userData, userData.uid).then(() => {
+    this.fbService.addItem(COLLECTION.users, user, user.uid).then(() => {
       console.log('User added successfully');
-      this.router.navigate(["/tabs/users"]);
+      //Redirect with routerLink in the html
+      this.modal.dismiss().then(() => this.router.navigate(['/tabs/users']));
+
     }).catch(err => {
       console.log(err);
     });
     
   }
+ 
+
+  signUpOnFirebase() {
+
+    this.fbService.SignUp(this.validations_form.value.email, this.validations_form.value.password).then(u => {
+      this.fbService.setStorage(STORAGE.FIREBASE_USER, u);
+      ++this.activeStep;
+    }).catch(err => {
+      console.log(err);
+      if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
+        this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
+      }
+      else if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
+        this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
+      }else {
+        this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP
+      }
+      
+    })
+  }
   
 
   goToSignInPage() {
-    this.router.navigate(['/signin'])
-  }
-
-  signupModal(){ 
-    this.router.navigate(['/signin'])
-  }
+    this.modal.dismiss().then(() => this.router.navigate(['/signin']));
+  } 
 
 }

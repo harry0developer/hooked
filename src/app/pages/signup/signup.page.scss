@@ -1,6 +1,6 @@
-// ::-webkit-scrollbar {
-//   display: none;
-// }
+::-webkit-scrollbar {
+  display: none;
+}
 
 // .logo {
 //   text-align: center;
@@ -108,26 +108,12 @@ ion-content {
   // ion-item {
   //   --inner-padding-end:0
   // }
-  ion-input {
-    margin: 4px 0;
-    border-bottom: 2px solid #3f093885;
-    // --padding-start: 10px;
-    // border-radius: 6px;
-  }
-
-  .validation-errors {
-    padding-left: 20px;
-    .error-message {
-      font-size: 14px;
-      color: rgb(175, 4, 4);
-      padding-top: 6px;
-    }
-  }
+  
 }
 
 .btn-group {
-    float: right;
 	margin: 20px;
+  float: right;
 }
 
 .summary.btn-group {
@@ -173,27 +159,49 @@ ion-modal {
     ion-select {
       width: 100%;
     }
-	.summary {
-        
-        .item {
-            border-bottom: 1px solid #ff3d7c;
-            margin: 10px 20px;
-            .gender {
-                padding-right: 16px;
-                font-size: 30px;
-            }
-            h1 {
-                font-size: 18px;
-                font-weight: bold;
-            }
-            p {
-                font-size: 16px;
-            }
-        }
+
+    ion-input {
+      margin: 4px 0;
+      border-bottom: 1px solid #292929;
+      // --padding-start: 10px;
+      // border-radius: 6px;
+  
+    }
+  
+    ion-label {
+      color: #292929;
+    }
+    ion-select {
+      border-bottom: 1px solid #292929;
+  
     }
     
+    .validation-errors {
+      padding-left: 20px;
+      .error-message {
+          font-size: 16px;
+          color: #ff3d7c;
+        }
+      }
+    }
+    .summary { 
+      .item {
+        margin: 10px 20px;
+        .gender {
+            padding-right: 16px;
+            font-size: 30px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        p {
+            font-size: 16px;
+        }
+      }
+    }
   }
-}
+
 
 ion-modal::part(backdrop) {
   background: rgba(209, 213, 219);
@@ -203,6 +211,10 @@ ion-modal::part(backdrop) {
 ion-modal ion-toolbar {
   --background: rgb(102, 63, 89);
   --color: white;
+}
+
+p.signin {
+  padding-top: 10px !important;
 }
 
 

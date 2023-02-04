@@ -27,10 +27,6 @@ const routes: Routes = [
     loadChildren: () => import('./verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
   },
   {
-    path: 'signup-info',
-    loadChildren: () => import('./pages/signup-info/signup-info.module').then( m => m.SignupInfoPageModule)
-  },
-  {
     path: 'intro',
     loadChildren: () => import('./pages/intro/intro.module').then( m => m.IntroPageModule)
   }
