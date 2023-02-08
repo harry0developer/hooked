@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { FIREBASE_ERROR } from 'src/app/utils/const';
+import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
+import { FbService } from '../services/fbService.service';
  
 @Component({
   selector: 'app-signin',
@@ -26,7 +26,7 @@ export class SigninPage implements OnInit {
  };
 
   constructor(
-    private authService: AuthService,
+    private fbService: FbService,
     private formBuilder: FormBuilder,
     private router: Router
   ) { }
@@ -45,10 +45,16 @@ export class SigninPage implements OnInit {
   }
 
   tryLogin(value){
-    this.authService.doLogin(value).then(res => {
-      // this.router.navigate(["/tabs/users"]);      
-      this.router.navigate(["/tabs/profile"]);
-
+    this.fbService.SignIn(value.email, value.password).then(res => {
+      
+      this.fbService.getItemById(COLLECTION.users, res.user['uid']).subscribe(user => {
+        console.log("SIGNIN USER", user);
+        
+        this.fbService.setStorage(STORAGE.USER, user);     
+        this.router.navigate(["/tabs/profile"]);
+      },err => {
+        console.log(err);
+      })
     }, err => {
       this.errorMessage = FIREBASE_ERROR.SIGNIN_USERNAME_PASSWORD//err.message;
       console.log(err)

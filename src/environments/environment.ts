@@ -4,6 +4,9 @@
 
 export const environment = {
   production: false,
+  appShellConfig: {
+    debug: false
+  },
   firebaseConfig: {
     apiKey: "AIzaSyAWCIawGXuAIu1CGprIndITjyysLqIKPBk",
     authDomain: "hooked-3b11c.firebaseapp.com",

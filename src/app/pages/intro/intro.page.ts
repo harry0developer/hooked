@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { STORAGE } from 'src/app/utils/const';
+import { FbService } from '../services/fbService.service';
 
 @Component({
   selector: 'app-intro',
@@ -8,13 +10,14 @@ import { Router } from '@angular/router';
 })
 export class IntroPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private fbService: FbService) { }
 
   ngOnInit() {
   }
 
   goToSignUp() {
-    this.router.navigate(['/signup'])
+    this.fbService.setStorage(STORAGE.SEEN_INTRO, true);
+    this.router.navigate(['/signin']);
   }
 
 }

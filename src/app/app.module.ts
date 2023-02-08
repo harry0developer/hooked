@@ -8,29 +8,28 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { DataService } from './providers/data.service';
 import { AuthService } from './providers/auth.service';
 
 //https://github.com/ivylaboratory/angular-gallery
 import {IvyGalleryModule} from 'angular-gallery';
 
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment'; 
 
 // Firebase 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+// import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 import { FbService } from './pages/services/fbService.service';
-// import { StateStepperModule } from 'state-stepper';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+ 
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule, 
-    // StateStepperModule,
     FormsModule,
     ReactiveFormsModule,
     IonicModule.forRoot(), 
@@ -42,13 +41,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     AngularFireModule.initializeApp(environment.firebaseConfig),  
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule, 
   ],
   providers: [
-    DataService,
+
     AuthService,
     FbService,
+
     {
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 

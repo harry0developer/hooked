@@ -28,6 +28,8 @@ export const FIREBASE_ERROR = {
 
 export const STORAGE = {
     USER: 'user',
-    FIREBASE_USER: "firebase-user"
+    FIREBASE_USER: "firebase-user",
+    INCOMPLETE_PROFILE: "incomplete-profile",
+    SEEN_INTRO: 'seen-intro'
     
 }

@@ -1,28 +1,35 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {  Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
-import { FirebaseService } from '../services/old-firebase.service';
 import { FbService } from '../services/fbService.service';
 import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
 import { IonModal } from '@ionic/angular';
- 
+import { ActionSheetController } from '@ionic/angular';
 
+import { Camera,  CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 var moment = require('moment'); // require
+
+
+interface LocalFile {
+  name: string;
+  path: string;
+  data: string;
+}
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
 })
-export class SignupPage implements OnInit, AfterViewInit {
+export class SignupPage implements OnInit {
 
   validations_form: FormGroup;
   signup_form: FormGroup;
 
   errorMessage: string = '';
   activeStep: number = 0;
+
 
   validation_messages = {
    'name': [
@@ -40,27 +47,29 @@ export class SignupPage implements OnInit, AfterViewInit {
  };
 
 
+ images: LocalFile[] = [];
+
+ profilePicture: string;
+
+ profileInComplete: boolean;
+
+ user: User;
+
+ uploadedImages: any;
+
  @ViewChild('modal') modal: IonModal;
 
   constructor(
-    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private firebaseService: FirebaseService,
     private fbService: FbService,
-    private router: Router
-  ) { }
+    private router: Router,
+    public actionSheetController: ActionSheetController,
 
 
-  ngAfterViewInit(): void {
-    // console.log(this.modal);
+  ) { } 
 
-  }
-  
 
-  ngOnInit() {
-    console.log(this.modal);
-
-    
+  ngOnInit() {    
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -87,10 +96,58 @@ export class SignupPage implements OnInit, AfterViewInit {
         Validators.required
       ]))
     });
+
+    this.profileInComplete = this.fbService.getStorage(STORAGE.INCOMPLETE_PROFILE);
+  
+    if(this.profileInComplete) {
+      this.activeStep = 1;
+    }
+
+    //Listern to image upload
+    this.uploadedImages = this.fbService.afs.collection(COLLECTION.images).valueChanges();
+  }
+
+  async uploadImage(source: CameraSource) {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: source
+    });
+    
+    if(image) {
+
+      this.fbService.loading();
+      // const result = await this.avatarService.uploadImage(this.user, image);
+      this.fbService.dismissLoading();
+
+      // this.user.images.push(`data:image/${image.format};base64,${image.base64String}`);
+    }
   }
  
-
-  
+  async selectImageActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Select Image",
+      buttons: [{
+        text: 'Load from Library',
+        handler: () => {
+          this.uploadImage(CameraSource.Photos)
+        }
+      },
+      {
+        text: 'Use Camera',
+        handler: () => {
+          this.uploadImage(CameraSource.Camera)
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+      ]
+    });
+    await actionSheet.present();
+  }
 
   back() {
     if(this.activeStep > 0) {
@@ -103,22 +160,20 @@ export class SignupPage implements OnInit, AfterViewInit {
     console.log(this.validations_form.value);
   }
 
-
-
   addUserToFirebaseDataStore() {
     let formData: any = this.signup_form.value;
 
     const firebaseUser = this.fbService.getStorage(STORAGE.FIREBASE_USER);
     console.log(firebaseUser);
-    
-    let user: User = {
-      uid: firebaseUser.user.uid,
-      email: firebaseUser.user.email,
+    let user: User;
+    user  = { 
+      uid: this.profileInComplete ? firebaseUser['uid'] : firebaseUser.user.uid,
+      email: this.profileInComplete ? firebaseUser['email'] : firebaseUser.user.email,
       name: formData.name,
       gender: formData.gender,
       dob: formData.dob,
       orientation: formData.orientation,
-      profile_picture: "",
+      profile_picture: this.profilePicture,
       images: [],
       isVerified: false,
       location: {
@@ -129,12 +184,14 @@ export class SignupPage implements OnInit, AfterViewInit {
         }
       }
     }; 
+     
     this.fbService.setStorage(STORAGE.USER, user);
 
     this.fbService.addItem(COLLECTION.users, user, user.uid).then(() => {
       console.log('User added successfully');
-      //Redirect with routerLink in the html
       this.modal.dismiss().then(() => this.router.navigate(['/tabs/users']));
+      this.profileInComplete = false;
+      this.fbService.setStorage(STORAGE.INCOMPLETE_PROFILE, this.profileInComplete);
 
     }).catch(err => {
       console.log(err);
@@ -166,5 +223,10 @@ export class SignupPage implements OnInit, AfterViewInit {
   goToSignInPage() {
     this.modal.dismiss().then(() => this.router.navigate(['/signin']));
   } 
+
+
+ 
+
+  
 
 }

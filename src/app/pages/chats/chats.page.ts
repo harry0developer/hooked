@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../models/User';
-import { DataService } from 'src/app/providers/data.service';
 
 @Component({
   selector: 'app-chats',
@@ -12,9 +11,7 @@ export class ChatsPage {
 
   users!: User[];
   user!: User;
-  constructor(private dataService: DataService, private router: Router) {
-    this.users = this.dataService.getUsers();
-    this.user = this.users[0];
+  constructor(private router: Router) {
   }
 
 

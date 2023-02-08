@@ -9,16 +9,14 @@ import {
 } from "@angular/core";
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
 import { IonCard, ModalController } from "@ionic/angular";
-import { DataService } from "../../providers/data.service";
 import { Subscription } from 'rxjs';
 
 import { User } from '../../models/User';
 import { Observable } from "rxjs";
-import { FirebaseService } from "../services/old-firebase.service";
-import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { FbService } from "../services/fbService.service";
 import { FilterPage } from "../filter/filter.page";
+import { Router } from "@angular/router";
 var moment = require('moment'); // require
 
 @Component({
@@ -45,13 +43,13 @@ export class UsersPage implements OnInit {
 
   constructor(
     private gestureCtrlService: GestureCtrlService,
-    public dataService: DataService,
     public angularFireAuth: AngularFireAuth,
     private fbService: FbService,
+    private router: Router,
     private modalCtrl: ModalController,
 
     private cd: ChangeDetectorRef) {
-      this.users = this.dataService.getUsers();
+      // this.users = this.dataService.getUsers();
     }
 
     async openFilterModal() {
@@ -75,6 +73,7 @@ export class UsersPage implements OnInit {
     
     ngOnInit() {
 
+
       this.angularFireAuth.authState.subscribe((user) => {
         if (user) {
           console.log(user);
@@ -82,6 +81,7 @@ export class UsersPage implements OnInit {
         } else {
           console.log("Not logged in....");
           this.fbService.signOut();
+          this.router.navigate(['/signin']);
         }
       });
       

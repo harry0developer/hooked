@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/User';
 import { STORAGE } from 'src/app/utils/const';
@@ -17,6 +18,7 @@ export class SettingsModalPage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
+    private router: Router,
     private fbService: FbService) {
     this.user = this.fbService.getStorage(STORAGE.USER);
 
@@ -35,4 +37,11 @@ export class SettingsModalPage implements OnInit {
   }
 
 
-  signout(){}}
+  signout(){
+
+    this.fbService.signOut();
+    this.cancel();
+    this.router.navigate(['/signin']);
+    
+  }
+}

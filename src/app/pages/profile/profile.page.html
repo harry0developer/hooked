@@ -21,7 +21,7 @@
   <div class="container">
     <div class="top">
       <div class="user-avatar">
-        <img *ngIf="user && user.profile_picture" [src]="user?.images[0]" alt="">
+        <img *ngIf="user && user.profile_picture" [src]="user.profile_picture" alt="">
         <div class="placeholder">
           <ion-icon name="person-outline"></ion-icon>
         </div>
@@ -32,15 +32,18 @@
       </div>
     </div>
     <div class="bottom">
-      <ion-grid class="photo-grid">
+      <ion-grid class="photo-grid" >
         <ion-row *ngIf="user && user.images.length > 0">
-          <ion-col size="4" *ngFor="let u of user.images; let i=index">
+          <ion-col class="user-image" size="4" *ngFor="let u of user.images; let i=index">
             <img [src]="u" alt="" (click)="showGallery(i)">
-          </ion-col> 
+          </ion-col>  
         </ion-row>
-        <ion-row>
-          <ion-col size="4" *ngFor="let u of [1,2,3,4,5,6]">
-            <img src="https://via.placeholder.com/500" alt="" >
+
+        <ion-row *ngIf="user && user.images.length < 1">
+          <ion-col size="4" >
+            <div *ngIf="user.images.length < 6" class="img-placeholder" (click)="selectImageActionSheet()">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </div>
           </ion-col> 
         </ion-row>
       </ion-grid>

@@ -6,22 +6,39 @@ import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { User } from 'src/app/models/User';
 import { STORAGE } from 'src/app/utils/const';
+import { LoadingController } from '@ionic/angular';
+
+import { Photo } from '@capacitor/camera';
+import { Storage, ref, getStorage, uploadString, listAll, getDownloadURL, deleteObject, StorageReference, ListResult, UploadResult } from '@angular/fire/storage';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class FbService {
-  userData: any; // Save logged in user data
+  userData: any; 
+  loading: any;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
+    public loadingCtrl: LoadingController,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
  
   }
 
+
+  async isLoading(msg?: string) {
+    this.loading = await this.loadingCtrl.create({
+      message: msg ? msg : "Loading, please wait..."
+    });
+    await this.loading.present();
+  }
+
+  async dismissLoading() {
+    this.loading.dismiss();
+  }
 
 
   setStorage(key: string, data: any) {
@@ -41,15 +58,6 @@ export class FbService {
   SignIn(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['/tabs/users']);
-        });
-        // this.setUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
   }
   // Sign up with email/password
   SignUp(email: string, password: string) {
@@ -154,5 +162,23 @@ export class FbService {
 
   removeItem(collectionName: string, id: string) {
     return this.afs.collection(collectionName).doc< User>(id).delete();
+  }
+
+  // Save picture to file on device
+  public async savePictureInFirebaseStorage(user: User,cameraPhoto: Photo) {
+
+    // Get a reference to the storage service, which is used to create references in your storage bucket
+    const storageRef = ref(getStorage());
+
+    // Points to our firestorage folder 'images/userID'
+    const imagesRef = ref(storageRef, 'images/' + user.uid);
+
+    // Points to 'tutorial-files/file-name.jpeg'
+    const fileName = new Date().getTime() + '.jpeg';
+    const spaceRef = ref(imagesRef, fileName);
+
+    let savedFile: UploadResult = await uploadString(spaceRef, cameraPhoto.base64String, 'base64');
+
+    return await getDownloadURL(ref(imagesRef, savedFile?.metadata.name));
   }
 }

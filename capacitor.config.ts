@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'hooked',
+  appId: 'com.charcoal.snuggle',
+  appName: 'snuggle',
   webDir: 'www',
   bundledWebRuntime: false
 };

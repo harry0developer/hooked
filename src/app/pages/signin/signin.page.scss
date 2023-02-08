@@ -1,59 +1,48 @@
 ::-webkit-scrollbar {
   display: none;
-}
+} 
 
-.logo {
+.signin-content{
+
   text-align: center;
-  margin-top: 100px;
-  img {
-    width: 120px;
-  }
-}
-
-ion-item {
-  --padding-start: 0;
-}
-
-.form {
   padding: 20px;
-  ion-item {
-    --inner-padding-end:0
-  }
-  .form-item {
-    ion-input {
-      border: 2px solid #3f093885;
-      --padding-start: 10px;
-      border-radius: 6px;
+
+  .logo {
+    margin: 40px 0;
+    img {
+      width: 100px;
     }
   }
 
+  .form {
 
+    .form-item {
+      margin: 0 auto;
+      width: 90%;
+      ion-input {
+        border: 2px solid rgb(121, 15, 73);
+        border-radius: 8px;
+        --padding-start: 10px;
+      }
 
-  .validation-errors {
-    .error-message {
-      font-size: 14px;
-      color: rgb(175, 4, 4);
-      padding-top: 6px;
+      ion-label {
+        color: #000;
+        font-weight: bold;
+      }
+    }
+    .validation-errors {
+      .error-message {
+        color: rgb(143, 10, 10);
+        padding: 0 40px;
+        line-height: 1;
+      }
+    }
+    .btn {
+      margin: 10px 30px;
     }
   }
- 
-}
 
-.not-registered, .reset-password {
-  text-align: center;
-  margin: 0;
-}
-
-
-.btn {
-  margin-top: 20px;
-}
-
-.container {
-  text-align: center;
-  padding: 20px;
-  .title {
-    font-weight: bold;
+  p.reset-password, p.not-registered {
     margin: 0;
   }
-} 
+}

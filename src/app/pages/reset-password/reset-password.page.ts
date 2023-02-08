@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
  
 @Component({
@@ -21,7 +20,6 @@ export class ResetPasswordPage implements OnInit {
  };
 
   constructor(
-    private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router
   ) { }

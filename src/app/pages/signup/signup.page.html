@@ -7,17 +7,35 @@
       <img src="../../../assets/logo_secondary.png" alt="">
     </div>
  
-    <div class="main">
-      <img src="../../../assets/intro/create.svg">
+    <div *ngIf="!profileInComplete">
+      <div class="main">
+        <img src="../../../assets/signup/create.svg">
+      </div> 
+      
+      <div class="bottom">
+        <h1>Let's get started</h1>
+        <p>Complete few steps and you should be good to go</p>
+        <ion-button fill="solid" expand="block" id="open-modal">Create Account</ion-button>
+        <p class="signin">
+          Already have an account? <a (click)="goToSignInPage()">Sign in</a>
+        </p>
+      </div>
     </div>
 
-    <div class="bottom">
-      <h1>Lets get started</h1>
-      <p>Complete few steps and you should be good to go</p>
-      <ion-button fill="solid" expand="block" id="open-modal">Create Account</ion-button>
-      <p class="signin">
-        Already have an account? <a (click)="goToSignInPage()">Sign in</a>
-      </p>
+    <div *ngIf="profileInComplete">
+
+      <div class="main">
+        <img src="../../../assets/signup/incomplete_profile.svg">
+      </div> 
+      
+      <div class="bottom">
+        <h1>Profile Incomplete</h1>
+        <p>Let's get to know you a little better</p>
+        <ion-button fill="solid" expand="block" id="open-modal">Complete Profile</ion-button>
+        <p class="signin">
+          Already have an account? <a (click)="goToSignInPage()">Sign in</a>
+        </p>
+      </div>
     </div>
   </div>
 
@@ -27,7 +45,9 @@
     trigger="open-modal">
     <ng-template>
       <ion-content> 
-        <div class="counter">Step {{activeStep + 1}}/6</div>
+        <div class="counter" *ngIf="profileInComplete">Step {{activeStep }}/5</div>
+        <div class="counter" *ngIf="!profileInComplete">Step {{activeStep + 1}}/6</div>
+
 
 
         <!-- Step one  -->
@@ -62,6 +82,9 @@
                 </div>
               </ng-container>
             </div>
+            <div class="validation-errors">
+              <label class="error-message">{{errorMessage}}</label>
+            </div>
             <div class="btn-group">
               <ion-button fill="outline" shape="round" type="submit" (click)="goToSignInPage()">
                 <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
@@ -73,9 +96,7 @@
                 <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
               </ion-button>
             </div>
-            <div class="validation-errors">
-              <label class="error-message">{{errorMessage}}</label>
-            </div>
+            
           </form>
         </div>
 
@@ -100,7 +121,11 @@
               </ng-container>
             </div>
             <div class="btn-group" >
-              <ion-button shape="round" fill="outline" (click)="back()">
+              <ion-button *ngIf="profileInComplete" fill="outline" shape="round" type="submit" (click)="goToSignInPage()">
+                <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+                Sign in
+              </ion-button>
+              <ion-button *ngIf="!profileInComplete" shape="round" fill="outline" (click)="back()">
                 <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
                 Back
               </ion-button>
@@ -205,8 +230,41 @@
         </div>
 
 
+          <!-- Upload Picture -->
+        <div class="container" *ngIf="activeStep == 5">
+          <div class="title">
+            <h1>Upload pictures</h1>
+            <p>Showcase your best features, the sexier the better</p>
+          </div>
+      
+          <div class="upload-image">
+            <div class="preview">
+              <img *ngIf="!profilePicture" src="../../../assets/default/default.jpg" (click)="selectImageActionSheet()" alt="">
+              <img *ngIf="!!profilePicture" (click)="selectImageActionSheet()" [src]="profilePicture" alt="">
+            </div>
+
+            <div class="upload-btn">
+              <ion-button fill="clear" (click)="selectImageActionSheet()">
+                <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+                Upload image
+              </ion-button> 
+            </div>
+            
+            <div class="btn-group" >
+              <ion-button shape="round" fill="outline" (click)="back()">
+                <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+                Back
+              </ion-button>
+              <ion-button shape="round" [disabled]="!profilePicture" (click)="addUserToFirebaseDataStore()">
+                Complete
+                <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+
         <!-- Validation/Summary  -->
-        <div class="container" *ngIf="activeStep === 5">
+        <!-- <div class="container" *ngIf="activeStep === 5">
           <div class="title">
             <h1>All done</h1>
           </div> 
@@ -254,7 +312,7 @@
               <ion-icon slot="end" name="checkmark-done-outline"></ion-icon>
             </ion-button>
           </div>
-        </div> 
+        </div>  -->
 
       </ion-content>
     </ng-template>
