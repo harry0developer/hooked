@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
+import { COLLECTION, FIREBASE_ERROR, ROUTES, STATUS, STORAGE } from 'src/app/utils/const';
 import { FbService } from '../services/fbService.service';
- 
+import { AlertController, LoadingController } from '@ionic/angular';
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.page.html',
@@ -28,7 +29,9 @@ export class SigninPage implements OnInit {
   constructor(
     private fbService: FbService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
   ) { }
 
   ngOnInit() {
@@ -44,23 +47,53 @@ export class SigninPage implements OnInit {
     });
   }
 
-  tryLogin(value){
-    this.fbService.SignIn(value.email, value.password).then(res => {
-      
-      this.fbService.getItemById(COLLECTION.users, res.user['uid']).subscribe(user => {
-        console.log("SIGNIN USER", user);
-        
-        this.fbService.setStorage(STORAGE.USER, user);     
-        this.router.navigate(["/tabs/profile"]);
-      },err => {
-        console.log(err);
-      })
-    }, err => {
-      this.errorMessage = FIREBASE_ERROR.SIGNIN_USERNAME_PASSWORD//err.message;
-      console.log(err)
-    })
+
+  get email() {
+    return this.validations_form.get('email')?.value;
   }
 
+  get password() {
+    return this.validations_form.get('password')?.value;
+  }
+
+  async login() {
+    const loading = await this.loadingCtrl.create();
+    await loading.present();
+
+    const status = await this.fbService.login(this.email, this.password);
+
+    await loading.dismiss();
+
+    if(status ===  STATUS.SUCCESS) {
+      this.router.navigateByUrl(ROUTES.USERS, {replaceUrl: true})
+    } else {
+
+      if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNIN_INCORRECT_PASSWORD.key)){
+        this.showAlert("Login failed",  FIREBASE_ERROR.SIGNIN_INCORRECT_PASSWORD.value);
+      }
+      else if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNIN_USER_NOT_FOUND.key)){
+        this.showAlert("Login failed",  FIREBASE_ERROR.SIGNIN_USER_NOT_FOUND.value);
+      } 
+      else if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNI_BLOCKED.key)){
+        this.showAlert("Login failed",  FIREBASE_ERROR.SIGNI_BLOCKED.value);
+      } else {
+        this.showAlert("Login failed",  FIREBASE_ERROR.SINGIN_GENERIC);
+
+      }
+      
+      // this.showAlert("Login failed", "Please try again");
+    }
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header, message, buttons: ['Ok']
+    })
+
+    await alert.present();
+  }
+
+ 
   goToSignupPage(){
     this.router.navigate(["/signup"]);
   }

@@ -3,18 +3,45 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{user?.name}}</ion-title>
+    <ion-title>{{reciever?.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <div class="imessage">
-    <p class="from-them">It was loud. We just laid there and said &ldquo;is this an earthquake? I think this is an earthquake.&rdquo;</p>
-    <p class="from-me">Like is this an earthquake just go back to sleep</p>
-    <p class="from-them margin-b_one">It&rsquo;s more like &ldquo;this is an earthquake. Check the Internet. Yup. Earthquake. This is the size. This is the epicenter. Check social media. Make sure the East Coast knows I&rsquo;m alive. Okay, try and go back to sleep.&rdquo;</p>
-    <p class="from-me no-tail emoji">👍🏻</p>
-    <p class="from-me">Glad you&rsquo;re safe</p>
+  <div class="messages-container" *ngIf="messagesArray && messagesArray.length > 0" >
+    <div class="imessage" *ngFor="let m of messagesArray">
+        <p class="from-me" *ngIf="fromMe(m)">
+          {{m.msg}}
+        </p>
+        <p class="from-other" *ngIf="!fromMe(m)">
+          {{m.msg}}
+        </p>
+    </div>
+  </div>
+
+
+  <div class="no-messages" *ngIf="messagesArray && messagesArray.length < 1">
+    <h1>No messages yet</h1>
+    <p>you do not have any messages yet</p>
   </div>
  
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-row class="ion-align-items-center">
+      <ion-col size="10">
+        <ion-textarea autoGrow="true" class="message-input" rows="1" maxLength="500" [(ngModel)]="newMsg">
+          
+        </ion-textarea>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button expand="block" fill="clear" color="primary" [disabled]="newMsg == ''"
+          class="msg-btn" (click)="sendMessage()">
+          <ion-icon name="send" slot="icon-only"></ion-icon> 
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

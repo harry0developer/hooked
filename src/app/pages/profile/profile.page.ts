@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/User';
 import { Gallery } from 'angular-gallery';
 import { FbService } from '../services/fbService.service';
-import { COLLECTION, STORAGE } from 'src/app/utils/const';
-import { ModalController, Platform } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SettingsModalPage } from '../settings-modal/settings-modal.page';
 var moment = require('moment'); // require
@@ -15,8 +14,9 @@ import { Camera,  CameraResultType, CameraSource } from '@capacitor/camera';
 
 
 import { Subscription } from 'rxjs';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ImageListingModel } from '../../utils/models/image-listing.model';
+import { Auth } from '@angular/fire/auth';
+import { COLLECTION } from 'src/app/utils/const';
 
 const IMAGE_DIR = "stored-images";
 interface LocalFile {
@@ -33,9 +33,13 @@ interface LocalFile {
 export class ProfilePage implements OnInit{
   
 
-  user: User;
+  user: any;
+  firebaseUser: any;
+
   images: [] ;
   profilePicture: string;
+
+  currentUser: any;
 
 
   files: ImageListingModel;
@@ -46,17 +50,19 @@ export class ProfilePage implements OnInit{
     private modalCtrl: ModalController,
     private platform: Platform,
     private actionSheetController: ActionSheetController,
-    private storage: AngularFireStorage,
+    private loadingCtrl: LoadingController,
+    private auth: Auth,
     private router: Router
-    ) {
-  }
+    ) {}
 
 
   ngOnInit(): void {
-     this.user = this.fbService.getStorage(STORAGE.USER);
-
-     console.log(this.user);
-     
+    this.currentUser = this.auth.currentUser;
+    
+    this.fbService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
+      this.user = user;
+      console.log(user);
+    })
    }
 
   async openModal() {
@@ -110,11 +116,16 @@ export class ProfilePage implements OnInit{
     
     if(image) {
 
-     const img = await this.fbService.savePictureInFirebaseStorage(this.user, image);
+      const loading = await this.loadingCtrl.create({message: "Uploading image, please wait..."});
+      await loading.present();
+
+      const img = await this.fbService.savePictureInFirebaseStorage(image);
       
-    console.log("Uploaded image",img);
-    this.user.images.push(img)
-    this.fbService.updateItem(COLLECTION.images, this.user, this.user.uid);
+      this.user.images.push(img)
+      await this.fbService.addDocumentToFirebase(COLLECTION.users,this.user);
+      await loading.dismiss();
+
+
      
       // const savedImageFile = await this.dataService.savePictureInFirebaseStorage(image);
       // this.files.imagesUrls.unshift(savedImageFile);      

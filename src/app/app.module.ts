@@ -16,14 +16,18 @@ import {IvyGalleryModule} from 'angular-gallery';
 import { environment } from 'src/environments/environment'; 
 
 // Firebase 
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore} from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 // import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 import { FbService } from './pages/services/fbService.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
  
 
 @NgModule({
@@ -37,11 +41,19 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     ReactiveFormsModule,
     HttpClientModule,
     IvyGalleryModule,
- 
-    AngularFireModule.initializeApp(environment.firebaseConfig),  
+
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireDatabaseModule, 
+    AngularFireStorageModule,
+
+
+   //this was working but cannot get list of documents in a collection 
+    
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage())
   ],
   providers: [
 

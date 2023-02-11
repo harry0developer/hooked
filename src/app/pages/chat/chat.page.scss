@@ -5,6 +5,15 @@ ion-header {
 
 } 
 
+
+.no-messages {
+  text-align: center;
+  margin-top: 20vh;
+  h1 {
+    font-weight: bold;
+  }
+}
+
   
 .imessage {
     display: flex;
@@ -32,20 +41,20 @@ ion-header {
     position: absolute;
   }
   
-  p.from-me {
+  p.from-other {
     align-self: flex-end;
     background-color: #248bf5;
     color: #fff; 
   }
   
-  p.from-me::before {
+  p.from-other::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
     border-right: 1rem solid #248bf5;
     right: -0.35rem;
     transform: translate(0, -0.1rem);
   }
   
-  p.from-me::after {
+  p.from-other::after {
     background-color: #fff;
     border-bottom-left-radius: 0.5rem;
     right: -40px;
@@ -58,32 +67,32 @@ ion-header {
     width: fit-content;
   }
   
-  p.from-me ~ p.from-me {
+  p.from-other ~ p.from-other {
     margin: 0.25rem 0 0;
   }
   
-  p.from-me ~ p.from-me:not(:last-child) {
+  p.from-other ~ p.from-other:not(:last-child) {
     margin: 0.25rem 0 0;
   }
   
-  p.from-me ~ p.from-me:last-child {
+  p.from-other ~ p.from-other:last-child {
     margin-bottom: 0.5rem;
   }
   
-  p.from-them {
+  p.from-me {
     align-items: flex-start;
     background-color: #e5e5ea;
     color: #000;
   }
   
-  p.from-them:before {
+  p.from-me:before {
     border-bottom-right-radius: 0.8rem 0.7rem;
     border-left: 1rem solid #e5e5ea;
     left: -0.35rem;
     transform: translate(0, -0.1rem);
   }
   
-  p.from-them::after {
+  p.from-me::after {
     background-color: #fff;
     border-bottom-right-radius: 0.5rem;
     left: 20px;

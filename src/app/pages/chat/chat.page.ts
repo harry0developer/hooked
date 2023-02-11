@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/models/User';
-import { FirebaseService } from '../services/old-firebase.service';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { IonContent } from '@ionic/angular';
+import { Observable, takeLast } from 'rxjs';
+import { Message, MessageObj, User } from 'src/app/models/User'; 
+import { ChatService } from '../services/chat.service';
+var moment = require('moment');
 
 @Component({
   selector: 'app-chat',
@@ -11,34 +14,74 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 })
 export class ChatPage implements OnInit {
 
-  user!: User;
+  reciever!: User;
+
+  @ViewChild(IonContent) content: IonContent;
+  messagesArray: Message[] = [];
+  newMessage: Message;
+  newMsg = "";
+
+  chatsDocumentId: string = "";
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router, 
-    private firebaseService: FirebaseService,
-    ) { 
-    }
+    private chatService: ChatService,
+    private auth: Auth
+  ) { }
   
 
+  sendMessage() {
+    const message:Message = {
+      msg: this.newMsg,
+      from: this.auth.currentUser.uid,
+      to: this.reciever.uid,
+      fromMe: true,
+      createdAt: new Date()
+    }
+
+
+
+    // this.messageObject = {
+    //   messages: [...this.messageObject.messages, message]
+    // }
+
+
+
+    
+
+    // this,this.chatService.addChatMessageWithId(this.messageObject, this.reciever.uid).then(() => {
+    //   this.newMsg = "",
+    //   this.content.scrollToBottom()
+    // });
+
+
+    
+  }
+
+  
   ngOnInit() {
     this.route.params.subscribe((params:any) => {
-      console.log(params);
-      this.user = JSON.parse(params.user);
-    });
+      this.reciever = JSON.parse(params.user);
 
-    this.firebaseService.afAuth.authState.subscribe((user) => {
-      if (user) {
-        console.log(user);
-        
-        // this.userData = user;
-        // localStorage.setItem('user', JSON.stringify(user));
-        // JSON.parse(localStorage.getItem('user')!);
-      } else {
-        console.log("No user");
+      this.chatService.documentExists(this.reciever.uid);
 
-        // localStorage.setItem('user', 'null');
-        // JSON.parse(localStorage.getItem('user')!);
-      }
-    });
+      this.chatService.documentExist$.subscribe(status => {
+        this.chatsDocumentId = status;
+        this.chatService.getOurMessages(status).then(msgs => {
+          msgs.forEach(m => {
+            console.log(m.messages);
+            this.messagesArray = m.messages;
+            
+          })
+        })
+      });
+   }); //route obs
   }
+
+  fromMe(message: Message): boolean {
+    return message.from === this.auth.currentUser.uid;
+  }
+
+
 }

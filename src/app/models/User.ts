@@ -19,3 +19,23 @@ export interface User {
         }
     }
  }
+
+
+ export interface Message {
+    msg: string,
+    createdAt: any,
+    from: string;
+    to: string;
+    fromMe: boolean;
+ }
+
+ export interface MessageObj {
+    messages: Message[];
+ }
+
+ export interface Chat {
+    senderUid: string;
+    recieverUid: string;
+    message: string;
+    timestamp: any;
+ }

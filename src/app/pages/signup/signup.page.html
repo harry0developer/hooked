@@ -48,8 +48,6 @@
         <div class="counter" *ngIf="profileInComplete">Step {{activeStep }}/5</div>
         <div class="counter" *ngIf="!profileInComplete">Step {{activeStep + 1}}/6</div>
 
-
-
         <!-- Step one  -->
         <div class="container" *ngIf="activeStep == 0">
           <div class="title">
@@ -86,12 +84,12 @@
               <label class="error-message">{{errorMessage}}</label>
             </div>
             <div class="btn-group">
-              <ion-button fill="outline" shape="round" type="submit" (click)="goToSignInPage()">
+              <ion-button fill="outline" shape="round" (click)="goToSignInPage()">
                 <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
                 Sign in
               </ion-button>
 
-              <ion-button shape="round" type="submit" [disabled]="!validations_form.valid" (click)="signUpOnFirebase()">
+              <ion-button shape="round" [disabled]="!validations_form.valid" (click)="registerOnFirebase()">
                 Next
                 <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
               </ion-button>

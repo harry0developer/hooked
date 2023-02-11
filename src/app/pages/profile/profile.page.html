@@ -21,6 +21,8 @@
   <div class="container">
     <div class="top">
       <div class="user-avatar">
+        <img *ngIf="user && !user.profile_picture" src="../../../assets/default/default.jpg" alt="">
+
         <img *ngIf="user && user.profile_picture" [src]="user.profile_picture" alt="">
         <div class="placeholder">
           <ion-icon name="person-outline"></ion-icon>
@@ -37,6 +39,11 @@
           <ion-col class="user-image" size="4" *ngFor="let u of user.images; let i=index">
             <img [src]="u" alt="" (click)="showGallery(i)">
           </ion-col>  
+          <ion-col size="4" >
+            <div *ngIf="user.images.length < 6" class="img-placeholder" (click)="selectImageActionSheet()">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </div>
+          </ion-col> 
         </ion-row>
 
         <ion-row *ngIf="user && user.images.length < 1">

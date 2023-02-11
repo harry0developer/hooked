@@ -12,7 +12,7 @@
     <!-- <div class="intro">
       <img src="../../../assets/signin/" alt="">
     </div> -->
-    <form class="form" [formGroup]="validations_form" (ngSubmit)="tryLogin(validations_form.value)">
+    <form class="form" [formGroup]="validations_form" (ngSubmit)="login()">
       <ion-item mode="ios" lines="none" class="form-item">
         <ion-label position="stacked" color="primary">Email</ion-label>
         <ion-input class="custom" type="text" formControlName="email"></ion-input>

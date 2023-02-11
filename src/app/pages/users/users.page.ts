@@ -5,18 +5,20 @@ import {
   QueryList,
   ViewChildren, 
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
 } from "@angular/core";
+
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
 import { IonCard, ModalController } from "@ionic/angular";
 import { Subscription } from 'rxjs';
 
 import { User } from '../../models/User';
 import { Observable } from "rxjs";
-import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { FbService } from "../services/fbService.service";
 import { FilterPage } from "../filter/filter.page";
 import { Router } from "@angular/router";
+import { Auth } from "@angular/fire/auth";
+import { ROUTES } from "src/app/utils/const";
+import { ChatService } from "../services/chat.service";
 var moment = require('moment'); // require
 
 @Component({
@@ -29,7 +31,7 @@ var moment = require('moment'); // require
 
 export class UsersPage implements OnInit {
  
-  users!: User[];
+  users: any;
 
 
   @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
@@ -41,72 +43,52 @@ export class UsersPage implements OnInit {
 
   count$!: Observable<Number>;
 
+  defaultImage = '../../../assets/default/default.jpg';
   constructor(
     private gestureCtrlService: GestureCtrlService,
-    public angularFireAuth: AngularFireAuth,
     private fbService: FbService,
     private router: Router,
     private modalCtrl: ModalController,
-
-    private cd: ChangeDetectorRef) {
-      // this.users = this.dataService.getUsers();
-    }
-
-    async openFilterModal() {
-      const modal = await this.modalCtrl.create({
-        component: FilterPage,
-      });
-      modal.present();
-  
-      const { data, role } = await modal.onWillDismiss();
-  
-      if (role === 'confirm') {
-        console.log("confirmed");
-        
-      }
-    }
-
-    getUserAge(user: User) : string{
-      return  moment().diff(user.dob, 'years');
-
-    }
+    private auth: Auth,
+    private chatServiice: ChatService
+  ){}
     
-    ngOnInit() {
+  ngOnInit() {
+    this.users = this.chatServiice.getUsers();
+  }
 
+ 
 
-      this.angularFireAuth.authState.subscribe((user) => {
-        if (user) {
-          console.log(user);
-          
-        } else {
-          console.log("Not logged in....");
-          this.fbService.signOut();
-          this.router.navigate(['/signin']);
-        }
-      });
-      
-
-      this.fbService.afAuth.authState.subscribe((user) => {
-        if (user) {
-          console.log(user.multiFactor['user']);
-        } else {
-          console.log("No user"); 
-        }
-      }); 
-    }
-
-    filterUsers() {
-      console.log("Filtering..");
-      
-    }
-    
-    ngOnDestroy() {
-      this.liked$.unsubscribe();
-      this.disLiked$.unsubscribe();
-    }
+  filterUsers() {
+    console.log("Filtering..");
+  }
   
-    ngAfterViewInit() {
-      const cardArray = this.cards.toArray();
-      this.gestureCtrlService.useSwiperGesture(cardArray);
+  async openFilterModal() {
+    const modal = await this.modalCtrl.create({
+      component: FilterPage,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      console.log("confirmed");
+      
     }
   }
+
+  getUserAge(user: User) : string{
+    return  moment().diff(user.dob, 'years');
+  }
+
+  async logout() {
+    await this.fbService.logout();
+    this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
+  }
+
+  ngAfterViewInit() {
+    const cardArray = this.cards.toArray();
+    this.gestureCtrlService.useSwiperGesture(cardArray);
+  }
+
+}

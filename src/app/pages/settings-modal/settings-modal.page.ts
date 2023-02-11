@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/User';
-import { STORAGE } from 'src/app/utils/const';
+import { ROUTES, STORAGE } from 'src/app/utils/const';
 import { FbService } from '../services/fbService.service';
 
 @Component({
@@ -37,11 +37,8 @@ export class SettingsModalPage implements OnInit {
   }
 
 
-  signout(){
-
-    this.fbService.signOut();
-    this.cancel();
-    this.router.navigate(['/signin']);
-    
+  async logout() {
+    await this.fbService.logout();
+    this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
   }
 }

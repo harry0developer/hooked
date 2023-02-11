@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from "@angular/core";
 import { GestureController, Platform } from "@ionic/angular";
-import { DataService } from "./data.service";
+// import { DataService } from "./data.service";
 
 @Injectable({
   providedIn: "root",
@@ -11,7 +11,7 @@ export class GestureCtrlService {
     private gestureCtrl: GestureController,
     private zone: NgZone,
     private platform: Platform,
-    private dataProvider: DataService
+    // private dataProvider: DataService
   ) {}
 
   useSwiperGesture(cardArray: string | any[]) {
@@ -43,7 +43,7 @@ export class GestureCtrlService {
             }px) rotate(${ev.deltaX / 2}deg)`;
 
             // this.dataProvider.setItem(const.LIKED, )
-            this.dataProvider.addLikedUser(card.nativeElement.uid);
+            // this.dataProvider.addLikedUser(card.nativeElement.uid);
             
           }
           // Left Side Move
@@ -51,7 +51,7 @@ export class GestureCtrlService {
             card.nativeElement.style.transform = `translateX(-${
               +this.platform.width() * 2
             }px) rotate(${ev.deltaX / 2}deg)`;
-            this.dataProvider.addDisLikedUser(card.nativeElement.id);
+            // this.dataProvider.addDisLikedUser(card.nativeElement.id);
 
           }
           // When No move or if small move back to original

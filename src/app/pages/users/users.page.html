@@ -13,6 +13,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content> 
   <div class="user-card-container" *ngIf="(count$ | async) > 0; else emptyTemplate">
     <ion-card class="user-card" *ngFor="let user of users; let i =index"  id="{{'card-' + user.uid}}">
