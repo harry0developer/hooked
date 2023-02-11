@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, query, where, CollectionReference } from '@angular/fire/firestore';
-import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult } from '@angular/fire/storage';
+import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult, deleteObject } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
 import { from, map, Observable } from 'rxjs';
 import { COLLECTION, STATUS } from 'src/app/utils/const';
 import { Chat, User } from 'src/app/models/User';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 
 @Injectable({
@@ -60,6 +61,44 @@ export class FbService {
     localStorage.removeItem(key);
   }
 
+
+  async updateUserProfilePicture(user: User) {
+    return await this.addDocumentToFirebase(COLLECTION.users, user);
+  }
+
+
+
+  async updateUserPhotoList(user: User, img: string) {
+    console.log("User before", user);
+
+    const deleted = user.images.splice(user.images.indexOf(img),1);
+    console.log("Deleted after", deleted);
+
+    return await this.addDocumentToFirebase(COLLECTION.users, user);
+  }
+
+  async deletePhotoFromFirebaseStorage(user: User, img: string) {
+    
+    const fileName = this.getImageNameFromFirebaseUrl(img);
+    console.log(fileName);
+
+    const storage = getStorage();
+    const desertRef = ref(storage, COLLECTION.images+"/"+this.auth.currentUser.uid + "/" + fileName);
+
+    console.log(desertRef);
+    
+    // Delete the file
+    return await deleteObject(desertRef);
+    
+    
+  }
+
+  getImageNameFromFirebaseUrl(imageUrl: string): string {
+
+    const subPath = imageUrl.split(`${COLLECTION.images}%2F${this.auth.currentUser.uid}%2F`)[1];
+    return subPath.split(".jpeg")[0]+'.jpeg';
+
+  }
   // Save picture to file on device
   public async savePictureInFirebaseStorage(cameraPhoto: Photo) {
 

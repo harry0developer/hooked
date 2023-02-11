@@ -37,7 +37,7 @@
       <ion-grid class="photo-grid" >
         <ion-row *ngIf="user && user.images.length > 0">
           <ion-col class="user-image" size="4" *ngFor="let u of user.images; let i=index">
-            <img [src]="u" alt="" (click)="showGallery(i)">
+            <img [src]="u" alt="" (click)="openImageActionSheet(i)">
           </ion-col>  
           <ion-col size="4" >
             <div *ngIf="user.images.length < 6" class="img-placeholder" (click)="selectImageActionSheet()">

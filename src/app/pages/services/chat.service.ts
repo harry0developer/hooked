@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
-import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, addDoc, query, where, getDocs, serverTimestamp } from '@angular/fire/firestore';
-import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult } from '@angular/fire/storage';
-import { Photo } from '@capacitor/camera';
-import { BehaviorSubject, combineLatest, from, map, Observable, Subject, switchMap, takeLast, takeUntil } from 'rxjs';
-import { COLLECTION, STATUS } from 'src/app/utils/const';
-import { Message, MessageObj, User } from 'src/app/models/User';
-
-import * as firebase from 'firebase/app';
+import { Auth} from '@angular/fire/auth';
+import { Firestore } from '@angular/fire/firestore';
+import { Storage } from '@angular/fire/storage';
+import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
+import { COLLECTION } from 'src/app/utils/const';
+import {  MessageObj, User } from 'src/app/models/User';
 
 import { FbService } from './fbService.service';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { orderBy, Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 
 export interface docStatus {
   uid: string;

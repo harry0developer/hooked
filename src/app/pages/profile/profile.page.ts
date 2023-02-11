@@ -104,6 +104,8 @@ export class ProfilePage implements OnInit{
   }
 
 
+  
+
 
 
   async uploadImage(source: CameraSource) {
@@ -132,6 +134,91 @@ export class ProfilePage implements OnInit{
       // this.user.images.push(`data:image/${image.format};base64,${image.base64String}`);
     }
   }
+
+
+  
+  private async setProfilePicture(index: number) {
+        
+    const loading = await this.loadingCtrl.create({message: "Updating profile picture, please wait..."});
+    await loading.present();
+    this.user.profile_picture = this.user.images[index];
+    this.fbService.updateUserProfilePicture(this.user).then(() => {
+      loading.dismiss();
+    }).catch(err => {
+      console.log(err);
+      loading.dismiss()
+    })
+    
+  }
+
+  private viewPhoto(index: number) {
+    this.showGallery(index)
+  }
+
+  private async deletePhoto(index: number) {
+
+    
+    const delLoading = await this.loadingCtrl.create({message: "Deleting photo, please wait..."});
+    await delLoading.present();
+
+
+    const updateLoading = await this.loadingCtrl.create({message: "Updating your profile, please wait..."});
+
+    this.fbService.deletePhotoFromFirebaseStorage(this.user, this.user.images[index])
+    .then((res) => {
+      delLoading.dismiss();
+      console.log("Photo deleted successfully", res);
+       updateLoading.present();
+
+      this.fbService.updateUserPhotoList(this.user, this.user.images[index]).then(img => {
+        console.log("User profile updated");
+        updateLoading.dismiss();
+        
+      }).catch(err => {
+        console.log("User Profile not updated", err);
+        updateLoading.dismiss();
+        
+      })
+      
+    }).catch((error) => {
+      console.log(error);
+      delLoading.dismiss();
+
+    });
+
+  }
+
+  async openImageActionSheet(index) {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Photo settings",
+      buttons: [
+        {
+          text: 'Set As Profile Picture',
+          handler: () => {
+            this.setProfilePicture(index)
+          }
+        },
+        {
+          text: 'View Photo',
+          handler: () => {
+            this.viewPhoto(index)
+          }
+        },
+        {
+          text: 'Delete Photo',
+          handler: () => {
+            this.deletePhoto(index)
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
+  
  
   async selectImageActionSheet() {
     const actionSheet = await this.actionSheetController.create({

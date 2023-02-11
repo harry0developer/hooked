@@ -1,4 +1,5 @@
 ion-header {
+
     &.header-md:after {
       background: none;
     }
@@ -32,7 +33,8 @@ ion-header {
     max-width: 75%;
     padding: 0.5rem .875rem;
     position: relative;
-    word-wrap: break-word;
+    // word-wrap: break-word;
+    white-space: pre-wrap;
   }
   
   .imessage p::before,
@@ -49,15 +51,18 @@ ion-header {
     color: #fff; 
   }
 
+  .from-me-date, .from-them-date  {
+    font-size: 12px; 
+    height: 12px;
+    color: #ff3d7c
+  }
+
   .from-me-date {
     align-self: flex-end;
-    font-size: 12px; 
-    height: 12px;
   }
+
   .from-them-date {
-    align-self: flex-start;
-    font-size: 12px; 
-    height: 12px;
+    align-self: flex-start; 
   }
   
   p.from-me::before {
@@ -137,47 +142,13 @@ ion-header {
   .margin-t_one {
     margin-top: 1rem !important;
   }
-  
    
-  /* general styling */
-  @font-face {
-    font-family: "SanFrancisco";
-    src:
-      url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff2") format("woff2"),
-      url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff") format("woff");
+  
+  ion-textarea.message-input {
+    border: 1px solid #818181;
+    background-color: #fff;
+    border-radius: 300px;
+    padding: 0 10px;
+
   }
-  
-  body {  
-    font-family: -apple-system, 
-      BlinkMacSystemFont, 
-      "Segoe UI", 
-      Roboto, 
-      Oxygen-Sans, 
-      Ubuntu, 
-      Cantarell, 
-      "Helvetica Neue", 
-      sans-serif;
-    font-weight: normal;
-    margin: 0;
-  }
-  
-  .container {
-    margin: 0 auto;
-    max-width: 600px;
-    padding: 1rem;
-  }
-  
-  h1 {
-    font-weight: normal;
-    margin-bottom: 0.5rem;
-  }
-  
-  h2 {
-    border-bottom: 1px solid #e5e5ea;
-    color: #666;
-    font-weight: normal;
-    margin-top: 0;
-    padding-bottom: 1.5rem;
-  }
-  
-  
+ 

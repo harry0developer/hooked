@@ -77,7 +77,6 @@ export class ChatPage implements OnInit {
            
             msgs.forEach(m => {
               if(m && m.messages) {
-                console.log(m.messages);
                 this.messagesArray = m.messages;
               }
               
