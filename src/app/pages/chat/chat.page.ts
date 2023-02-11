@@ -18,7 +18,7 @@ export class ChatPage implements OnInit {
 
   @ViewChild(IonContent) content: IonContent;
   messagesArray: Message[] = [];
-  newMessage: Message;
+  messageObject: MessageObj;
   newMsg = "";
 
   chatsDocumentId: string = "";
@@ -32,31 +32,36 @@ export class ChatPage implements OnInit {
   
 
   sendMessage() {
-    const message:Message = {
+    const newMessage:Message = {
       msg: this.newMsg,
       from: this.auth.currentUser.uid,
       to: this.reciever.uid,
-      fromMe: true,
-      createdAt: new Date()
-    }
+      createdAt: this.chatService.getServerTimestamp()
+    } 
 
-
-
-    // this.messageObject = {
-    //   messages: [...this.messageObject.messages, message]
-    // }
-
-
-
+    console.log(newMessage);
+    
     
 
-    // this,this.chatService.addChatMessageWithId(this.messageObject, this.reciever.uid).then(() => {
-    //   this.newMsg = "",
-    //   this.content.scrollToBottom()
-    // });
+    const newMessages: MessageObj = {
+      messages: [
+        ...this.messagesArray,
+        newMessage
+      ]
+    } 
+    this.chatService.addChatMessage(this.chatsDocumentId, newMessages, this.reciever.uid).then(() => {
+      this.newMsg = "",
+      this.content.scrollToBottom();
 
-
+      console.log("Message added");
+      
+    });
     
+  }
+
+  getSentDate(msg) {
+    
+    return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
   }
 
   
@@ -69,11 +74,15 @@ export class ChatPage implements OnInit {
       this.chatService.documentExist$.subscribe(status => {
         this.chatsDocumentId = status;
         this.chatService.getOurMessages(status).then(msgs => {
-          msgs.forEach(m => {
-            console.log(m.messages);
-            this.messagesArray = m.messages;
-            
-          })
+           
+            msgs.forEach(m => {
+              if(m && m.messages) {
+                console.log(m.messages);
+                this.messagesArray = m.messages;
+              }
+              
+            })
+          
         })
       });
    }); //route obs

@@ -19,10 +19,12 @@ ion-header {
     display: flex;
     flex-direction: column;
     font-family: "SanFrancisco";
-    font-size: 14px;
-    margin: 0 auto 1rem;
+    font-size: 16px;
+    // margin: 0 auto 1rem;
     max-width: 600px;
     padding: 0.5rem 1.5rem;
+
+  
   }
   
   .imessage p {
@@ -41,20 +43,31 @@ ion-header {
     position: absolute;
   }
   
-  p.from-other {
+  p.from-me {
     align-self: flex-end;
     background-color: #248bf5;
     color: #fff; 
   }
+
+  .from-me-date {
+    align-self: flex-end;
+    font-size: 12px; 
+    height: 12px;
+  }
+  .from-them-date {
+    align-self: flex-start;
+    font-size: 12px; 
+    height: 12px;
+  }
   
-  p.from-other::before {
+  p.from-me::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
     border-right: 1rem solid #248bf5;
     right: -0.35rem;
     transform: translate(0, -0.1rem);
   }
   
-  p.from-other::after {
+  p.from-me::after {
     background-color: #fff;
     border-bottom-left-radius: 0.5rem;
     right: -40px;
@@ -67,32 +80,32 @@ ion-header {
     width: fit-content;
   }
   
-  p.from-other ~ p.from-other {
+  p.from-me ~ p.from-me {
     margin: 0.25rem 0 0;
   }
   
-  p.from-other ~ p.from-other:not(:last-child) {
+  p.from-me ~ p.from-me:not(:last-child) {
     margin: 0.25rem 0 0;
   }
   
-  p.from-other ~ p.from-other:last-child {
+  p.from-me ~ p.from-me:last-child {
     margin-bottom: 0.5rem;
   }
   
-  p.from-me {
+  p.from-them {
     align-items: flex-start;
     background-color: #e5e5ea;
     color: #000;
   }
   
-  p.from-me:before {
+  p.from-them:before {
     border-bottom-right-radius: 0.8rem 0.7rem;
     border-left: 1rem solid #e5e5ea;
     left: -0.35rem;
     transform: translate(0, -0.1rem);
   }
   
-  p.from-me::after {
+  p.from-them::after {
     background-color: #fff;
     border-bottom-right-radius: 0.5rem;
     left: 20px;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
-import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, addDoc, query, where, getDocs } from '@angular/fire/firestore';
+import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, addDoc, query, where, getDocs, serverTimestamp } from '@angular/fire/firestore';
 import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
 import { BehaviorSubject, combineLatest, from, map, Observable, Subject, switchMap, takeLast, takeUntil } from 'rxjs';
@@ -13,7 +13,7 @@ import * as firebase from 'firebase/app';
 import { FbService } from './fbService.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { orderBy } from 'firebase/firestore';
+import { orderBy, Timestamp } from 'firebase/firestore';
 
 export interface docStatus {
   uid: string;
@@ -84,17 +84,22 @@ export class ChatService {
     
     
   }
-  
- 
 
-  // addChatMessage(msg, recieverUid: string) {
-  //   return this.afs.collection<Message>(COLLECTION.chats).add({
-  //     msg,
-  //     from: this.auth.currentUser.uid,
-  //     to: recieverUid,
-  //     createdAt: new Date()
-  //   })
-  // }
+  getServerTimestamp() {
+    return Timestamp.now().toMillis()
+  }
+  
+
+  async addChatMessage(docId: string, msg: MessageObj, reciever_uid: string) {
+    if(!docId) {
+      docId = `${this.auth.currentUser.uid}__${reciever_uid}`
+    }
+
+
+    // console.log("Doc id", docId, " msg: ", msg, " rec id: ", reciever_uid);
+    
+    return await this.afs.collection<MessageObj>(COLLECTION.chats).doc(docId).set(msg, {merge: true});
+  }
 
   getUsers() {
     return this.afs.collection(COLLECTION.users).valueChanges({idField: 'uid'}) as Observable<User[]>

@@ -26,7 +26,6 @@ export interface User {
     createdAt: any,
     from: string;
     to: string;
-    fromMe: boolean;
  }
 
  export interface MessageObj {

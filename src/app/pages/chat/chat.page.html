@@ -11,12 +11,16 @@
 
   <div class="messages-container" *ngIf="messagesArray && messagesArray.length > 0" >
     <div class="imessage" *ngFor="let m of messagesArray">
-        <p class="from-me" *ngIf="fromMe(m)">
-          {{m.msg}}
-        </p>
-        <p class="from-other" *ngIf="!fromMe(m)">
-          {{m.msg}}
-        </p>
+      
+      <div class="from-me-date" *ngIf="fromMe(m)">{{getSentDate(m)}}</div>
+      <p class="from-me" *ngIf="fromMe(m)">
+        {{m.msg}}
+      </p>
+
+      <div class="from-them-date" *ngIf="!fromMe(m)">{{getSentDate(m)}}</div>
+      <p class="from-them" *ngIf="!fromMe(m)">
+        {{m.msg}}
+      </p>
     </div>
   </div>
 
