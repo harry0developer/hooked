@@ -188,16 +188,17 @@ export class ProfilePage implements OnInit{
     const actionSheet = await this.actionSheetController.create({
       header: "Photo settings",
       buttons: [
-        {
-          text: 'Set As Profile Picture',
-          handler: () => {
-            this.setProfilePicture(index)
-          }
-        },
+        
         {
           text: 'View Photo',
           handler: () => {
             this.viewPhoto(index)
+          }
+        },
+        {
+          text: 'Set As Profile Picture',
+          handler: () => {
+            this.setProfilePicture(index)
           }
         },
         {

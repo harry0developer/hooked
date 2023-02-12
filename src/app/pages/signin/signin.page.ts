@@ -34,7 +34,8 @@ export class SigninPage implements OnInit {
     private alertCtrl: AlertController,
   ) { }
 
-  ngOnInit() {
+  ngOnInit() { 
+ 
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -57,7 +58,7 @@ export class SigninPage implements OnInit {
   }
 
   async login() {
-    const loading = await this.loadingCtrl.create();
+    const loading = await this.loadingCtrl.create( {message:"Signing in, please wait..."});
     await loading.present();
 
     const status = await this.fbService.login(this.email, this.password);
@@ -80,8 +81,6 @@ export class SigninPage implements OnInit {
         this.showAlert("Login failed",  FIREBASE_ERROR.SINGIN_GENERIC);
 
       }
-      
-      // this.showAlert("Login failed", "Please try again");
     }
   }
 

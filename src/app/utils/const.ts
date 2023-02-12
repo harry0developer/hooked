@@ -47,8 +47,6 @@ export const ROUTES = {
 
 export const STORAGE = {
     USER: 'user',
-    FIREBASE_USER: "firebase-user",
-    INCOMPLETE_PROFILE: "incomplete-profile",
     SEEN_INTRO: 'seen-intro'
     
 }

@@ -1,9 +1,9 @@
 import {  Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ROUTER_CONFIGURATION } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { FbService } from '../services/fbService.service';
-import { COLLECTION, FIREBASE_ERROR, STORAGE } from 'src/app/utils/const';
+import { COLLECTION, FIREBASE_ERROR, ROUTES, STORAGE } from 'src/app/utils/const';
 import { IonModal } from '@ionic/angular';
 import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
 import { Auth } from '@angular/fire/auth';
@@ -54,9 +54,8 @@ export class SignupPage implements OnInit {
 
  profilePicture: string;
 
- profileInComplete: boolean;
-
  user: User;
+
  currentUser: any;
 
  uploadedImages: any;
@@ -70,12 +69,7 @@ export class SignupPage implements OnInit {
     public actionSheetController: ActionSheetController,
     private loadingCtrl:LoadingController,
     private alertCtrl: AlertController,
-    private auth: Auth,
-    private storage: Storage,
-    private firestore: Firestore,
-
-
-
+    private auth: Auth, 
   ) { } 
 
   get email() {
@@ -87,21 +81,22 @@ export class SignupPage implements OnInit {
   }
 
   get dob() {
-    return this.validations_form.get('dob')?.value;
+    return this.signup_form.get('dob')?.value;
   }
 
   get gender() {
-    return this.validations_form.get('gender')?.value;
+    return this.signup_form.get('gender')?.value;
   }
   get orientation() {
-    return this.validations_form.get('orientation')?.value;
+    return this.signup_form.get('orientation')?.value;
   }
   get name() {
-    return this.validations_form.get('name')?.value;
+    return this.signup_form.get('name')?.value;
   }
  
 
   ngOnInit() {    
+ 
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -129,12 +124,8 @@ export class SignupPage implements OnInit {
       ]))
     });
 
-    this.profileInComplete = this.fbService.getStorage(STORAGE.INCOMPLETE_PROFILE);
   
-    if(this.profileInComplete) {
-      this.activeStep = 1;
-    }
-
+  
     //Listern to image upload
     // import { doc, onSnapshot } from "firebase/firestore";
 
@@ -154,8 +145,11 @@ export class SignupPage implements OnInit {
     });
     
     if(image) {
-
-      // const result = await this.avatarService.uploadImage(this.user, image);
+      
+      this.fbService.savePictureInFirebaseStorage(image).then(r => {
+        console.log("Uploaded",r);
+      })
+      // const result = await this.chat.uploadImage(this.user, image);
 
       // this.user.images.push(`data:image/${image.format};base64,${image.base64String}`);
     }
@@ -191,23 +185,22 @@ export class SignupPage implements OnInit {
     }
   }
 
-  next() {
-    ++this.activeStep;
-    console.log(this.validations_form.value);
-  }
+	next() {
+		++this.activeStep;
+	}
 
-  async addUserToFirebaseDataStore() {
-    let user: User;
-    const currentUser = this.auth.currentUser;
-    user  = { 
-      uid: currentUser.uid,
-      email: currentUser.email,
+	async createAccount() { 
+
+		this.user  = { 
+      uid: "",
+      email: this.email,
       name: this.name,
       gender: this.gender,
       dob: this.dob,
       orientation: this.orientation,
-      profile_picture: this.profilePicture,
+      profile_picture: "",
       images: [],
+	  	password: this.password,
       isVerified: false,
       location: {
         address: "",
@@ -217,64 +210,53 @@ export class SignupPage implements OnInit {
         }
       }
     }; 
-     
-    const loading = await this.loadingCtrl.create();
-    await loading.present();
 
-    this.fbService.addDocumentToFirebase(COLLECTION.users, user).then(res => {
-      console.log(res);
-      
-    }).catch(err => {
-      console.log(err);
-    })
-    // this.fbService.addItem(COLLECTION.users, user, user.uid).then(() => {
-    //   console.log('User added successfully');
-    //   loading.dismiss();
 
-    //   this.modal.dismiss().then(() => {
-    //     this.router.navigateByUrl('/tabs/users', {replaceUrl: true})
-    //     this.profileInComplete = false;
-    //     this.fbService.setStorage(STORAGE.INCOMPLETE_PROFILE, this.profileInComplete);
-    //   });
-    // }).catch(err => {
-    //   console.log(err);
-    // });
-    
-  }
- 
-  async registerOnFirebase() {
-    const loading = await this.loadingCtrl.create();
+		//create auth, for uid
+
+    const loading = await this.loadingCtrl.create({message: "Creating account, please wait..."});
     await loading.present();
     const user = await this.fbService.register(this.email, this.password);
-    await loading.dismiss();
+		if(!!user && user.user.uid) {
+			this.user.uid = user.user.uid;
+			this.fbService.addDocumentToFirebase(COLLECTION.users, this.user).then(res => {
+				loading.dismiss();
+				 this.modal.dismiss().then(() => this.router.navigateByUrl(ROUTES.USERS, {replaceUrl:true}));
+			}).catch(err => {
+				console.log(err);
+				loading.dismiss();
+			})
+		} else {
+			loading.dismiss();
+			console.log("No user registered");
+			this.showAlert("Could not create account", "Verfy that your email address is correctly formated")
+		}
+		
+	} 
+ 
+  async stepOne() {
 
-    if(user) {
-      ++this.activeStep;
+    const loading = await this.loadingCtrl.create({message: "Checking email address..."});
+    await loading.present();
+    // const user = await this.fbService.register(this.email, this.password);
+    //check if email is registered
 
-      // this.router.navigateByUrl('/tabs/users', {replaceUrl: true})
-    } else {
-      this.showAlert("Registration failed", "Please try again");
-    }
-  }
+    this.fbService.getAllUsers().then(res => {
+      loading.dismiss();
 
-  XXXsignUpOnFirebase() {
-    this.fbService.register(this.validations_form.value.email, this.validations_form.value.password).then(u => {
-      this.fbService.setStorage(STORAGE.FIREBASE_USER, u);
-      ++this.activeStep;
+      res.forEach(users => {
+        const foundUser = users.filter(u => u.email == this.email)[0];
+        if(foundUser) {
+          this.showAlert("Email address already in use", "Please sign in, reset your password or create an account with a different email address" )
+        } else {
+					this.next();
+        }
+      })
     }).catch(err => {
       console.log(err);
-      // if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED)) {        
-      //   this.errorMessage = FIREBASE_ERROR.EMAIL_ALREADY_REGISTERED;
-      // }
-      // else if(err && err.message && this.fbService.findInString(err.message, FIREBASE_ERROR.PASSWORD_TOO_SHORT)) {
-      //   this.errorMessage = FIREBASE_ERROR.PASSWORD_TOO_SHORT;
-      // }else {
-      //   this.errorMessage = FIREBASE_ERROR.GENERIC_SIGNINP
-      // }
-      
-    })
+    }) 
   }
-  
+ 
 
   goToSignInPage() {
     this.modal.dismiss().then(() => this.router.navigate(['/signin']));
@@ -282,10 +264,10 @@ export class SignupPage implements OnInit {
 
   async showAlert(header: string, message: string) {
     const alert = await this.alertCtrl.create({
-      header, message, buttons: ['Ok']
+      header, message, buttons: ['Dismiss']
     })
 
     await alert.present();
   }
-
+ 
 }

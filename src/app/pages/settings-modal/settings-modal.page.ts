@@ -38,7 +38,9 @@ export class SettingsModalPage implements OnInit {
 
 
   async logout() {
-    await this.fbService.logout();
-    this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
+    await this.fbService.signout().then(() => {
+      this.cancel();
+      this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
+    })
   }
 }

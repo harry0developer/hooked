@@ -5,9 +5,9 @@ import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, doc
 import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult, deleteObject } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
 import { from, map, Observable } from 'rxjs';
-import { COLLECTION, STATUS } from 'src/app/utils/const';
+import { COLLECTION, STATUS, STORAGE } from 'src/app/utils/const';
 import { Chat, User } from 'src/app/models/User';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 
 @Injectable({
@@ -19,7 +19,8 @@ export class FbService {
     public router: Router,
     private auth: Auth,
     private firestore: Firestore,
-    private storage: Storage
+    private storage: Storage,
+    private afs: AngularFirestore
   ) {}
 
   setStorage(key: string, data: any) {
@@ -52,7 +53,7 @@ export class FbService {
   } 
 
   //new
-  logout() {
+  signout() {
     return signOut(this.auth);
   }
  
@@ -102,8 +103,8 @@ export class FbService {
   // Save picture to file on device
   public async savePictureInFirebaseStorage(cameraPhoto: Photo) {
 
-    const currentUser = this.auth.currentUser;
-    const imagesRef = ref(this.storage, `images/${currentUser.uid}`);
+    const currentUserUid =  this.auth.currentUser.uid;
+    const imagesRef = ref(this.storage, `images/${currentUserUid}`);
     const fileName = new Date().getTime() + '.jpeg';
     const spaceRef = ref(imagesRef, fileName);
 
@@ -137,6 +138,11 @@ export class FbService {
     );
   }
 
+
+  async getAllUsers(){
+     
+    return this.afs.collection<User>(COLLECTION.users).valueChanges({idField: 'uid'}) as Observable<User[]>
+  }
 
 
   async getDocumentFromFirebase(collection: string, uid: string){

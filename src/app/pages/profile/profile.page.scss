@@ -48,32 +48,36 @@
         padding-top: 10px;
         .divider {
             background-color: $bg-light-grey;
-            padding: 19px 10px;
+            padding: 19px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+
         }
-            ion-button {
-                width: 60px;
-                height: 30px; 
-                font-size: 14px;
-            }
-            
-            ion-item {
-                box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-                margin: 10px;
-                font-size: 16px;
-                border-radius: 8px;
-                padding: 10px inherit;
-                ion-label {
-                    h3 {
-                        font-size: 20px;
-                        // font-weight: bold;
-                        margin: 0;
-                    }  
-                }
-                ion-icon {
-                    color: $primary-color;
-                }
-            }
+        ion-button {
+            width: 60px;
+            height: 30px; 
+            font-size: 14px;
+        }
         
+        ion-item {
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            padding: 10px inherit;
+            ion-label {
+                h3 {
+                    font-size: 20px;
+                    // font-weight: bold;
+                    margin: 0;
+                }  
+            }
+            ion-icon {
+                color: $primary-color;
+            }
+        }
+    
 
         .photo-grid {
             margin-bottom: 10vh;

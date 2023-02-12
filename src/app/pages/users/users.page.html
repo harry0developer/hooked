@@ -15,7 +15,7 @@
 
 
 <ion-content> 
-  <div class="user-card-container" *ngIf="(count$ | async) > 0; else emptyTemplate">
+  <div class="user-card-container" *ngIf="users && users.length > 0; else emptyTemplate">
     <ion-card class="user-card" *ngFor="let user of users; let i =index"  id="{{'card-' + user.uid}}">
       <img [src]="user.images[0]" />
       <div class="user-info">

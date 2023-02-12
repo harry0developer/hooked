@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
-import { AuthService } from './providers/auth.service';
 
 //https://github.com/ivylaboratory/angular-gallery
 import {IvyGalleryModule} from 'angular-gallery';
@@ -56,8 +55,6 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     provideStorage(() => getStorage())
   ],
   providers: [
-
-    AuthService,
     FbService,
 
     {
