@@ -1,32 +1,17 @@
-<ion-header [translucent]="true" class="ion-no-border">
+<ion-header [translucent]="true"class="ion-no-border">
   <ion-toolbar mode="md">
-    <ion-title text-center>
+    <ion-title class="title" text-center>
       Profile
     </ion-title>
-    <!-- <ion-buttons slot="end">
-      <ion-button id="modal">
-        <ion-icon name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div class="container">
+<ion-content [fullscreen]="true"> 
+  <div class="container" *ngIf="!isLoading; else emptyTemplate">
     <div class="top">
       <div class="user-avatar">
         <img *ngIf="user && !user.profile_picture" src="../../../assets/default/default.jpg" alt="">
-
         <img *ngIf="user && user.profile_picture" [src]="user.profile_picture" alt="">
-        <div class="placeholder">
-          <ion-icon name="person-outline"></ion-icon>
-        </div>
       </div>
       <div class="user-info">
         <h1>{{user?.name}}, {{getUserAge()}}</h1>
@@ -34,6 +19,44 @@
       </div>
     </div>
     <div class="bottom">
+      <ion-list lines="none">
+        <ion-item-divider class="divider">
+          <ion-label>Your details</ion-label>
+        </ion-item-divider>
+
+        <ion-item class="edit-info">
+          <ion-icon slot="start" class="gender" name="man-outline" *ngIf="user.gender == 'male' "></ion-icon>
+          <ion-icon slot="start" class="gender" name="woman-outline" *ngIf="user.gender == 'female' "></ion-icon>
+
+          <!-- <ion-button slot="end" fill="outline" shape="round">Edit</ion-button> -->
+          <ion-label>
+            <h3> {{user?.gender}}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item class="edit-info">
+          <ion-icon slot="start" name="calendar-clear-outline"></ion-icon>
+          <!-- <ion-button slot="end" fill="outline" shape="round">Edit</ion-button> -->
+          <ion-label>
+            <h3> {{user?.dob | date}}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item class="edit-info">
+          <ion-icon slot="start" name="transgender-outline"></ion-icon>
+          <!-- <ion-button slot="end" fill="outline" shape="round">Edit</ion-button> -->
+          <ion-label>
+            <h3> {{user?.orientation}}</h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-item-divider class="divider">
+        <ion-label>
+          Your Photos
+          <p>You can click on each photo to manage it</p>
+
+        </ion-label>
+      </ion-item-divider>
+
       <ion-grid class="photo-grid" >
         <ion-row *ngIf="user && user.images.length > 0">
           <ion-col class="user-image" size="4" *ngFor="let u of user.images; let i=index">
@@ -56,4 +79,13 @@
       </ion-grid>
     </div>
   </div>
+
+  <ng-template #emptyTemplate>
+    <div class="is-loading">
+      <img src="../../../assets/loading.gif" alt="">
+      <h1>Loading Profile...</h1>
+      <p>This should not take long. Hang on tight...</p>
+    </div>
+  </ng-template>
+ 
 </ion-content>

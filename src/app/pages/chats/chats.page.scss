@@ -1,6 +1,11 @@
 ion-content  {
     --ion-background-color: rgb(253, 253, 253);
 }
+
+.title {
+    font-weight: bold;
+    font-size: 28px;
+}
 ion-item {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     margin: 4px 10px;

@@ -41,6 +41,8 @@ export class ProfilePage implements OnInit{
 
   currentUser: any;
 
+  isLoading: boolean = true;
+
 
   files: ImageListingModel;
   private subs: Subscription[] = [];
@@ -57,11 +59,13 @@ export class ProfilePage implements OnInit{
 
 
   ngOnInit(): void {
+
     this.currentUser = this.auth.currentUser;
     
     this.fbService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
       this.user = user;
       console.log(user);
+      this.isLoading = false;
     })
    }
 
@@ -88,9 +92,7 @@ export class ProfilePage implements OnInit{
   } 
 
   showGallery(index: number) {
-
     let imgs = [];
-
     for(let img of this.user.images ) {
       imgs.push({path: img})
     }
@@ -102,10 +104,6 @@ export class ProfilePage implements OnInit{
     };
     this.gallery.load(prop);
   }
-
-
-  
-
 
 
   async uploadImage(source: CameraSource) {
@@ -124,14 +122,12 @@ export class ProfilePage implements OnInit{
       const img = await this.fbService.savePictureInFirebaseStorage(image);
       
       this.user.images.push(img)
-      await this.fbService.addDocumentToFirebase(COLLECTION.users,this.user);
-      await loading.dismiss();
+      await this.fbService.addDocumentToFirebase(COLLECTION.users,this.user).then(() => {
+        loading.dismiss();
+      }).catch(err => {
+        loading.dismiss();
+      })
 
-
-     
-      // const savedImageFile = await this.dataService.savePictureInFirebaseStorage(image);
-      // this.files.imagesUrls.unshift(savedImageFile);      
-      // this.user.images.push(`data:image/${image.format};base64,${image.base64String}`);
     }
   }
 
