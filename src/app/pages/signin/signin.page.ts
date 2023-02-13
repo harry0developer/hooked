@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { COLLECTION, FIREBASE_ERROR, ROUTES, STATUS, STORAGE } from 'src/app/utils/const';
-import { FbService } from '../services/fbService.service';
+import { FIREBASE_ERROR, ROUTES, STATUS } from 'src/app/utils/const';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/service/firebase.service';
 
 @Component({
   selector: 'app-signin',
@@ -27,7 +27,7 @@ export class SigninPage implements OnInit {
  };
 
   constructor(
-    private fbService: FbService,
+    private firebaseService: FirebaseService,
     private formBuilder: FormBuilder,
     private router: Router,
     private loadingCtrl: LoadingController,
@@ -61,7 +61,7 @@ export class SigninPage implements OnInit {
     const loading = await this.loadingCtrl.create( {message:"Signing in, please wait..."});
     await loading.present();
 
-    const status = await this.fbService.login(this.email, this.password);
+    const status = await this.firebaseService.login(this.email, this.password);
 
     await loading.dismiss();
 
@@ -69,13 +69,13 @@ export class SigninPage implements OnInit {
       this.router.navigateByUrl(ROUTES.USERS, {replaceUrl: true})
     } else {
 
-      if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNIN_INCORRECT_PASSWORD.key)){
+      if(this.firebaseService.findInString(status.message, FIREBASE_ERROR.SIGNIN_INCORRECT_PASSWORD.key)){
         this.showAlert("Login failed",  FIREBASE_ERROR.SIGNIN_INCORRECT_PASSWORD.value);
       }
-      else if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNIN_USER_NOT_FOUND.key)){
+      else if(this.firebaseService.findInString(status.message, FIREBASE_ERROR.SIGNIN_USER_NOT_FOUND.key)){
         this.showAlert("Login failed",  FIREBASE_ERROR.SIGNIN_USER_NOT_FOUND.value);
       } 
-      else if(this.fbService.findInString(status.message, FIREBASE_ERROR.SIGNI_BLOCKED.key)){
+      else if(this.firebaseService.findInString(status.message, FIREBASE_ERROR.SIGNI_BLOCKED.key)){
         this.showAlert("Login failed",  FIREBASE_ERROR.SIGNI_BLOCKED.value);
       } else {
         this.showAlert("Login failed",  FIREBASE_ERROR.SINGIN_GENERIC);

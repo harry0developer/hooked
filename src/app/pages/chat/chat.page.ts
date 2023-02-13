@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
-import { Observable, takeLast } from 'rxjs';
 import { Message, MessageObj, User } from 'src/app/models/User'; 
-import { ChatService } from '../services/chat.service';
+import { ChatService } from 'src/app/service/chat.service';
 var moment = require('moment');
 
 @Component({

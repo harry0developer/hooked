@@ -9,7 +9,7 @@
 <ion-content [fullscreen]="true">
 
   <div class="container">
-    <ion-list lines="none">
+    <ion-list lines="none" *ngIf="(users | async); else emptyTemplate">
       <ion-item *ngFor="let user of users | async; let i = index" (click)="openChats(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
@@ -22,4 +22,12 @@
       </ion-item>
     </ion-list>
   </div>
+
+  <ng-template #emptyTemplate>
+    <div class="is-loading">
+      <img src="../../../assets/loading.gif" alt="">
+      <h1>Loading Chats...</h1>
+      <p>This should not take long. Hang on tight...</p>
+    </div>
+  </ng-template>
 </ion-content> 

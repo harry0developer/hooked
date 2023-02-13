@@ -1,8 +1,5 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
-    </ion-buttons>
+  <ion-toolbar> 
     <ion-buttons slot="end">
       <ion-button (click)="confirm()">Confirm</ion-button>
     </ion-buttons>
@@ -11,6 +8,27 @@
 <ion-content>
   
   <div class="container">
+    <ion-list lines="none">
+      <ion-item-divider class="divider">
+        <ion-label>Profile</ion-label>
+      </ion-item-divider>
+
+      <ion-item detail="true" class="edit-info">
+        <ion-label>
+          <h3> Show me women/men</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item class="edit-info">
+        <ion-label>
+          <h3> Show my gender Yes/No</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item class="edit-info">
+        <ion-label>
+          <h3> Show my sexual orientation Yes/No</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
     <ion-list lines="none">
       <ion-item-divider class="divider">
         <ion-label>Preference</ion-label>

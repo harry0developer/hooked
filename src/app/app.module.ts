@@ -21,14 +21,19 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 // import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
-import { FbService } from './pages/services/fbService.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
- 
+import { FirebaseService } from './service/firebase.service';
+import { LocationService } from './service/location.service';
+import { ChatService } from './service/chat.service';
 
+import { Geolocation } from '@capacitor/geolocation';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -41,6 +46,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     HttpClientModule,
     IvyGalleryModule,
 
+ 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
@@ -55,8 +61,13 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     provideStorage(() => getStorage())
   ],
   providers: [
-    FbService,
 
+    SplashScreen,
+    StatusBar,
+    NativeGeocoder,
+    FirebaseService,
+    LocationService,
+    ChatService,
     {
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 

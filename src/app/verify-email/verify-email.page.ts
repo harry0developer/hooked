@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FbService } from '../pages/services/fbService.service';
+import { FirebaseService } from '../service/firebase.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -11,12 +11,12 @@ export class VerifyEmailPage implements OnInit {
 
   user: any;
   constructor(
-    private fbService: FbService,
+    private firebaseService: FirebaseService,
     private router: Router
     ) { }
 
   ngOnInit() {
-    this.user = this.fbService.userData;
+    this.user = this.firebaseService.userData;
   }
 
   goLoginPage(){

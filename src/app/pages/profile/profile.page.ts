@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/User';
 import { Gallery } from 'angular-gallery';
-import { FbService } from '../services/fbService.service';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SettingsModalPage } from '../settings-modal/settings-modal.page';
@@ -17,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
 import { COLLECTION } from 'src/app/utils/const';
+import { FirebaseService } from 'src/app/service/firebase.service';
 
 const IMAGE_DIR = "stored-images";
 interface LocalFile {
@@ -48,7 +47,7 @@ export class ProfilePage implements OnInit{
   private subs: Subscription[] = [];
   constructor(
     private gallery: Gallery, 
-    private fbService: FbService,
+    private firebaseService: FirebaseService,
     private modalCtrl: ModalController,
     private platform: Platform,
     private actionSheetController: ActionSheetController,
@@ -62,7 +61,7 @@ export class ProfilePage implements OnInit{
 
     this.currentUser = this.auth.currentUser;
     
-    this.fbService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
+    this.firebaseService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
       this.user = user;
       console.log(user);
       this.isLoading = false;
@@ -119,10 +118,10 @@ export class ProfilePage implements OnInit{
       const loading = await this.loadingCtrl.create({message: "Uploading image, please wait..."});
       await loading.present();
 
-      const img = await this.fbService.savePictureInFirebaseStorage(image);
+      const img = await this.firebaseService.savePictureInFirebaseStorage(image);
       
       this.user.images.push(img)
-      await this.fbService.addDocumentToFirebase(COLLECTION.users,this.user).then(() => {
+      await this.firebaseService.addDocumentToFirebase(COLLECTION.users,this.user).then(() => {
         loading.dismiss();
       }).catch(err => {
         loading.dismiss();
@@ -138,7 +137,7 @@ export class ProfilePage implements OnInit{
     const loading = await this.loadingCtrl.create({message: "Updating profile picture, please wait..."});
     await loading.present();
     this.user.profile_picture = this.user.images[index];
-    this.fbService.updateUserProfilePicture(this.user).then(() => {
+    this.firebaseService.updateUserProfilePicture(this.user).then(() => {
       loading.dismiss();
     }).catch(err => {
       console.log(err);
@@ -160,13 +159,13 @@ export class ProfilePage implements OnInit{
 
     const updateLoading = await this.loadingCtrl.create({message: "Updating your profile, please wait..."});
 
-    this.fbService.deletePhotoFromFirebaseStorage(this.user, this.user.images[index])
+    this.firebaseService.deletePhotoFromFirebaseStorage(this.user, this.user.images[index])
     .then((res) => {
       delLoading.dismiss();
       console.log("Photo deleted successfully", res);
        updateLoading.present();
 
-      this.fbService.updateUserPhotoList(this.user, this.user.images[index]).then(img => {
+      this.firebaseService.updateUserPhotoList(this.user, this.user.images[index]).then(img => {
         console.log("User profile updated");
         updateLoading.dismiss();
         

@@ -2,15 +2,12 @@ import {  Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router, ROUTER_CONFIGURATION } from '@angular/router';
 import { User } from 'src/app/models/User';
-import { FbService } from '../services/fbService.service';
-import { COLLECTION, FIREBASE_ERROR, ROUTES, STORAGE } from 'src/app/utils/const';
+import { COLLECTION, ROUTES } from 'src/app/utils/const';
 import { IonModal } from '@ionic/angular';
 import { ActionSheetController, AlertController, LoadingController } from '@ionic/angular';
 import { Auth } from '@angular/fire/auth';
-import { doc, docData, Firestore, onSnapshot } from '@angular/fire/firestore';
-import { ref, Storage } from '@angular/fire/storage';
 import { Camera,  CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { docChanges } from '@angular/fire/compat/firestore';
+import { FirebaseService } from 'src/app/service/firebase.service';
 var moment = require('moment'); // require
 
 
@@ -64,7 +61,7 @@ export class SignupPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private fbService: FbService,
+    private firebaseService: FirebaseService,
     private router: Router,
     public actionSheetController: ActionSheetController,
     private loadingCtrl:LoadingController,
@@ -133,7 +130,7 @@ export class SignupPage implements OnInit {
 
   
 
-    // this.uploadedImages = this.fbService.afs.collection(COLLECTION.images).valueChanges();
+    // this.uploadedImages = this.firebaseService.afs.collection(COLLECTION.images).valueChanges();
   }
 
   async uploadImage(source: CameraSource) {
@@ -146,7 +143,7 @@ export class SignupPage implements OnInit {
     
     if(image) {
       
-      this.fbService.savePictureInFirebaseStorage(image).then(r => {
+      this.firebaseService.savePictureInFirebaseStorage(image).then(r => {
         console.log("Uploaded",r);
       })
       // const result = await this.chat.uploadImage(this.user, image);
@@ -203,7 +200,7 @@ export class SignupPage implements OnInit {
 	  	password: this.password,
       isVerified: false,
       location: {
-        address: "",
+        distance: "",
         geo: {
           lat: 0,
           lng: 0
@@ -216,10 +213,10 @@ export class SignupPage implements OnInit {
 
     const loading = await this.loadingCtrl.create({message: "Creating account, please wait..."});
     await loading.present();
-    const user = await this.fbService.register(this.email, this.password);
+    const user = await this.firebaseService.register(this.email, this.password);
 		if(!!user && user.user.uid) {
 			this.user.uid = user.user.uid;
-			this.fbService.addDocumentToFirebase(COLLECTION.users, this.user).then(res => {
+			this.firebaseService.addDocumentToFirebase(COLLECTION.users, this.user).then(res => {
 				loading.dismiss();
 				 this.modal.dismiss().then(() => this.router.navigateByUrl(ROUTES.USERS, {replaceUrl:true}));
 			}).catch(err => {
@@ -238,10 +235,10 @@ export class SignupPage implements OnInit {
 
     const loading = await this.loadingCtrl.create({message: "Checking email address..."});
     await loading.present();
-    // const user = await this.fbService.register(this.email, this.password);
+    // const user = await this.firebaseService.register(this.email, this.password);
     //check if email is registered
 
-    this.fbService.getAllUsers().then(res => {
+    this.firebaseService.getAllUsers().then(res => {
       loading.dismiss();
 
       res.forEach(users => {

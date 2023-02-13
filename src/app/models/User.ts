@@ -13,14 +13,15 @@ export interface User {
     isVerified: boolean;
     dateCreated?: string;
     location: {
-        address: string;
-        geo: {
-            lat: number;
-            lng: number
-        }
+        distance: string;
+        geo: Geo
     }
  }
 
+ export interface Geo {
+   lat: number,
+   lng: number;
+ }
 
  export interface Message {
     msg: string,

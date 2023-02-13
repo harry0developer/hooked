@@ -2,6 +2,10 @@
   display: none;
 }
 
+
+ion-content {
+  // --ion-background-color:pink;
+}
 .logo {
   width: 100px;
   vertical-align: middle;
@@ -70,15 +74,24 @@
  
 }
 
-.no-swipes {
-  text-align: center;
-  height: 50vh;
-  margin-top: 25vh;
-  padding: 20px;
-  
-  h1 {
-    text-align: center;
-    font-weight: bold;
-    font-size: 20px;
+.horizontal-slider {
+  width: 100px;
+  height: 150px;
+  border: 2px solid #eceaeb;
+  margin: 0 3px;
+  border-radius: 8px;
+  img {
+    border-radius: 4px;
+  }
+  ion-label {
+    // font-size: 16px;
+    // font-weight: bold;
+    white-space: nowrap; 
+    width: 100px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    // border: 1px solid #000000;
+    
   }
 }
+

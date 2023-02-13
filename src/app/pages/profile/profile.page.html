@@ -3,6 +3,12 @@
     <ion-title class="title" text-center>
       Profile
     </ion-title>
+
+    <ion-buttons slot="secondary">
+      <ion-button (click)="openModal()">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +21,7 @@
       </div>
       <div class="user-info">
         <h1>{{user?.name}}, {{getUserAge()}}</h1>
-        <ion-button (click)="openModal()" shape="round">Edit Profile</ion-button>
+        <!-- <ion-button (click)="openModal()" shape="round">Edit Profile</ion-button> -->
       </div>
     </div>
     <div class="bottom">

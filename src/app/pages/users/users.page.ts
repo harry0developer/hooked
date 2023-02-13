@@ -8,16 +8,19 @@ import {
 } from "@angular/core";
 
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
-import { AlertController, IonCard, ModalController } from "@ionic/angular";
-import { Subscription } from 'rxjs';
+import { AlertController, IonCard, LoadingController, ModalController } from "@ionic/angular";
+import { map, Subscription } from 'rxjs';
 
-import { User } from '../../models/User';
+import { Geo, User } from '../../models/User';
 import { Observable } from "rxjs";
-import { FbService } from "../services/fbService.service";
 import { FilterPage } from "../filter/filter.page";
 import { Router } from "@angular/router";
 import { Auth } from "@angular/fire/auth";
-import { COLLECTION, ROUTES } from "src/app/utils/const";
+import { ROUTES } from "src/app/utils/const";
+import { MatchPage } from "../match/match.page";
+import { FirebaseService } from "src/app/service/firebase.service";
+import { LocationService } from "src/app/service/location.service";
+import { ChatService } from "src/app/service/chat.service";
 var moment = require('moment'); // require
 
 @Component({
@@ -30,27 +33,7 @@ var moment = require('moment'); // require
 
 export class UsersPage implements OnInit {
  
-  users: User[] = [
-    {
-      uid: "xxx",
-      name: "Lisa",
-      gender: "Female",
-      orientation: "Gay",
-      dob: "12/01/1991",
-      profile_picture: "",
-      email: "lisa@test.com",
-      images: [],
-      isVerified: false,
-      location: {
-        address: "",
-        geo: {
-          lat: 0, lng: 0
-        }
-
-      }
-
-    }
-  ]
+  users;
 
   @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
 
@@ -63,16 +46,69 @@ export class UsersPage implements OnInit {
 
   defaultImage = '../../../assets/default/default.jpg';
 
+
+
+  location: Geo;
+  addressError;
+
+  locationPermission;
   constructor(
     private gestureCtrlService: GestureCtrlService,
-    private fbService: FbService,
+    private firebaseService: FirebaseService,
     private router: Router,
     private modalCtrl: ModalController,
     private auth: Auth,
-    private alertCtrl: AlertController
+    private locationService: LocationService,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private chatService: ChatService
   ){}
     
-  ngOnInit() { }
+  ngOnInit() { 
+    this.locationService.checkLocationPermissions().then(perm => {
+      console.log(perm);
+      
+    }).catch(err => {
+      console.log(err);
+      
+    })
+  }
+
+  getUsersWithLocation(lat, lng) {
+    return this.chatService.getUsers().pipe(
+      map(res => this.locationService.applyHaversine(res, lat, lng))
+    );
+  }
+
+
+  async getLocation() {
+    const loading = await this.loadingCtrl.create({message: "Getting location..."});
+    await loading.present();
+    this.locationService.printCurrentPosition().then((res:any )=> {
+      console.log(res);
+
+     console.log(moment(res.timestamp).format());
+     
+      this.location = {
+        lat: res.coords.latitude,
+        lng: res.coords.latitude
+      };
+
+    this.users = this.getUsersWithLocation(this.location.lat, this.location.lng);
+
+      // this.users = this.locationService.applyHaversine(this.users, res.coords.latitude, res.coords.longitude);
+
+      loading.dismiss();
+      
+    }).catch(err => {
+      console.log(err);
+      loading.dismiss()
+      
+      this.addressError = err;
+
+    });
+
+  }
 
  
   filterUsers() {
@@ -93,12 +129,31 @@ export class UsersPage implements OnInit {
     }
   }
 
+  async openMatchModal() {
+    const modal = await this.modalCtrl.create({
+      component: MatchPage,
+    });
+    modal.present();
+
+    const { role } = await modal.onWillDismiss();
+
+    if (role === 'swipe') { // do nothing
+      console.log("Want to continue swipping"); 
+    }
+    else if (role === 'chat') {
+      console.log("Want to navigate to chat"); 
+      
+    }
+  }
+
+
+
   getUserAge(user: User) : string{
     return  moment().diff(user.dob, 'years');
   }
 
   async logout() {
-    await this.fbService.signout().then(() => {
+    await this.firebaseService.signout().then(() => {
       this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
     })
   }

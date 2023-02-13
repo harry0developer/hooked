@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/User';
+import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
-import { FbService } from '../services/fbService.service';
 
 @Component({
   selector: 'app-settings-modal',
@@ -19,8 +19,8 @@ export class SettingsModalPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
-    private fbService: FbService) {
-    this.user = this.fbService.getStorage(STORAGE.USER);
+    private firebaseService: FirebaseService) {
+    this.user = this.firebaseService.getStorage(STORAGE.USER);
 
 
   }
@@ -38,7 +38,7 @@ export class SettingsModalPage implements OnInit {
 
 
   async logout() {
-    await this.fbService.signout().then(() => {
+    await this.firebaseService.signout().then(() => {
       this.cancel();
       this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
     })

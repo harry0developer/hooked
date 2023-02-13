@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FirebaseService } from 'src/app/service/firebase.service';
 import { STORAGE } from 'src/app/utils/const';
-import { FbService } from '../services/fbService.service';
 
 @Component({
   selector: 'app-intro',
@@ -10,13 +10,13 @@ import { FbService } from '../services/fbService.service';
 })
 export class IntroPage implements OnInit {
 
-  constructor(private router: Router, private fbService: FbService) { }
+  constructor(private router: Router, private firebaseService: FirebaseService) { }
 
   ngOnInit() {
   }
 
   goToSignUp() {
-    this.fbService.setStorage(STORAGE.SEEN_INTRO, true);
+    this.firebaseService.setStorage(STORAGE.SEEN_INTRO, true);
     this.router.navigate(['/signin']);
   }
 

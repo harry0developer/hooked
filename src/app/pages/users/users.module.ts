@@ -7,15 +7,20 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { UsersPageRoutingModule } from './users-routing.module';
 import { FilterPageModule } from '../filter/filter.module';
-import { FilterPage } from '../filter/filter.page';
+import { MatchPageModule } from '../match/match.module';
+import { LocationPageModule } from '../location/location.module';
+import { CameraPageModule } from '../camera/camera.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    CameraPageModule,
     UsersPageRoutingModule,
     HttpClientModule,
+    LocationPageModule,
+    MatchPageModule,
     FilterPageModule,
     
   ],

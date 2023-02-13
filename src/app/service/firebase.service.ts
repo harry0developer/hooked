@@ -13,7 +13,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 @Injectable({
   providedIn: 'root',
 })
-export class FbService {
+export class FirebaseService {
   userData: any; 
   constructor( 
     public router: Router,
@@ -30,6 +30,8 @@ export class FbService {
   getStorage(key: string) {
     return JSON.parse(localStorage.getItem(key));
   }
+
+  
  
   //new
   async register(email: string, password: string)  {
@@ -140,8 +142,7 @@ export class FbService {
 
 
   async getAllUsers(){
-     
-    return this.afs.collection<User>(COLLECTION.users).valueChanges({idField: 'uid'}) as Observable<User[]>
+    return this.afs.collection<User>(COLLECTION.users).valueChanges({idField: 'uid'}) ;
   }
 
 
