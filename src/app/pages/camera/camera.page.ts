@@ -13,13 +13,13 @@ export class CameraPage implements OnInit {
   ngOnInit() {
   }
 
-  openChats() {}
 
-  continueSwipping() {
-    return this.modalCtrl.dismiss(null, 'swipe');
+  dismiss() {
+    return this.modalCtrl.dismiss(null, 'none');
   }
 
-  startChatting() {
-    return this.modalCtrl.dismiss(null, 'chat');
+  tryAgain() {
+    return this.modalCtrl.dismiss(null, 'retry');
   }
+
 }

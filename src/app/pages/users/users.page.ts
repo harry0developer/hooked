@@ -5,6 +5,7 @@ import {
   QueryList,
   ViewChildren, 
   ChangeDetectionStrategy,
+  ComponentRef,
 } from "@angular/core";
 
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
@@ -21,6 +22,8 @@ import { MatchPage } from "../match/match.page";
 import { FirebaseService } from "src/app/service/firebase.service";
 import { LocationService } from "src/app/service/location.service";
 import { ChatService } from "src/app/service/chat.service";
+import { LocationPage } from "../location/location.page";
+import { CameraPage } from "../camera/camera.page";
 var moment = require('moment'); // require
 
 @Component({
@@ -85,68 +88,53 @@ export class UsersPage implements OnInit {
     const loading = await this.loadingCtrl.create({message: "Getting location..."});
     await loading.present();
     this.locationService.printCurrentPosition().then((res:any )=> {
-      console.log(res);
-
-     console.log(moment(res.timestamp).format());
      
       this.location = {
         lat: res.coords.latitude,
         lng: res.coords.latitude
       };
-
-    this.users = this.getUsersWithLocation(this.location.lat, this.location.lng);
-
+    // this.users = this.getUsersWithLocation(this.location.lat, this.location.lng);
       // this.users = this.locationService.applyHaversine(this.users, res.coords.latitude, res.coords.longitude);
+      loading.dismiss();
+    }).catch(err => {
+      console.log(err); //permision denied
+      this.openModal('location');
 
       loading.dismiss();
-      
-    }).catch(err => {
-      console.log(err);
-      loading.dismiss()
-      
-      this.addressError = err;
-
     });
-
   }
 
  
   filterUsers() {
     console.log("Filtering..");
   }
+
+
+  async openModal(name: string) {
+
+    let genericModal;
+    if(name == 'filter') {
+      genericModal = await this.modalCtrl.create({
+        component: FilterPage,
+      });
+    }
+    else if(name == 'camera') {
+      genericModal = await this.modalCtrl.create({
+        component: CameraPage,
+      });
+    } else if(name == 'location') {
+      genericModal = await this.modalCtrl.create({
+        component: LocationPage,
+      });
+    }
   
-  async openFilterModal() {
-    const modal = await this.modalCtrl.create({
-      component: FilterPage,
-    });
-    modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-
+  
+    genericModal.present();
+    const { data, role } = await genericModal.onWillDismiss();
     if (role === 'confirm') {
       console.log("confirmed");
-      
     }
-  }
-
-  async openMatchModal() {
-    const modal = await this.modalCtrl.create({
-      component: MatchPage,
-    });
-    modal.present();
-
-    const { role } = await modal.onWillDismiss();
-
-    if (role === 'swipe') { // do nothing
-      console.log("Want to continue swipping"); 
-    }
-    else if (role === 'chat') {
-      console.log("Want to navigate to chat"); 
-      
-    }
-  }
-
-
+  } 
 
   getUserAge(user: User) : string{
     return  moment().diff(user.dob, 'years');
@@ -163,9 +151,9 @@ export class UsersPage implements OnInit {
     this.gestureCtrlService.useSwiperGesture(cardArray);
   }
 
-  async showAlert(header: string, message: string) {
+  async showAlert(header: string, message: string, btnText: string) {
     const alert = await this.alertCtrl.create({
-      header, message, buttons: ['Complete Profile'], 
+      header, message, buttons: [btnText], 
        backdropDismiss: false
     })
 
