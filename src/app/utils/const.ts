@@ -4,10 +4,15 @@ export const COLLECTION = {
     views: 'views',
     images: 'images',
     countries: 'countries',
-    appInfo: 'appInfo',
+    matched: 'matched',
     chats: 'chats'
 }
 
+export const SERVICE = {
+    CONNECTION: 'connection',
+    CAMERA: 'camera',
+    LOCATION: 'location'
+}
 export const AUTH_TYPE = {
     google: 'google',
     email: 'email',
@@ -47,6 +52,7 @@ export const ROUTES = {
 
 export const STORAGE = {
     USER: 'user',
-    SEEN_INTRO: 'seen-intro'
+    SEEN_INTRO: 'seen-intro',
+    LOCATION: 'location'
     
 }

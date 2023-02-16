@@ -1,0 +1,39 @@
+<ion-header> </ion-header>
+
+<ion-content>
+
+
+  <div class="modal-container">
+
+    <ion-list lines="none"> 
+      <ion-item class="edit-info">
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" [src]="user.profile_picture" />
+        </ion-avatar>
+        <ion-label>
+          <h3> {{ user.name }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item class="edit-info">
+        <ion-label>
+          <h3> I am a {{user.gender}}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item class="edit-info">
+        <ion-label>
+          <h3> I am need {{ user.compensation }}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-grid class="photo-grid" >
+      <ion-row *ngIf="user && user.images.length > 0">
+        <ion-col class="user-image" size="6" *ngFor="let u of user.images; let i=index">
+          <img [src]="u" alt="" (click)="showGallery(i)">
+        </ion-col>  
+      </ion-row>
+    </ion-grid>
+
+  </div>
+
+</ion-content>

@@ -15,17 +15,14 @@ export class LocationService {
   KM: number = 1.60934;
 
   constructor() { }
-
   
   async printCurrentPosition() {
-    
     const options = {
       timeout: 6000, 
       enableHighAccuracy: true, 
       maximumAge: 3600
     };
     return await Geolocation.getCurrentPosition(options); 
-
   };
 
 
@@ -34,6 +31,7 @@ export class LocationService {
   }
 
   applyHaversine(users: User[], lat: number, lng:number): Observable<User[]>{
+    
     if (users && lat && lng) {
       let usersLocation = {
         lat: lat,
@@ -82,7 +80,5 @@ export class LocationService {
 
   toRad(x) {
     return x * Math.PI / 180;
-  }
-
-  
+  }  
 }

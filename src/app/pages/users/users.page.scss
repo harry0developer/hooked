@@ -1,11 +1,9 @@
+@import '../../utils/global.scss';
+
 ::-webkit-scrollbar {
   display: none;
 }
 
-
-ion-content {
-  // --ion-background-color:pink;
-}
 .logo {
   width: 100px;
   vertical-align: middle;
@@ -74,24 +72,50 @@ ion-content {
  
 }
 
-.horizontal-slider {
-  width: 100px;
-  height: 150px;
-  border: 2px solid #eceaeb;
-  margin: 0 3px;
-  border-radius: 8px;
-  img {
-    border-radius: 4px;
-  }
-  ion-label {
-    // font-size: 16px;
-    // font-weight: bold;
-    white-space: nowrap; 
-    width: 100px; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    // border: 1px solid #000000;
-    
+.no-swipes {
+  text-align: center;
+  height: 50vh;
+  margin-top: 25vh;
+  padding: 20px;
+  
+  h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
   }
 }
 
+.show-more {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  font-size: 45px;
+}
+
+.modal-container {
+  margin-bottom: 40px;
+  .divider {
+      background-color: $bg-light-grey;
+      padding: 19px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+  }
+
+  ion-item {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      padding: 10px inherit;
+      ion-label {
+          h3 {
+              font-size: 20px;
+              margin: 0;
+          }  
+      }
+      ion-icon {
+          color: $primary-color;
+      }
+  }
+}

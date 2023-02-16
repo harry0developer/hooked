@@ -15,7 +15,7 @@ export class ChatsPage implements OnInit {
 
   defaultImage = '../../../assets/default/default.jpg';
 
-  users: any;
+  matchedUser: any;
   currentUser: any;
   isLoading: boolean = true;
   constructor(
@@ -27,9 +27,7 @@ export class ChatsPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.users = this.chatService.getUsers(); 
-
-    
+    this.matchedUser = this.chatService.getMatchedUsers(); 
   } 
 
   openChats(user) {
@@ -41,5 +39,7 @@ export class ChatsPage implements OnInit {
   gotToUsers() {
     this.router.navigateByUrl('tabs/users', {replaceUrl: true});
   }
+
+
 
 }

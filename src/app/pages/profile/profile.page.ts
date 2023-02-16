@@ -16,14 +16,7 @@ import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
 import { COLLECTION } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
-
-const IMAGE_DIR = "stored-images";
-interface LocalFile {
-  name: string;
-  path: string;
-  data: string;
-}
-
+ 
 @Component({
   selector: 'app-profile',
   templateUrl: 'profile.page.html',
@@ -58,9 +51,7 @@ export class ProfilePage implements OnInit{
 
 
   ngOnInit(): void {
-
     this.currentUser = this.auth.currentUser;
-    
     this.firebaseService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
       this.user = user;
       console.log(user);
@@ -73,12 +64,9 @@ export class ProfilePage implements OnInit{
       component: SettingsModalPage,
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
-
     if (role === 'confirm') {
       console.log("confirmed");
-      
     }
   }
 
@@ -130,10 +118,8 @@ export class ProfilePage implements OnInit{
     }
   }
 
-
   
   private async setProfilePicture(index: number) {
-        
     const loading = await this.loadingCtrl.create({message: "Updating profile picture, please wait..."});
     await loading.present();
     this.user.profile_picture = this.user.images[index];
@@ -151,8 +137,6 @@ export class ProfilePage implements OnInit{
   }
 
   private async deletePhoto(index: number) {
-
-    
     const delLoading = await this.loadingCtrl.create({message: "Deleting photo, please wait..."});
     await delLoading.present();
 
@@ -187,7 +171,6 @@ export class ProfilePage implements OnInit{
     const actionSheet = await this.actionSheetController.create({
       header: "Photo settings",
       buttons: [
-        
         {
           text: 'View Photo',
           handler: () => {

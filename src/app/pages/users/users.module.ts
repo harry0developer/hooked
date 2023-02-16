@@ -10,12 +10,14 @@ import { FilterPageModule } from '../filter/filter.module';
 import { MatchPageModule } from '../match/match.module';
 import { LocationPageModule } from '../location/location.module';
 import { CameraPageModule } from '../camera/camera.module';
+import { UserModalPageModule } from '../user-modal/user-modal.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    UserModalPageModule,
     UsersPageRoutingModule,
     HttpClientModule,
     CameraPageModule,

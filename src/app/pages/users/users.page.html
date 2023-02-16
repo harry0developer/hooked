@@ -3,39 +3,79 @@
     <ion-title text-center>
      <img class="logo" src="../../../assets/logo_secondary.png" alt=""> 
     </ion-title>
-
     <ion-buttons slot="secondary">
       <ion-button (click)="openModal('camera')">
         <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding"> 
-  <div class="location">
 
-    <ion-button (click)="getLocation()">Address</ion-button>
-    <pre>Location results: {{ location | json}}</pre>
+<ion-content> 
+
+  <div  id="parent" class="user-card-container" *ngIf="usersLoaded$ | async; else loadingTemplate">
+    <ion-card class="user-card" *ngFor="let user of allUsers; let i =index"  id="{{'card-' + user.uid}}">
+      <img [src]="user.profile_picture" />
+      <div class="user-info">
+        <h1>{{user.name}}, {{ user.age}}</h1>
+        <p>
+          <ion-icon name="home-outline"></ion-icon>
+        <p>
+          <ion-icon name="location-outline"></ion-icon>
+          12km away</p>
+      </div>
+
+
+      <div class="show-more">
+        <ion-icon color="primary" (click)="showUserModal()" name="arrow-up-circle-outline"></ion-icon>
+      </div>
+    </ion-card>
   </div>
 
 
-  <div class="container">
-    <ion-list lines="none" *ngIf="users">
-      <ion-item *ngFor="let user of users | async ; let i = index" >
-        <ion-avatar slot="start" >
-          <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
-        </ion-avatar>  
-        <p slot="end">{{user.location?.distance}}</p>
-        <ion-label>
-          {{user?.name}}
-          <p>last message</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+  <ng-template #loadingTemplate>
+    <div class="is-loading">
+      <img src="../../../assets/loading.gif" alt="">
+      <h1>Loading Profile...</h1>
+      <p>This should not take long. Hang on tight...</p>
+    </div>
+  </ng-template>
+ 
 
-
+  <!-- show more modal -->
+  <!-- <ion-modal
+    trigger="open-showmore-modal"
+    [initialBreakpoint]=".8"
+    [breakpoints]="[0, .8]"
+    handleBehavior="cycle"
+  >
+    <ng-template>
+      <ion-content >
+        <div class="modal-container">
+          <ion-list lines="none"> 
+      
+            <ion-item class="edit-info">
+              <ion-avatar slot="start">
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <ion-label>{{activeUser.name}}</ion-label>
+            </ion-item>
+            <ion-item class="edit-info">
+              <ion-label>
+                <h3> Show my gender Yes/No</h3>
+              </ion-label>
+            </ion-item>
+            <ion-item class="edit-info">
+              <ion-label>
+                <h3> Show my sexual orientation Yes/No</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal> -->
 </ion-content>
-
+ 

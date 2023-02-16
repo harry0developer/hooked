@@ -13,8 +13,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     IonicModule,
     CommonModule,
     FormsModule,
-    SettingsModalPageModule,
     ProfilePageRoutingModule,
+    SettingsModalPageModule,
     AngularFireStorageModule,
     
      

@@ -87,6 +87,10 @@ export class ChatService {
   }
  
 
+  getMatchedUsers() {
+    return this.afs.collection(COLLECTION.matched).valueChanges({idField: 'uid'}) as Observable<User[]>
+  }
+
   async getOurMessages(docId) {
     return await this.afs.collection<MessageObj>(COLLECTION.chats).doc(docId).valueChanges();
   }

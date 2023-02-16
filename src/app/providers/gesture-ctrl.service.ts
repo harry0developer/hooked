@@ -1,6 +1,10 @@
 import { Injectable, NgZone } from "@angular/core";
 import { GestureController, Platform } from "@ionic/angular";
-// import { DataService } from "./data.service";
+import { map, Observable } from "rxjs";
+import { User } from "../models/User";
+import { ChatService } from "../service/chat.service";
+import { LocationService } from "../service/location.service";
+import { DataService } from "./data.service";
 
 @Injectable({
   providedIn: "root",
@@ -11,14 +15,27 @@ export class GestureCtrlService {
     private gestureCtrl: GestureController,
     private zone: NgZone,
     private platform: Platform,
-    // private dataProvider: DataService
+    private chatService: ChatService,
+    private locationService: LocationService
   ) {}
 
+  getUsersWithLocation(lat, lng): Observable<User[]> {
+    return this.chatService.getUsers().pipe(
+      map(res => {
+        this.locationService.applyHaversine(res, lat, lng);
+        console.log(res);
+        return res;
+      })
+    );
+  }
+
   useSwiperGesture(cardArray: string | any[]) {
+
+
     for (let i = 0; i < cardArray.length; i++) {
       const card = cardArray[i];
 
-      // console.log(card);
+      console.log(card);
       
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,
@@ -43,7 +60,7 @@ export class GestureCtrlService {
             }px) rotate(${ev.deltaX / 2}deg)`;
 
             // this.dataProvider.setItem(const.LIKED, )
-            // this.dataProvider.addLikedUser(card.nativeElement.uid);
+            // this.dataProvider.addLikedUser(card.nativeElement.id);
             
           }
           // Left Side Move

@@ -5,6 +5,8 @@ export interface User {
     email: string;
     password?: string;
     gender: string;
+    want: string[],
+    with: string[];
     dob: string;
     phone?: string;
     orientation: string;
@@ -12,6 +14,7 @@ export interface User {
     profile_picture: string;
     isVerified: boolean;
     dateCreated?: string;
+    compensation?: string;
     location: {
         distance: string;
         geo: Geo

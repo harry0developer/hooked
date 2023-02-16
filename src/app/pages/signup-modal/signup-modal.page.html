@@ -1,0 +1,229 @@
+
+<ion-header> </ion-header>
+
+<ion-content class="modal-container ion-padding"> 
+  <div class="counter" >Step {{activeStep + 1}}/6</div>
+
+  <!-- Step one  -->
+  <div class="container" *ngIf="activeStep == 0">
+    <div class="title">
+      <h1>Sign up</h1>
+      <p>Use your personal email and create a password</p>
+    </div>
+    <form class="modal-form" [formGroup]="validations_form">
+      <ion-item mode="ios" lines="none">
+        <ion-label position="stacked" color="primary">Email</ion-label>
+        <ion-input type="text" formControlName="email"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.email">
+          <div class="error-message"
+            *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item mode="ios" lines="none">
+        <ion-label position="stacked" color="primary">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.password">
+          <div class="error-message" 
+            *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <div class="validation-errors">
+        <label class="error-message">{{errorMessage}}</label>
+      </div>
+      <div class="btn-group">
+        <ion-button fill="outline" shape="round" (click)="goToSignInPage()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Sign in
+        </ion-button>
+
+        <ion-button shape="round" [disabled]="!validations_form.valid" (click)="stepOne()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
+    </form>
+  </div>
+
+
+  <!-- Step 2 -->
+  <div class="container" *ngIf="activeStep == 1">
+    <div class="title">
+      <h1>What's your name?</h1>
+      <p>This is what others will see.</p>
+    </div>
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-item  mode="ios" lines="none">
+        <ion-input placeholder="Enter your name" type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.name">
+          <div class="error-message"
+            *ngIf="signup_form.get('name').hasError(validation.type) && (signup_form.get('name').dirty || signup_form.get('name').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <div class="btn-group" >
+          
+        <ion-button shape="round" fill="outline" (click)="back()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Back
+        </ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('name').valid" (click)="next()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Step 3 -->
+  <div class="container" *ngIf="activeStep == 2">
+    <div class="title">
+      <h1>What's your date of birth</h1>
+      <p>Others will only see your age.</p>
+    </div> 
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-datetime
+        preferWheel = "true"
+        value="2006-01-01T00:00:00"
+        max="2006-01-01T00:00:00"
+        presentation="date" 
+        formControlName="dob"
+        size="cover"
+        placeholder="Select date of birth"></ion-datetime>
+      <div class="btn-group">
+        <ion-button shape="round" fill="outline" (click)="back()">Back</ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('dob').valid" (click)="next()">Next</ion-button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="container" *ngIf="activeStep == 3">
+    <div class="title">
+      <h1>What's your gender?</h1>
+      <p>This help us find the right match for you</p>
+    </div>
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-item class="item-choose"> 
+        <ion-select 
+          formControlName="gender"
+          interface="action-sheet" 
+          placeholder="Select gender">
+            <ion-select-option value="male">Male</ion-select-option>
+            <ion-select-option value="female">Female</ion-select-option>
+            <ion-select-option value="nonbinary">Nonbinary</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="btn-group" >
+        <ion-button shape="round" fill="outline" (click)="back()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Back
+        </ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('gender').valid" (click)="next()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Step 5 -->
+  <div class="container" *ngIf="activeStep == 4">
+    <div class="title">
+      <h1>What's your sexual orientation?</h1>
+      <p>This helps us find the right match for you</p>
+    </div>
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-item class="item-choose"> 
+        <ion-select
+          formControlName="orientation"
+          interface="action-sheet"
+          placeholder="Select sexual orientation">
+            <ion-select-option value="straight">Straight</ion-select-option>
+            <ion-select-option value="lgbt">Lesbian, Gay, Bi, Transgender (LGBT)</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="btn-group" >
+        <ion-button shape="round" fill="outline" (click)="back()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Back
+        </ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('orientation').valid" (click)="next()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+
+
+  <!-- Step 6 -->
+  <div class="container" *ngIf="activeStep == 5">
+    <div class="title">
+      <h1>What are you looking for?</h1>
+      <p>These preferences can be changed, once logged in, in the profile page</p>
+    </div>
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-item class="item-choose"> 
+        <ion-select
+          formControlName="want"
+          interface="action-sheet"
+          placeholder="I am looking for"
+          [multiple]="true">
+            <ion-select-option value="NSA">No Strings Attached (NSA)</ion-select-option>
+            <ion-select-option value="LTR">Long Term Relationship (LTR)</ion-select-option>
+            <ion-select-option value="ONS">One Night Stand (ONS)</ion-select-option> 
+        </ion-select>
+      </ion-item>
+
+      <div class="title">
+        <h1>With</h1>
+      </div>
+
+      <ion-item class="item-choose"> 
+        <ion-select
+          formControlName="with"
+          interface="action-sheet"
+          placeholder="With who"
+          [multiple]="true">
+            <ion-select-option value="male">Male</ion-select-option>
+            <ion-select-option value="female">Female</ion-select-option>
+            <ion-select-option value="transgender">Transgender</ion-select-option> 
+        </ion-select>
+      </ion-item>
+      <div class="btn-group" >
+        <ion-button shape="round" fill="outline" (click)="back()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Back
+        </ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('with').valid" (click)="createAccount()">
+          Complete
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div> 
+    </form>
+  </div>
+
+ 
+
+</ion-content>

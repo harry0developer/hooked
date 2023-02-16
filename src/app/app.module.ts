@@ -35,6 +35,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { InternetPageModule } from './pages/internet/internet.module';
+import { LocationPageModule } from './pages/location/location.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -54,6 +55,7 @@ import { InternetPageModule } from './pages/internet/internet.module';
     AngularFireStorageModule,
 
     InternetPageModule,
+    LocationPageModule,
 
 
    //this was working but cannot get list of documents in a collection 

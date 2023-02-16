@@ -6,24 +6,26 @@ import {
   ViewChildren, 
   ChangeDetectionStrategy,
   ComponentRef,
+  ChangeDetectorRef,
 } from "@angular/core";
 
 import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
 import { AlertController, IonCard, LoadingController, ModalController } from "@ionic/angular";
-import { map, Subscription } from 'rxjs';
+import { BehaviorSubject, map, Subject, Subscription } from 'rxjs';
 
 import { Geo, User } from '../../models/User';
 import { Observable } from "rxjs";
 import { FilterPage } from "../filter/filter.page";
 import { Router } from "@angular/router";
 import { Auth } from "@angular/fire/auth";
-import { ROUTES } from "src/app/utils/const";
+import { ROUTES, SERVICE, STORAGE } from "src/app/utils/const";
 import { MatchPage } from "../match/match.page";
 import { FirebaseService } from "src/app/service/firebase.service";
 import { LocationService } from "src/app/service/location.service";
 import { ChatService } from "src/app/service/chat.service";
 import { LocationPage } from "../location/location.page";
 import { CameraPage } from "../camera/camera.page";
+import { UserModalPage } from "../user-modal/user-modal.page";
 var moment = require('moment'); // require
 
 @Component({
@@ -36,74 +38,60 @@ var moment = require('moment'); // require
 
 export class UsersPage implements OnInit {
  
-  users;
+  users$;
+  currentUser;
+  defaultImage = '../../../assets/default/default.jpg';
+  location: Geo;
+  allUsers = [];
+  usersLoaded$ = new BehaviorSubject(false);
+  activeUser: User;
 
   @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
 
-  likeUsers: User[] = [];
-  disLikeUsers: User[] = [];
-  liked$!: Subscription;
-  disLiked$!: Subscription;
-
-  count$!: Observable<Number>;
-
-  defaultImage = '../../../assets/default/default.jpg';
-
-
-
-  location: Geo;
-  addressError;
-
-  locationPermission;
   constructor(
     private gestureCtrlService: GestureCtrlService,
     private firebaseService: FirebaseService,
     private router: Router,
     private modalCtrl: ModalController,
-    private auth: Auth,
-    private locationService: LocationService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private chatService: ChatService
-  ){}
+    private chatService: ChatService,
+  ){  }
     
   ngOnInit() { 
-    this.locationService.checkLocationPermissions().then(perm => {
-      console.log(perm);
-      
+
+    //1. Get all user
+    // this.chatService.getUsers().forEach(r => {
+    //   this.allUsers = r
+    //   this.usersLoaded$.next(true)
+    // });
+
+    //2. Get current logged in user
+    this.firebaseService.getCurrentUser().then((user: User) => {
+      this.currentUser = user;
+      if(!user.profile_picture) {
+        this.showAlert("Inclomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
+      }
     }).catch(err => {
       console.log(err);
-      
+    });
+
+    //3. Get location from storage
+    const location = this.firebaseService.getStorage(STORAGE.LOCATION);
+    if(!location || !location.lat || !location.lng) {
+      this.openModal(SERVICE.LOCATION);
+    } 
+  }
+
+
+  ngAfterViewInit() {
+    //Add swipe gester after users have loaded
+    this.cards.changes.subscribe(r => {
+      const cardArray = this.cards.toArray();
+      this.gestureCtrlService.useSwiperGesture(cardArray);
+      console.log(this.allUsers);
     })
   }
-
-  getUsersWithLocation(lat, lng) {
-    return this.chatService.getUsers().pipe(
-      map(res => this.locationService.applyHaversine(res, lat, lng))
-    );
-  }
-
-
-  async getLocation() {
-    const loading = await this.loadingCtrl.create({message: "Getting location..."});
-    await loading.present();
-    this.locationService.printCurrentPosition().then((res:any )=> {
-     
-      this.location = {
-        lat: res.coords.latitude,
-        lng: res.coords.latitude
-      };
-    // this.users = this.getUsersWithLocation(this.location.lat, this.location.lng);
-      // this.users = this.locationService.applyHaversine(this.users, res.coords.latitude, res.coords.longitude);
-      loading.dismiss();
-    }).catch(err => {
-      console.log(err); //permision denied
-      this.openModal('location');
-
-      loading.dismiss();
-    });
-  }
-
+ 
  
   filterUsers() {
     console.log("Filtering..");
@@ -111,7 +99,6 @@ export class UsersPage implements OnInit {
 
 
   async openModal(name: string) {
-
     let genericModal;
     if(name == 'filter') {
       genericModal = await this.modalCtrl.create({
@@ -127,7 +114,6 @@ export class UsersPage implements OnInit {
         component: LocationPage,
       });
     }
-  
   
     genericModal.present();
     const { data, role } = await genericModal.onWillDismiss();
@@ -146,9 +132,21 @@ export class UsersPage implements OnInit {
     })
   }
 
-  ngAfterViewInit() {
-    const cardArray = this.cards.toArray();
-    this.gestureCtrlService.useSwiperGesture(cardArray);
+  async showUserModal() {
+
+    const modal = await this.modalCtrl.create({
+      component: UserModalPage,
+      initialBreakpoint: 0.8,
+      breakpoints: [0, 0.8]
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    if (role === 'confirm') {
+      console.log("confirmed");
+      
+    }
   }
 
   async showAlert(header: string, message: string, btnText: string) {
@@ -158,6 +156,10 @@ export class UsersPage implements OnInit {
     })
 
     await alert.present();
+    alert.onDidDismiss().then(() => {
+      this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true})
+    })
+    
   }
 
 }

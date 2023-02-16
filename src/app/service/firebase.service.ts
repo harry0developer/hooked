@@ -131,6 +131,20 @@ export class FirebaseService {
     }
   }
 
+
+  async getCurrentUser() {
+    const docRef = doc(this.firestore, COLLECTION.users, this.auth.currentUser.uid)
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      return null
+    }
+  }
+
   getChatById() {
     collectionData<Chat>(
       query<Chat>(
@@ -142,7 +156,13 @@ export class FirebaseService {
 
 
   async getAllUsers(){
-    return this.afs.collection<User>(COLLECTION.users).valueChanges({idField: 'uid'}) ;
+    return this.afs.collection<User>(COLLECTION.users).get();
+  }
+
+  queryUsers(email: string) {
+    return new Promise<any>((resolve)=> {
+      this.afs.collection(COLLECTION.users, ref => ref.where('email', '==', email).limit(1)).valueChanges().subscribe(product => resolve(product))
+    });
   }
 
 
