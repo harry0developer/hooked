@@ -3,7 +3,7 @@ export const COLLECTION = {
     ratings: 'ratings',
     views: 'views',
     images: 'images',
-    countries: 'countries',
+    pending: 'pending',
     matched: 'matched',
     chats: 'chats'
 }

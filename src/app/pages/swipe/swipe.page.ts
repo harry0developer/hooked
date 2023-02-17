@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from "@angular/core";
-import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
+import { GestureCtrlService } from "src/app/service/gesture-ctrl.service";
 import { IonCard } from "@ionic/angular";
 import { DataService } from "../../providers/data.service";
 import { Subscription } from 'rxjs';

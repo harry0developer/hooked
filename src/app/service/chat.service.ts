@@ -30,17 +30,17 @@ export class ChatService {
     private afs: AngularFirestore
   ) {}
 
-  async documentExists(uid){
+  async documentExists(collection: string, uid: string){
     const reciever_sender_uid = `${uid}__${this.auth.currentUser.uid}`; 
     const sender_reciever_uid = `${this.auth.currentUser.uid}__${uid}`; 
 
-    const doc1 =  this.afs.collection(COLLECTION.chats).doc(sender_reciever_uid).get();
-    const doc2 =  this.afs.collection(COLLECTION.chats).doc(reciever_sender_uid).get();
+    const doc1 =  this.afs.collection(collection).doc(sender_reciever_uid).get();
+    const doc2 =  this.afs.collection(collection).doc(reciever_sender_uid).get();
 
-    await this.afs.collection(COLLECTION.chats).doc(sender_reciever_uid).get().forEach(dox => {
+    await this.afs.collection(collection).doc(sender_reciever_uid).get().forEach(dox => {
       this.senderRecieverDocument$.next({uid: sender_reciever_uid, exists: dox.exists});      
     });
-    await this.afs.collection(COLLECTION.chats).doc(reciever_sender_uid).get().forEach(dox => {
+    await this.afs.collection(collection).doc(reciever_sender_uid).get().forEach(dox => {
       this.recieverSenderDocument$.next({uid: reciever_sender_uid, exists: dox.exists});
     });
     const obs$ = combineLatest([this.senderRecieverDocument$, this.recieverSenderDocument$]);

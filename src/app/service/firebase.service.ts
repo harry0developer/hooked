@@ -230,4 +230,8 @@ export class FirebaseService {
       return message.search(str) > 1;
     return false;
   }
+
+  capitalize(s): string{
+      return s && s[0].toUpperCase() + s.slice(1);
+  }
 }

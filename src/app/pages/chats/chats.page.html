@@ -11,7 +11,7 @@
   <div class="container">
 
     <pre>MM: {{matchedUser | async}}</pre>
-    <ion-list lines="none" *ngIf="!!(matchedUser | async); else emptyTemplate">
+    <ion-list lines="none" *ngIf="(matchedUser | async); else emptyTemplate">
       <ion-item *ngFor="let user of matchedUser | async; let i = index" (click)="openChats(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />

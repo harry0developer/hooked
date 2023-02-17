@@ -133,7 +133,7 @@ export class SignupModalPage implements OnInit {
 		this.user  = { 
       uid: "",
       email: this.email,
-      name: this.name,
+      name: this.firebaseService.capitalize(this.name),
       gender: this.gender,
       want: this.want,
       with: this.with,
@@ -151,7 +151,6 @@ export class SignupModalPage implements OnInit {
         }
       }
     }; 
-
 
     const loading = await this.loadingCtrl.create({message: "Creating account, please wait..."});
     await loading.present();

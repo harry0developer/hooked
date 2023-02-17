@@ -62,6 +62,9 @@ export class ProfilePage implements OnInit{
   async openModal() {
     const modal = await this.modalCtrl.create({
       component: SettingsModalPage,
+      componentProps: {
+        "user": this.user
+      }
     });
     modal.present();
     const { data, role } = await modal.onWillDismiss();
@@ -108,7 +111,10 @@ export class ProfilePage implements OnInit{
 
       const img = await this.firebaseService.savePictureInFirebaseStorage(image);
       
-      this.user.images.push(img)
+      if(this.user.images.length < 1 && !this.user.profile_picture) {
+        this.user.profile_picture = img;
+      }
+      this.user.images.push(img);
       await this.firebaseService.addDocumentToFirebase(COLLECTION.users,this.user).then(() => {
         loading.dismiss();
       }).catch(err => {

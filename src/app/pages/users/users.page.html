@@ -18,7 +18,7 @@
     <ion-card class="user-card" *ngFor="let user of allUsers; let i =index"  id="{{'card-' + user.uid}}">
       <img [src]="user.profile_picture" />
       <div class="user-info">
-        <h1>{{user.name}}, {{ user.age}}</h1>
+        <h1>{{user.name}}, {{ getUserAge(user)}}</h1>
         <p>
           <ion-icon name="home-outline"></ion-icon>
         <p>
@@ -30,6 +30,11 @@
       <div class="show-more">
         <ion-icon color="primary" (click)="showUserModal()" name="arrow-up-circle-outline"></ion-icon>
       </div>
+
+        <ion-icon name="heart-dislike" class="icon" id="rejected-icon"></ion-icon>
+        <ion-icon name="heart" class="icon" id="accepted-icon"></ion-icon>
+
+
     </ion-card>
   </div>
 
@@ -37,7 +42,7 @@
   <ng-template #loadingTemplate>
     <div class="is-loading">
       <img src="../../../assets/loading.gif" alt="">
-      <h1>Loading Profile...</h1>
+      <h1>Loading users...</h1>
       <p>This should not take long. Hang on tight...</p>
     </div>
   </ng-template>

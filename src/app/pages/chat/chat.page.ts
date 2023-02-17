@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Message, MessageObj, User } from 'src/app/models/User'; 
 import { ChatService } from 'src/app/service/chat.service';
+import { COLLECTION } from 'src/app/utils/const';
 var moment = require('moment');
 
 @Component({
@@ -68,7 +69,7 @@ export class ChatPage implements OnInit {
     this.route.params.subscribe((params:any) => {
       this.reciever = JSON.parse(params.user);
 
-      this.chatService.documentExists(this.reciever.uid);
+      this.chatService.documentExists(COLLECTION.chats, this.reciever.uid);
 
       this.chatService.documentExist$.subscribe(status => {
         this.chatsDocumentId = status;

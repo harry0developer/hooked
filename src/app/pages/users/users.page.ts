@@ -4,24 +4,18 @@ import {
   ElementRef,
   QueryList,
   ViewChildren, 
-  ChangeDetectionStrategy,
-  ComponentRef,
-  ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from "@angular/core";
 
-import { GestureCtrlService } from "src/app/providers/gesture-ctrl.service";
-import { AlertController, IonCard, LoadingController, ModalController } from "@ionic/angular";
-import { BehaviorSubject, map, Subject, Subscription } from 'rxjs';
+import { GestureCtrlService } from "src/app/service/gesture-ctrl.service";
+import { AlertController, IonCard, ModalController } from "@ionic/angular";
+import { BehaviorSubject } from 'rxjs';
 
 import { Geo, User } from '../../models/User';
-import { Observable } from "rxjs";
 import { FilterPage } from "../filter/filter.page";
 import { Router } from "@angular/router";
-import { Auth } from "@angular/fire/auth";
 import { ROUTES, SERVICE, STORAGE } from "src/app/utils/const";
-import { MatchPage } from "../match/match.page";
 import { FirebaseService } from "src/app/service/firebase.service";
-import { LocationService } from "src/app/service/location.service";
 import { ChatService } from "src/app/service/chat.service";
 import { LocationPage } from "../location/location.page";
 import { CameraPage } from "../camera/camera.page";
@@ -59,11 +53,20 @@ export class UsersPage implements OnInit {
     
   ngOnInit() { 
 
+
+    this.gestureCtrlService.noLike$.subscribe(nl => {
+      console.log(nl);
+      
+    });
+    this.gestureCtrlService.like$.subscribe(like => {
+      console.log(like);
+      
+    });
     //1. Get all user
-    // this.chatService.getUsers().forEach(r => {
-    //   this.allUsers = r
-    //   this.usersLoaded$.next(true)
-    // });
+    this.chatService.getUsers().forEach(r => {
+      this.allUsers = r
+      this.usersLoaded$.next(true)
+    });
 
     //2. Get current logged in user
     this.firebaseService.getCurrentUser().then((user: User) => {
