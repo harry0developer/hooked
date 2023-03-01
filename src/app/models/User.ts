@@ -33,6 +33,15 @@ export interface User {
     to: string;
  }
 
+ export interface Swipe {
+   swipperUid: string;
+   swippedUid: string;
+   like: boolean;
+   uid?: string;
+   match: boolean;
+ }
+ 
+
  export interface MessageObj {
     messages: Message[];
  }

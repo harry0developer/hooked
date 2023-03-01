@@ -1,9 +1,12 @@
 import { Injectable, NgZone } from "@angular/core";
 import { GestureController, Platform } from "@ionic/angular";
 import { BehaviorSubject, map, Observable } from "rxjs";
-import { User } from "../models/User";
+import { Swipe, User } from "../models/User";
+import { COLLECTION } from "../utils/const";
 import { ChatService } from "./chat.service";
+import { FirebaseService } from "./firebase.service";
 import { LocationService } from "./location.service";
+import { Auth } from '@angular/fire/auth'; 
 
 @Injectable({
   providedIn: "root",
@@ -13,15 +16,19 @@ export class GestureCtrlService {
 
   like$ = new BehaviorSubject([]);
   likes = [];
-  noLikes = [];
-  noLike$ =  new BehaviorSubject([]);
+  unLiked = [];
+  unLiked$ =  new BehaviorSubject([]);
+
+  matchedUser: User[] = [];
+  matchedUsersObs$ = new BehaviorSubject([]);
 
   constructor(
     private gestureCtrl: GestureController,
-    private zone: NgZone,
+    private firebaseService: FirebaseService,
     private platform: Platform,
     private chatService: ChatService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private auth: Auth
   ) {}
 
   getUsersWithLocation(lat, lng): Observable<User[]> {
@@ -36,17 +43,13 @@ export class GestureCtrlService {
 
   useSwiperGesture(cardArray: string | any[]) {
 
-
     for (let i = 0; i < cardArray.length; i++) {
       const card = cardArray[i];
-
-      
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,
         threshold: 15,
         gestureName: "swipe",
-        onStart: (ev) => {
-        },
+        onStart: (ev) => {},
         onMove: (ev) => {
           card.nativeElement.style.transform = `translateX(${
             ev.deltaX
@@ -76,14 +79,12 @@ export class GestureCtrlService {
               +this.platform.width() * 2
             }px) rotate(${ev.deltaX / 2}deg)`;
 
-
-            this.likes.push(card);
-            this.like$.next(this.likes);
-
-            // this.dataProvider.setItem(const.LIKED, )
-            // this.dataProvider.addLikedUser(card.nativeElement.id);
-
             
+
+            //swipe right
+            //Add swiped user to the swipped document
+            this.addUserToSwippedCollection(card, true);
+
             
           }
           // Left Side Move
@@ -91,9 +92,10 @@ export class GestureCtrlService {
             card.nativeElement.style.transform = `translateX(-${
               +this.platform.width() * 2
             }px) rotate(${ev.deltaX / 2}deg)`;
-            // this.dataProvider.addDisLikedUser(card.nativeElement.id);
-            this.noLikes.push(card);
-            this.noLike$.next(this.noLikes);
+             
+
+            //Swipe left
+            this.addUserToSwippedCollection(card, false);
 
 
           }
@@ -105,6 +107,36 @@ export class GestureCtrlService {
       });
       gesture.enable(true);
     }
+  }
+
+
+  private addUserToSwippedCollection(card, like: boolean) {
+    const uid = card.nativeElement.id.split("card-")[1]; 
+    this.firebaseService.querySwipeUsers(uid, like).then(res => {
+      console.log( "DONE XXXXXXXXX: ", res);
+    }).catch(err => console.log(err))
+  }
+
+  private getLikedUserFromElementA(card) {
+    const uid = card.nativeElement.id.split("card-")[1];
+    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, uid).then(user => {
+      this.likes.push(user);
+      this.like$.next(this.likes);
+
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
+  private getUnLikedUserFromElement(card) {
+    const uid = card.nativeElement.id.split("card-")[1];
+    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, uid).then(user => {
+      this.unLiked.push(user);
+      this.unLiked$.next(this.unLiked);
+
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   // STYLE OF CARD WHEN GESTURE START

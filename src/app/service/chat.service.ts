@@ -79,20 +79,17 @@ export class ChatService {
 
     // console.log("Doc id", docId, " msg: ", msg, " rec id: ", reciever_uid);
     
-    return await this.afs.collection<MessageObj>(COLLECTION.chats).doc(docId).set(msg, {merge: true});
+    return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).set(msg, {merge: true});
   }
 
   getUsers() {
-    return this.afs.collection(COLLECTION.users).valueChanges({idField: 'uid'}) as Observable<User[]>
+    return this.afs.collection(COLLECTION.USERS).valueChanges({idField: 'uid'}) as Observable<User[]>
   }
  
-
-  getMatchedUsers() {
-    return this.afs.collection(COLLECTION.matched).valueChanges({idField: 'uid'}) as Observable<User[]>
-  }
+ 
 
   async getOurMessages(docId) {
-    return await this.afs.collection<MessageObj>(COLLECTION.chats).doc(docId).valueChanges();
+    return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).valueChanges();
   }
 
 

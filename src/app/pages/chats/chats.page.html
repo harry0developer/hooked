@@ -8,22 +8,39 @@
 
 <ion-content [fullscreen]="true">
 
-  <div class="container">
+  <div class="users-wrapper">
+    <ul class="user" *ngIf="matchedUser && matchedUser.length > 0">
+      <div *ngFor="let user of matchedUser" class="item">
+        <img [src]="user.profile_picture" alt="" (click)="openChats(user)">
+        <p (click)="openChats(user)">Maphuti Stipane  {{user}}</p>
+      </div> 
+    </ul>
+    <ul class="user" *ngIf="matchedUser.length < 1">
+      <div class="item">
+        <img [src]="defaultImage" alt="" >
+        <p >Likes</p>
+      </div> 
+    </ul>
+  </div>
+ 
+ 
 
-    <pre>MM: {{matchedUser | async}}</pre>
-    <ion-list lines="none" *ngIf="(matchedUser | async); else emptyTemplate">
-      <ion-item *ngFor="let user of matchedUser | async; let i = index" (click)="openChats(user)">
+   <div class="container" *ngIf="allUsers.length > 0; else emptyTemplate">
+    <ion-list lines="none">
+      <ion-item class="bg" *ngFor="let user of allUsers; let i = index" (click)="openChats(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
         </ion-avatar>  
         <p slot="end">12:35</p>
         <ion-label>
-          {{user?.name}}
+          <h3>{{user?.name}}</h3>
           <p>last message</p>
         </ion-label>
       </ion-item>
     </ion-list>
-  </div>
+  </div> 
+
+ 
 
   <ng-template #emptyTemplate>
     <div class="is-loading">

@@ -5,14 +5,14 @@
   <div class="container">
 
       <h1>It's a snatch</h1>
-      <p>You have matched with <b>Some guy</b></p>
+      <p>You have matched with <b>{{user.name}}</b></p>
 
       <div class="match-photos">
         <div class="match-left">
-          <img src="../../../assets/users/user13.jpg" alt="">
+          <img [src]="me.profile_picture" alt="">
         </div>
         <div class="match-right">
-          <img src="../../../assets/users/user01.jpg" alt="">
+          <img [src]="user.profile_picture" alt="">
         </div>
       </div>
 

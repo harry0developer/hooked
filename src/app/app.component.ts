@@ -21,14 +21,14 @@ export class AppComponent{
     private firebaseService: FirebaseService,
     private modalCtrl: ModalController) {
 
-      Network.addListener('networkStatusChange', status => {
-        console.log('Network status changed', status);
-        if(!status.connected) {
-          this.openModal(SERVICE.CONNECTION)
-        }
-      });
+      // Network.addListener('networkStatusChange', status => {
+      //   console.log('Network status changed', status);
+      //   if(!status.connected) {
+      //     this.openModal(SERVICE.CONNECTION)
+      //   }
+      // });
 
-      this.getLocation();
+      // this.getLocation();
   }
 
 

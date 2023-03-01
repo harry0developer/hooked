@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { User } from 'src/app/models/User';
 
 @Component({
   selector: 'app-match',
@@ -8,6 +9,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class MatchPage implements OnInit {
 
+  user: User;
+  me: User;
   constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {

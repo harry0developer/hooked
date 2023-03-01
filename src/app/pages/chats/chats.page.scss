@@ -1,5 +1,5 @@
 ion-content  {
-    --ion-background-color: rgb(253, 253, 253);
+    --ion-background-color: rgb(247, 245, 245);
 }
 
 .title {
@@ -15,8 +15,61 @@ ion-item {
     ion-avatar {
         width: 60px;
         height: 60px;
+        border: 2px solid #f04864;
+    } 
+
+    ion-label{
+        h3 {
+
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+} 
+ 
+ 
+
+
+.users-wrapper {
+    position: relative;
+    height: 120px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    .user {
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        margin: 10px 0;
+        padding: 0;
+        .item {
+            margin: 0 10px;
+            height: 140px;
+            width: 80px;
+            display: inline-block;
+            // border: 2px solid #fff;
+            box-sizing: border-box;
+            text-align: center;
+            
+            img {
+                border: 4px solid #f04864;
+                height: 65px;
+                border-radius: 100%;
+            }
+            p {
+                // font-size: 16px;
+                margin: 4px 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     }
 }
+
+
+
+
+
 .is-loading {
     text-align: center;
     height: 50vh;

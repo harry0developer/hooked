@@ -52,7 +52,7 @@ export class ProfilePage implements OnInit{
 
   ngOnInit(): void {
     this.currentUser = this.auth.currentUser;
-    this.firebaseService.getDocumentFromFirebase(COLLECTION.users, this.currentUser.uid).then(user => {
+    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, this.currentUser.uid).then(user => {
       this.user = user;
       console.log(user);
       this.isLoading = false;
@@ -115,7 +115,7 @@ export class ProfilePage implements OnInit{
         this.user.profile_picture = img;
       }
       this.user.images.push(img);
-      await this.firebaseService.addDocumentToFirebase(COLLECTION.users,this.user).then(() => {
+      await this.firebaseService.addDocumentToFirebaseWithCustomID(COLLECTION.USERS,this.user).then(() => {
         loading.dismiss();
       }).catch(err => {
         loading.dismiss();

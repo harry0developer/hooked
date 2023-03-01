@@ -46,30 +46,8 @@
         padding: 0;
         margin: 0;
       }
-    }
-    // .controls {
-    //   text-align: center;
-    //   align-items: center;
-    //   position: absolute;
-    //   width: 100%;
-    //   bottom: 4px;
-    //   ion-icon {
-    //     font-size: 54px;
-        
-    //   }
-    //   .dislike {
-    //     color: red;
-    //   }
-    //   .super-like {
-    //     color: orange;
-    //   }
-    //   .like {
-    //     color: green;
-    //   }
-    // }
- 
+    } 
   }
- 
 }
 
 .no-swipes {
@@ -103,49 +81,51 @@
   }
 
   ion-item {
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-      margin: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      padding: 10px inherit;
-      ion-label {
-          h3 {
-              font-size: 20px;
-              margin: 0;
-          }  
-      }
-      ion-icon {
-          color: $primary-color;
-      }
-  }
-}
-.is-loading {
-    text-align: center;
-    height: 50vh;
-    margin-top: 25vh;
-    padding: 20px;
-    
-    h1 {
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    margin: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 10px inherit;
+    ion-label {
+      h3 {
+        font-size: 20px;
+        margin: 0;
+      }  
+    }
+    ion-icon {
+      color: $primary-color;
     }
   }
+}
+
+.is-loading {
+  text-align: center;
+  height: 50vh;
+  margin-top: 25vh;
+  padding: 20px;
+  
+  h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
 
 
-  .icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 20;
-    opacity: 0;
-    font-size: 100px;
-  }
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  opacity: 0;
+  font-size: 100px;
+}
 
-  #rejected-icon {
-    color: rgb(204, 23, 23);
-  }
-  #accepted-icon {
-    color: rgb(29, 172, 29);
-  }
+#rejected-icon {
+  color: rgb(204, 23, 23);
+}
+
+#accepted-icon {
+  color: rgb(29, 172, 29);
+}

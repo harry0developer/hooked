@@ -6,6 +6,7 @@ import { User } from 'src/app/models/User';
 import { ChatService } from 'src/app/service/chat.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { LocationService } from 'src/app/service/location.service';
+import { STORAGE } from 'src/app/utils/const';
 @Component({
   selector: 'app-chats',
   templateUrl: 'chats.page.html',
@@ -15,9 +16,13 @@ export class ChatsPage implements OnInit {
 
   defaultImage = '../../../assets/default/default.jpg';
 
-  matchedUser: any;
+  matchedUser: User[] = [];
   currentUser: any;
   isLoading: boolean = true;
+
+  allUsers = [];
+
+
   constructor(
     private router: Router, 
     private firebaseService: FirebaseService,
@@ -27,8 +32,34 @@ export class ChatsPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.matchedUser = this.chatService.getMatchedUsers(); 
+
+    this.firebaseService.getDummyData().then(r => this.allUsers = r);
+
+    // const users = this.firebaseService.getStorage(STORAGE.USERS);
+    // if(!users) {
+    //   console.log("Fetching users from firebase");
+      
+    //   this.chatService.getUsers().forEach(r => {
+    //     this.allUsers = r;
+    //     this.firebaseService.setStorage(STORAGE.USERS, r);
+    //     // this.usersLoaded$.next(true)
+    //   });
+    // } else {
+    //   this.allUsers = users;
+    // }
+
+    this.firebaseService.getMySwippes().then(matches => {
+      console.log(matches);
+      matches.forEach(m => {
+        console.log(m);
+        
+      })
+      
+    })
+      
   } 
+
+  
 
   openChats(user) {
     console.log(user);

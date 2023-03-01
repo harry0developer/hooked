@@ -1,11 +1,8 @@
 export const COLLECTION = {
-    users: 'users',
-    ratings: 'ratings',
-    views: 'views',
-    images: 'images',
-    pending: 'pending',
-    matched: 'matched',
-    chats: 'chats'
+    USERS: 'users',
+    SWIPES: 'swipes',
+    IMAGES: 'images',
+    CHATS: 'chats'
 }
 
 export const SERVICE = {
@@ -20,6 +17,20 @@ export const AUTH_TYPE = {
     apple: 'apple',
 }
 
+export const SWIPE_USER = {
+    SWIPPER_UID: 'swipperUid',
+    SWIPPED_UID: 'swippedUid',
+    LIKE: 'like',
+    MATCH: 'match'
+}
+
+export const MODALS = {
+    MATCH: 'match',
+    FILTER: 'filter',
+    LOCATION: 'location',
+    CAMERA: 'camera',
+    
+}
 export const FIREBASE_ERROR = {
 
     EMAIL_ALREADY_REGISTERED: "The email address is already in use",
@@ -52,6 +63,7 @@ export const ROUTES = {
 
 export const STORAGE = {
     USER: 'user',
+    USERS: 'users',
     SEEN_INTRO: 'seen-intro',
     LOCATION: 'location'
     

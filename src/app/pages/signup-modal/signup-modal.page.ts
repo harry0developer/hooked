@@ -159,7 +159,7 @@ export class SignupModalPage implements OnInit {
     const user = await this.firebaseService.register(this.email, this.password);
 		if(!!user && user.user.uid) {
 			this.user.uid = user.user.uid;
-			this.firebaseService.addDocumentToFirebase(COLLECTION.users, this.user).then(res => {
+			this.firebaseService.addDocumentToFirebaseWithCustomID(COLLECTION.USERS, this.user).then(res => {
 				loading.dismiss();
 				this.modalCtrl.dismiss().then(() => this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true}));
 			}).catch(err => {
@@ -178,7 +178,7 @@ export class SignupModalPage implements OnInit {
     const loading = await this.loadingCtrl.create({message: "Checkng email.."});
     await loading.present();
 
-    const user = await this.firebaseService.queryUsers(this.email);
+    const user = await this.firebaseService.queryUsersByEmail(this.email);
 
     console.log("FOund ", user);
     

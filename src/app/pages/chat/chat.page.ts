@@ -69,15 +69,21 @@ export class ChatPage implements OnInit {
     this.route.params.subscribe((params:any) => {
       this.reciever = JSON.parse(params.user);
 
-      this.chatService.documentExists(COLLECTION.chats, this.reciever.uid);
+      this.chatService.documentExists(COLLECTION.CHATS, this.reciever.uid);
 
       this.chatService.documentExist$.subscribe(status => {
+
+        console.log("Document status", status);
+        
         this.chatsDocumentId = status;
         this.chatService.getOurMessages(status).then(msgs => {
+           console.log("got new messages", msgs);
            
             msgs.forEach(m => {
               if(m && m.messages) {
                 this.messagesArray = m.messages;
+                console.log(m.messages);
+                
               }
               
             })
