@@ -1,6 +1,7 @@
+@import "../../../theme/colors.scss";
 
 ion-content {
-    --ion-background-color: #ff3d7c;
+    --ion-background-color: $primary;
     
 }
  

@@ -1,42 +1,28 @@
+@import "../../../theme/colors.scss";
 
 ion-content {
-
-   --background: url('../../../assets/bondage_bg.jpg') 0 0/100% 100% no-repeat;
-   --background-position: bottom;
-
-  //  background-size: cover;
-  // height: 100vh;
-  // width: 100%;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
 }
 
- 
-
-// Background Blur using backdrop-filter
 .container {
-  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
-  backdrop-filter: blur(2px); // This be the blur
-  width: 100%;
-
+  background: #f8f9f1;
 }
    
 
   
 .intro {
-
   .logo {
     text-align: center;
     padding-top: 10vh;
     img {
       height: 10vh;
-      // width: 160px;
     }
   }
-
-
   ion-slide {
     height: 80vh;
     flex-direction: column;
-    // color: #fff;
     .top-info {
       height: 35vh;
       img {
@@ -44,35 +30,38 @@ ion-content {
       }
     }
     .info {
-
-      color: #fff;;
       padding: 0 40px;
-
-      
       h1 {
-        font-size: 40px;
-        font-weight: bold;
+        font-size: 36px;
+        font-weight: 900;
         line-height: 1;
+        color: $primary;
+
       }
       p {
         line-height: 1;
         font-size: 18px;
         padding: 0 0 20px 0;
         margin: 0;
+        color: $black;
       }
     }
-    
+      
   }
 
-  }
+}
   
    
   ::ng-deep .swiper-pagination-bullet {
     width: 50px;
-    height: 2px;
-    background-color: #fff;
+    height: 4px;
+    border-radius: inherit;
+    background-color: $black;
   }
   
+  ::ng-deep ion-button {
+    font-weight: 600;
+  }
   .top {
     height: 35vh;
     text-align: center;
