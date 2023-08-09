@@ -3,19 +3,14 @@ import { Gallery } from 'angular-gallery';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SettingsModalPage } from '../settings-modal/settings-modal.page';
-var moment = require('moment'); // require
-
-
 import { ActionSheetController } from '@ionic/angular';
-
 import { Camera,  CameraResultType, CameraSource } from '@capacitor/camera';
-
-
 import { Subscription } from 'rxjs';
 import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
 import { COLLECTION } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
+var moment = require('moment'); // require
  
 @Component({
   selector: 'app-profile',
@@ -23,19 +18,12 @@ import { FirebaseService } from 'src/app/service/firebase.service';
   styleUrls: ['profile.page.scss']
 })
 export class ProfilePage implements OnInit{
-  
-
   user: any;
   firebaseUser: any;
-
   images: [] ;
   profilePicture: string;
-
   currentUser: any;
-
   isLoading: boolean = true;
-
-
   files: ImageListingModel;
   private subs: Subscription[] = [];
   constructor(

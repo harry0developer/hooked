@@ -1,0 +1,58 @@
+
+<ion-header> </ion-header>
+
+<ion-content class="modal-container ion-padding"> 
+  <div class="counter" >Sign in</div>
+
+  <div class="container" *ngIf="activeStep == 0">
+    <div class="title">
+      <h1>Sign in</h1>
+      <p>Use your registered email and password</p>
+    </div>
+    <form class="modal-form" [formGroup]="validations_form">
+      <ion-item mode="ios" lines="none">
+        <ion-label position="stacked" color="primary">Email</ion-label>
+        <ion-input type="text" formControlName="email"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.email">
+          <div class="error-message"
+            *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item mode="ios" lines="none">
+        <ion-label position="stacked" color="primary">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.password">
+          <div class="error-message" 
+            *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      <div class="validation-errors">
+        <label class="error-message">{{errorMessage}}</label>
+      </div>
+      <div class="btn-group">
+        <ion-button fill="outline" shape="round" (click)="cancel()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Cancel
+        </ion-button>
+
+        <ion-button shape="round" [disabled]="!validations_form.valid" (click)="signin()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
+    </form>
+  </div>
+ 
+ 
+
+</ion-content>

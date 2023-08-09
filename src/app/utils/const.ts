@@ -53,7 +53,7 @@ export const STATUS = {
     FAILED: 'failed'
 }
 export const ROUTES = {
-    SIGNIN: "signin",
+    AUTH: "auth",
     SIGNUP: "signup",
     USERS: "tabs/users",
     CHATS: "tabs/chats",

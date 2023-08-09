@@ -13,16 +13,12 @@ import { ROUTES, STORAGE } from 'src/app/utils/const';
 export class SettingsModalPage implements OnInit {
 
   name: string;
-
   user: User;
-
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
     private firebaseService: FirebaseService) {
     this.user = this.firebaseService.getStorage(STORAGE.USER);
-
-
   }
 
   cancel() {
@@ -40,7 +36,7 @@ export class SettingsModalPage implements OnInit {
   async logout() {
     await this.firebaseService.signout().then(() => {
       this.cancel();
-      this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
+      this.router.navigateByUrl(ROUTES.AUTH, {replaceUrl:true})
     })
   }
 }

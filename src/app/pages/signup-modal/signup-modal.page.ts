@@ -31,14 +31,20 @@ export class SignupModalPage implements OnInit {
     'password': [
       { type: 'required', message: 'Password is required.' },
       { type: 'minlength', message: 'Password must be at least 6 characters long.' }
+    ],
+    'verificationCode': [
+      { type: 'required', message: 'Verification code is required.' },
+      { type: 'minlength', message: 'Verification code must be 6 characters long.' },
+      { type: 'maxlength', message: 'Verification code must be 6 characters long.' }
     ]
   };
  
-  
   profilePicture: string;
   user: User;
   currentUser: any;
   uploadedImages: any;
+  code: string;
+  verificationCodeError: string = "";
 
 
   constructor(
@@ -78,10 +84,11 @@ export class SignupModalPage implements OnInit {
   get with() {
     return this.signup_form.get('with')?.value;
   }
- 
+  get verificationCode() {
+    return this.signup_form.get('verificationCode')?.value;
+  } 
 
   ngOnInit() {    
- 
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -112,11 +119,14 @@ export class SignupModalPage implements OnInit {
       ])),
       with: new FormControl('', Validators.compose([
         Validators.required
+      ])),
+      verificationCode: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(5)
       ]))
     });
   }
-
-
 
   back() {
     if(this.activeStep > 0) {
@@ -129,51 +139,61 @@ export class SignupModalPage implements OnInit {
 	}
  
 	async createAccount() { 
-
-		this.user  = { 
-      uid: "",
-      email: this.email,
-      name: this.firebaseService.capitalize(this.name),
-      gender: this.gender,
-      want: this.want,
-      with: this.with,
-      dob: this.dob,
-      orientation: this.orientation,
-      profile_picture: "",
-      images: [],
-	  	password: this.password,
-      isVerified: false,
-      location: {
-        distance: "",
-        geo: {
-          lat: 0,
-          lng: 0
+    if(this.verificationCode === this.code) {
+      this.verificationCodeError = "Verification code does not match";
+    } else {
+      this.user  = { 
+        uid: "",
+        email: this.email,
+        name: this.firebaseService.capitalize(this.name),
+        gender: this.gender,
+        want: this.want,
+        with: this.with,
+        dob: this.dob,
+        verificationCode: this.verificationCode,
+        orientation: this.orientation,
+        profile_picture: "",
+        images: [],
+        password: this.password,
+        isVerified: false,
+        location: {
+          distance: "",
+          geo: {
+            lat: 0,
+            lng: 0
+          }
         }
-      }
-    }; 
+      }; 
+      // this.createAccountHelper();
 
+      console.log("Creating account ...");
+      
+    }
+      
+	} 
+
+  async createAccountHelper() {
     const loading = await this.loadingCtrl.create({message: "Creating account, please wait..."});
     await loading.present();
     console.log(this.user);
     
     const user = await this.firebaseService.register(this.email, this.password);
-		if(!!user && user.user.uid) {
-			this.user.uid = user.user.uid;
-			this.firebaseService.addDocumentToFirebaseWithCustomID(COLLECTION.USERS, this.user).then(res => {
-				loading.dismiss();
-				this.modalCtrl.dismiss().then(() => this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true}));
-			}).catch(err => {
-				console.log(err);
-				loading.dismiss();
-			})
-		} else {
-			loading.dismiss();
-			console.log("No user registered");
-			this.showAlert("Could not create account", "Check that your email address is correctly formated")
-		}
-		
-	} 
- 
+    if(!!user && user.user.uid) {
+      this.user.uid = user.user.uid;
+      this.firebaseService.addDocumentToFirebaseWithCustomID(COLLECTION.USERS, this.user).then(res => {
+        loading.dismiss();
+        this.modalCtrl.dismiss().then(() => this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true}));
+      }).catch(err => {
+        console.log(err);
+        loading.dismiss();
+      })
+    } else {
+      loading.dismiss();
+      console.log("No user registered");
+      this.showAlert("Could not create account", "Check that your email address is correctly formated")
+    }
+  }
+   
   async stepOne() { 
     const loading = await this.loadingCtrl.create({message: "Checkng email.."});
     await loading.present();
@@ -198,10 +218,25 @@ export class SignupModalPage implements OnInit {
     await alert.present();
   }
 
-  goToSignInPage() {
-    this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl: true})
+  cancel() {
+    // this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl: true})
+    this.modalCtrl.dismiss();
   }  
 
- 
+  sendVerificationCode() {
+    this.next();
+    this.code = ""+Math.floor(Math.random()*100000+1);
+    console.log("Cocde: ", this.code);
+  }
+
+  resedCode() {
+    this.code = ""+Math.floor(Math.random()*100000+1);
+    console.log("Cocde: ", this.code);
+
+  }
+
+  cancelCreateAccount() {
+    this.router.navigateByUrl(ROUTES.SIGNUP, {replaceUrl: true})
+  } 
 
 }

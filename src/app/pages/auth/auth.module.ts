@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-
-import { SignupPageRoutingModule } from './signup-routing.module';
-
-import { SignupPage } from './signup.page';  
 import { SignupModalPageModule } from '../signup-modal/signup-modal.module';
+import { SigninModalPageModule } from '../signin-modal/signin-modal.module';
+import { AuthRoutingModule } from './auth-routing.module';
+import { AuthPage } from './auth.page';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
     SignupModalPageModule,
-    SignupPageRoutingModule    
+    SigninModalPageModule,
+    AuthRoutingModule    
   ],
-  declarations: [SignupPage]
+  declarations: [AuthPage]
 })
-export class SignupPageModule {}
+export class AuthPageModule {}

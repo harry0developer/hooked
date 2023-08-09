@@ -40,9 +40,9 @@
         <label class="error-message">{{errorMessage}}</label>
       </div>
       <div class="btn-group">
-        <ion-button fill="outline" shape="round" (click)="goToSignInPage()">
+        <ion-button fill="outline" shape="round" (click)="cancel()">
           <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-          Sign in
+          Cancel
         </ion-button>
 
         <ion-button shape="round" [disabled]="!validations_form.valid" (click)="stepOne()">
@@ -191,7 +191,7 @@
           placeholder="I am looking for"
           [multiple]="true">
             <ion-select-option value="NSA">No Strings Attached (NSA)</ion-select-option>
-            <ion-select-option value="LTR">Long Term Relationship (LTR)</ion-select-option>
+            <ion-select-option value="FWB">Friends With Benefits (FWB)</ion-select-option>
             <ion-select-option value="ONS">One Night Stand (ONS)</ion-select-option> 
         </ion-select>
       </ion-item>
@@ -216,12 +216,59 @@
           <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Back
         </ion-button>
-        <ion-button shape="round" [disabled]="!signup_form.get('with').valid" (click)="createAccount()">
-          Complete
+        <ion-button shape="round" [disabled]="!signup_form.get('with').valid" (click)="sendVerificationCode()">
+          Verify
           <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div> 
     </form>
+  </div>
+
+  <!-- Step 7 OTP -->
+  <div class="container" *ngIf="activeStep == 6">
+    <div class="title">
+      <h1>We have sent a verification code to {{email}}</h1>
+      <p>Please enter the verification code below:</p>
+    </div>
+
+    <form class="modal-form" [formGroup]="signup_form">
+      <ion-item  mode="ios" lines="none">
+        <ion-input placeholder="Enter verification code" type="text" formControlName="verificationCode"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.verificationCode">
+          <div class="error-message"
+            *ngIf="signup_form.get('verificationCode').hasError(validation.type) && (signup_form.get('verificationCode').dirty || signup_form.get('verificationCode').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+
+        <ng-container  *ngIf="verificationCodeError">
+          <div class="error-message">
+            {{ verificationCodeError}}
+          </div>
+        </ng-container>
+      </div>
+      <div class="btn-group" >
+          
+        <ion-button shape="round" fill="outline" (click)="resedCode()">
+          <ion-icon name="refresh-circle-outline"></ion-icon>
+            Resend Code
+          </ion-button>
+        <ion-button shape="round" [disabled]="!signup_form.get('verificationCode').valid" (click)="createAccount()">
+          Verify Code
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </form>     
+    
+    <div class="cancel">
+      <ion-button shape="round" fill="clear" (click)="cancelCreateAccount()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+        Cancel creating account
+      </ion-button> 
+    </div>
+
   </div>
 
  

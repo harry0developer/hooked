@@ -188,7 +188,7 @@ export class UsersPage implements OnInit {
 
   async logout() {
     await this.firebaseService.signout().then(() => {
-      this.router.navigateByUrl(ROUTES.SIGNIN, {replaceUrl:true})
+      this.router.navigateByUrl(ROUTES.AUTH, {replaceUrl:true})
     })
   }
 

@@ -15,6 +15,7 @@ export interface User {
     isVerified: boolean;
     dateCreated?: string;
     compensation?: string;
+    verificationCode?: string;
     location: {
         distance: string;
         geo: Geo
