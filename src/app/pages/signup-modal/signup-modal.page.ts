@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
-import { map } from 'rxjs';
 import { User } from 'src/app/models/User';
 import { FirebaseService } from 'src/app/service/firebase.service';
-import { COLLECTION, ROUTES } from 'src/app/utils/const';
+import { COLLECTION, FIREBASE_ERROR, ROUTES } from 'src/app/utils/const';
+var moment = require('moment'); // require
 
 @Component({
   selector: 'app-signup-modal',
@@ -45,7 +45,9 @@ export class SignupModalPage implements OnInit {
   uploadedImages: any;
   code: string;
   verificationCodeError: string = "";
-
+  selectedDate: any;
+  minDate: any;
+  maxDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -89,6 +91,7 @@ export class SignupModalPage implements OnInit {
   } 
 
   ngOnInit() {    
+    this.setMaxDate();
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -128,6 +131,7 @@ export class SignupModalPage implements OnInit {
     });
   }
 
+
   back() {
     if(this.activeStep > 0) {
       --this.activeStep;
@@ -138,9 +142,18 @@ export class SignupModalPage implements OnInit {
 		++this.activeStep;
 	}
  
+  setMaxDate() {
+    const m = moment().subtract(18, 'years');
+    const mm = moment().subtract(100, 'years');
+    this.minDate = mm.format();
+    this.maxDate = m.format();
+    this.selectedDate = m.format();    
+  }
+ 
+
 	async createAccount() { 
-    if(this.verificationCode === this.code) {
-      this.verificationCodeError = "Verification code does not match";
+    if(this.verificationCode !== this.code) { 
+      this.showAlert("Account Verification", "Verification code does not match");
     } else {
       this.user  = { 
         uid: "",
@@ -164,10 +177,7 @@ export class SignupModalPage implements OnInit {
           }
         }
       }; 
-      // this.createAccountHelper();
-
-      console.log("Creating account ...");
-      
+      this.createAccountHelper();      
     }
       
 	} 

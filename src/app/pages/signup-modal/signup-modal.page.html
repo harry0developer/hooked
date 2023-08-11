@@ -2,13 +2,13 @@
 <ion-header> </ion-header>
 
 <ion-content class="modal-container ion-padding"> 
-  <div class="counter" >Step {{activeStep + 1}}/6</div>
+  <div class="counter" *ngIf="activeStep <= 6">Step {{activeStep + 1}}/6</div>
 
   <!-- Step one  -->
   <div class="container" *ngIf="activeStep == 0">
     <div class="title">
       <h1>Sign up</h1>
-      <p>Use your personal email and create a password</p>
+      <p>Use your email address and create a new password</p>
     </div>
     <form class="modal-form" [formGroup]="validations_form">
       <ion-item mode="ios" lines="none">
@@ -41,13 +41,11 @@
       </div>
       <div class="btn-group">
         <ion-button fill="outline" shape="round" (click)="cancel()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Cancel
         </ion-button>
 
         <ion-button shape="round" [disabled]="!validations_form.valid" (click)="stepOne()">
           Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
       
@@ -77,12 +75,10 @@
       <div class="btn-group" >
           
         <ion-button shape="round" fill="outline" (click)="back()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Back
         </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('name').valid" (click)="next()">
           Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
     </form>
@@ -94,13 +90,15 @@
     <div class="title">
       <h1>What's your date of birth</h1>
       <p>Others will only see your age.</p>
+      <p class="note">You must be 18 years or older to use this app</p>
     </div> 
 
     <form class="modal-form" [formGroup]="signup_form">
       <ion-datetime
         preferWheel = "true"
-        value="2006-01-01T00:00:00"
-        max="2006-01-01T00:00:00"
+        [value]="selectedDate"
+        [max]="maxDate"
+        [min]="minDate"
         presentation="date" 
         formControlName="dob"
         size="cover"
@@ -132,12 +130,10 @@
       </ion-item>
       <div class="btn-group" >
         <ion-button shape="round" fill="outline" (click)="back()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Back
         </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('gender').valid" (click)="next()">
           Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
     </form>
@@ -163,12 +159,10 @@
       </ion-item>
       <div class="btn-group" >
         <ion-button shape="round" fill="outline" (click)="back()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Back
         </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('orientation').valid" (click)="next()">
           Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
     </form>
@@ -213,12 +207,10 @@
       </ion-item>
       <div class="btn-group" >
         <ion-button shape="round" fill="outline" (click)="back()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Back
         </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('with').valid" (click)="sendVerificationCode()">
           Verify
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div> 
     </form>
@@ -250,21 +242,17 @@
         </ng-container>
       </div>
       <div class="btn-group" >
-          
         <ion-button shape="round" fill="outline" (click)="resedCode()">
-          <ion-icon name="refresh-circle-outline"></ion-icon>
-            Resend Code
-          </ion-button>
+          Resend Code
+        </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('verificationCode').valid" (click)="createAccount()">
           Verify Code
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
     </form>     
     
     <div class="cancel">
       <ion-button shape="round" fill="clear" (click)="cancelCreateAccount()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
         Cancel creating account
       </ion-button> 
     </div>

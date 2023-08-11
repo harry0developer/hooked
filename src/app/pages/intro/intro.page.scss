@@ -7,7 +7,7 @@ ion-content {
 }
 
 .container {
-  background: #f8f9f1;
+  background: $primary;
 }
    
 
@@ -35,15 +35,21 @@ ion-content {
         font-size: 36px;
         font-weight: 900;
         line-height: 1;
-        color: $primary;
+        color: #FFF ;
 
       }
       p {
         line-height: 1;
         font-size: 18px;
-        padding: 0 0 20px 0;
+        padding: 8px 0 20px 0;
         margin: 0;
-        color: $black;
+        color: $primary-light;
+      }
+
+      .btn {
+        --background: var(--ion-color-primary-contrast);
+        color:  var(--ion-color-primary);
+        font-weight: bold;
       }
     }
       

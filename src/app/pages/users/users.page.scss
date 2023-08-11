@@ -1,4 +1,4 @@
-@import '../../utils/global.scss';
+@import "../../../theme/colors.scss";
 
 ::-webkit-scrollbar {
   display: none;
@@ -73,7 +73,7 @@
 .modal-container {
   margin-bottom: 40px;
   .divider {
-      background-color: $bg-light-grey;
+      background-color: $primary-light;
       padding: 19px 20px;
       font-size: 18px;
       font-weight: bold;
@@ -93,7 +93,7 @@
       }  
     }
     ion-icon {
-      color: $primary-color;
+      color: $primary;
     }
   }
 }

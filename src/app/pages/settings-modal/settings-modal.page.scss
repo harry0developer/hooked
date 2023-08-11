@@ -1,9 +1,9 @@
-@import '../../utils/global.scss';
+@import "../../../theme/colors.scss";
 
 .container {
     margin-bottom: 40px;
     .divider {
-        background-color: $bg-light-grey;
+        background-color: #FFF;
         padding: 19px 20px;
         font-size: 18px;
         font-weight: bold;
@@ -23,7 +23,7 @@
             }  
         }
         ion-icon {
-            color: $primary-color;
+            color: $primary;
         }
     }
 
@@ -31,6 +31,19 @@
     .settings {
         .btn {
             text-align: center;
+        }
+        p {
+            color: #000;
+        }
+        .title {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .looking-for {
+            list-style:disc;
+            padding-left: 0;
+
         }
     }
 
