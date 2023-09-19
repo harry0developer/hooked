@@ -154,15 +154,16 @@ export class FirebaseService {
     private auth: Auth,
     private firestore: Firestore,
     private storage: Storage,
-    private afs: AngularFirestore
+    private afs: AngularFirestore    
   ) {}
 
 
-  getDummyData() {
-    return new Promise<User[]> ((resolve) => {
-      resolve(this.dummy)
-    })
-  }
+  // getDummyData() {
+  //   return new Promise<User[]> ((resolve) => {
+  //     resolve(this.dummy)
+  //   })
+  // }
+
   setStorage(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
   } 
@@ -170,8 +171,6 @@ export class FirebaseService {
   getStorage(key: string) {
     return JSON.parse(localStorage.getItem(key));
   }
-
-  
  
   //new
   async register(email: string, password: string)  {
@@ -196,7 +195,9 @@ export class FirebaseService {
 
   //new
   signout() {
-    return signOut(this.auth);
+    return signOut(this.auth).then(() => {
+      this.removeStorageItem(STORAGE.USERS);
+    })
   }
  
 

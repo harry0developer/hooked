@@ -47,7 +47,7 @@ export class GestureCtrlService {
       const card = cardArray[i];
       const gesture = this.gestureCtrl.create({
         el: card.nativeElement,
-        threshold: 15,
+        threshold: 2,
         gestureName: "swipe",
         onStart: (ev) => {},
         onMove: (ev) => {

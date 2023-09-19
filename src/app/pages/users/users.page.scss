@@ -5,9 +5,9 @@
 }
 
 .logo {
-  width: 100px;
+  width: 90px;
   vertical-align: middle;
-}
+} 
 
 .user-card-container {
   position: relative;
@@ -17,13 +17,11 @@
   justify-content: center;
   .user-card { 
     position: absolute;
-    border-radius: 8px;
-    height: 75vh;
     width: 95vw;
-
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px -50px 36px -28px inset;
     img {
       width: 100vw;
-      border-radius: 8px;
       object-fit: center;
       object-position: top;
       mask-image: linear-gradient(to bottom, #000, #000, transparent);
@@ -31,13 +29,13 @@
     .user-info {
       position: absolute;
       bottom: 20px; //change this to 80px to controller
-      color: #292929;
+      color: #000;
       text-align: center;
       width: 100%;
       h1 {
-        font-size: x-large;
+        font-size: 19px;
+        padding-bottom: 4px;
         font-weight: bold;
-        
       }
       p {
         font-size: 16px;
@@ -81,10 +79,10 @@
   }
 
   ion-item {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    box-shadow: none;
     margin: 10px;
     font-size: 16px;
-    border-radius: 8px;
+    // border-radius: 8px;
     padding: 10px inherit;
     ion-label {
       h3 {
@@ -129,3 +127,6 @@
 #accepted-icon {
   color: rgb(29, 172, 29);
 }
+
+::ng-deep ion-card {
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;}

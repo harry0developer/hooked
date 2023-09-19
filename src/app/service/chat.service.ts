@@ -8,6 +8,8 @@ import { MessageObj, User } from 'src/app/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
 
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+
 export interface docStatus {
   uid: string;
   exists: boolean;
@@ -27,8 +29,17 @@ export class ChatService {
   constructor( 
     public router: Router,
     private auth: Auth, 
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private db: AngularFireDatabase
   ) {}
+
+  // getUser(text: string) {
+  //   this.db.list('/messages').push({
+  //     text,
+  //     createdAt: new Date().toString()
+  //   });
+  // }
+ 
 
   async documentExists(collection: string, uid: string){
     const reciever_sender_uid = `${uid}__${this.auth.currentUser.uid}`; 

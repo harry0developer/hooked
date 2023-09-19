@@ -4,7 +4,9 @@ import {
   ElementRef,
   QueryList,
   ViewChildren, 
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  NgZone
 } from "@angular/core";
 
 import { GestureCtrlService } from "src/app/service/gesture-ctrl.service";
@@ -20,7 +22,7 @@ import { ChatService } from "src/app/service/chat.service";
 import { LocationPage } from "../location/location.page";
 import { CameraPage } from "../camera/camera.page";
 import { UserModalPage } from "../user-modal/user-modal.page";
-import { Auth } from "@angular/fire/auth";
+import { Auth, user } from "@angular/fire/auth";
 import { MatchPage } from "../match/match.page";
 var moment = require('moment'); // require
 
@@ -39,12 +41,15 @@ export class UsersPage implements OnInit {
   defaultImage = '../../../assets/default/default.jpg';
   location: Geo;
   allUsers = [];
+  users = [];
+  toBeRemoved: any[] = [];
   usersLoaded$ = new BehaviorSubject(false);
   activeUser: User;
 
   matchUserSubscription$: Subscription;
+  mySwipes: any[] = [];
 
-  @ViewChildren(IonCard, { read: ElementRef }) cards!: QueryList<ElementRef>;
+  @ViewChildren(IonCard, { read: ElementRef }) cards: QueryList<ElementRef>;
 
   constructor(
     private gestureCtrlService: GestureCtrlService,
@@ -54,10 +59,11 @@ export class UsersPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private chatService: ChatService,
+    private changeDetectorRef: ChangeDetectorRef,
+    public zone: NgZone
   ){}
     
-  ngOnInit() {  
-
+ async ngOnInit() {  
  
     // this.gestureCtrlService.unLiked$.subscribe(nl => {
     //   console.log(nl);
@@ -66,42 +72,17 @@ export class UsersPage implements OnInit {
     //   console.log(like);
     // });
 
-    this.matchUserSubscription$ = this.firebaseService.aMatch$.subscribe(matchData => {
-      if(matchData && matchData.uid) {
-        console.log(matchData);
-        
-        this.openModal(MODALS.MATCH,  matchData)
-      }
-    })
+    // this.matchUserSubscription$ = this.firebaseService.aMatch$.subscribe(matchData => {
+    //   if(matchData && matchData.uid) {
+    //     console.log(matchData);
+    //     this.openModal(MODALS.MATCH,  matchData)
+    //   }
+    // })
+
 
     //1. Get all user
-    let cachedUser = this.firebaseService.getStorage('users');
-
-    if(cachedUser && cachedUser.length > 0 ) {
-      // this.allUsers = cachedUser;
-      console.log("Loaded cached users");
-      for(let i of cachedUser) { 
-        if(i.uid !== this.auth.currentUser.uid) {
-          this.allUsers.push(i)
-        }
-      }
-
-      this.usersLoaded$.next(true);
-    } else {
-      this.chatService.getUsers().forEach(r => {
-        cachedUser = r;
-        for(let i of cachedUser) { 
-          if(i.uid !== this.auth.currentUser.uid) {
-            this.allUsers.push(i)
-          }
-        }
-        this.firebaseService.setStorage('users', r);
-        this.usersLoaded$.next(true);
-      });
-    }
-
-    
-
+    await this.getAllUsers();
+    await this.initMySwipes(); 
 
     //2. Get current logged in user
     this.firebaseService.getCurrentUser().then((user: User) => {
@@ -120,35 +101,62 @@ export class UsersPage implements OnInit {
     // } 
   }
 
-  ngOnDestroy() {
-    this.matchUserSubscription$.unsubscribe();
+  async getAllUsers() {
+    this.usersLoaded$.next(false);
+    let cachedUsers = this.firebaseService.getStorage('users');
+    if(cachedUsers && cachedUsers.length > 0 ) {
+      this.allUsers = cachedUsers;
+    } else {
+      this.chatService.getUsers().forEach(users => {
+        cachedUsers.push(users);
+        this.allUsers.push(users); 
+        this.firebaseService.setStorage('users', users);
+      });
+    }
   }
 
+  async initMySwipes() {
+    await this.firebaseService.getMySwippes().then(matches => {
+      matches.forEach(matchedUsers => {
+        this.mySwipes = matchedUsers; 
+        this.excludeSwippedUsers(this.allUsers, this.mySwipes); 
+      });
+    }, () => {
+      this.usersLoaded$.next(true);
+    });
+  }
+
+  private excludeSwippedUsers(users: any[], swipes: any[]){
+    users.forEach(u => {
+      swipes.forEach(s => {
+        if(u.uid === s.swippedUid) {
+          users.splice(this.allUsers.indexOf(u), 1);
+        }
+      });
+    });
+    this.users = [...new Map(users.map(item => [item['uid'], item])).values()];
+ 
+    console.log("Users ex", this.users);
+    
+    // this.users =  [...new Map(users.map(item => [item['uid'], item])).values()];
+    // console.log("Users ", this.users);
+    // this.allUsers = this.users;
+    this.usersLoaded$.next(true);
+    // this.changeDetectorRef.detectChanges();
+  } 
 
   ngAfterViewInit() {
 
-    // console.log("After view init", this.cards);
-
-    // if(this.cards && this.cards.length > 0 ) {
-      const cardArray = this.cards.toArray();
-      this.gestureCtrlService.useSwiperGesture(cardArray);
-    // }
+    this.cards.changes.subscribe(r =>{
+      const cardArray = this.cards.toArray();      
+      this.gestureCtrlService.useSwiperGesture(cardArray); 
+    });
     
-    //Add swipe gester after users have loaded
-    // this.cards.changes.subscribe(r => {
-    //   console.log("Card changed ", r);
-      
-    //   const cardArray = this.cards.toArray();
-    //   this.gestureCtrlService.useSwiperGesture(cardArray);
-    //   console.log(this.allUsers);
-    // })
   }
- 
  
   filterUsers() {
     console.log("Filtering..");
   }
-
 
   async openModal(name: string, user?) {
     let genericModal;
@@ -217,13 +225,15 @@ export class UsersPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header, message, buttons: [btnText], 
        backdropDismiss: false
-    })
-
+    });
     await alert.present();
     alert.onDidDismiss().then(() => {
       this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true})
-    })
-    
+    });
+  }
+
+  ngOnDestroy() {
+    this.matchUserSubscription$.unsubscribe();
   }
 
 }

@@ -26,11 +26,22 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 * {
-
     font-family: 'Nunito';
-
 }
 
 .alert-message {
     line-height: 1;
+}
+
+ion-tab-bar, ion-tab-button{
+    background-color: #FFF;
+}
+ 
+ion-tab-bar {
+    border: 0;
+    margin-top: -1px;
+}
+
+ion-tabs{
+    --ion-tabbar-background-color: #762b69;  
 }

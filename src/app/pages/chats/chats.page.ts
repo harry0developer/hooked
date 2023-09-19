@@ -33,7 +33,7 @@ export class ChatsPage implements OnInit {
 
   ngOnInit(): void {
 
-    this.firebaseService.getDummyData().then(r => this.allUsers = r);
+    // this.firebaseService.getDummyData().then(r => this.allUsers = r);
 
     // const users = this.firebaseService.getStorage(STORAGE.USERS);
     // if(!users) {
@@ -48,18 +48,23 @@ export class ChatsPage implements OnInit {
     //   this.allUsers = users;
     // }
 
+    this.isLoading = true;
+
     this.firebaseService.getMySwippes().then(matches => {
-      console.log(matches);
       matches.forEach(m => {
-        console.log(m);
-        
+        this.allUsers = this.getMyMatches(m);
+        this.isLoading = false;
       })
       
+    }, () => {
+      this.isLoading = false;
     })
       
   } 
 
-  
+  getMyMatches(users: any[]) {
+    return users.filter(user => user.match);
+  }
 
   openChats(user) {
     console.log(user);

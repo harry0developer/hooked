@@ -11,6 +11,7 @@ import { MatchPageModule } from '../match/match.module';
 import { LocationPageModule } from '../location/location.module';
 import { CameraPageModule } from '../camera/camera.module';
 import { UserModalPageModule } from '../user-modal/user-modal.module';
+import { SwipeCardPage } from '../swipe-card/swipe-card.page';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { UserModalPageModule } from '../user-modal/user-modal.module';
     FilterPageModule,
     
   ],
-  declarations: [UsersPage],
+  declarations: [UsersPage, SwipeCardPage],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class UsersPageModule {}

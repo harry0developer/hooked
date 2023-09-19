@@ -8,7 +8,7 @@
 
 <ion-content [fullscreen]="true">
 
-  <div class="users-wrapper">
+  <!-- <div class="users-wrapper">
     <ul class="user" *ngIf="matchedUser && matchedUser.length > 0">
       <div *ngFor="let user of matchedUser" class="item">
         <img [src]="user.profile_picture" alt="" (click)="openChats(user)">
@@ -22,11 +22,12 @@
       </div> 
     </ul>
   </div>
- 
+  -->
  
 
-   <div class="container" *ngIf="allUsers.length > 0; else emptyTemplate">
-    <ion-list lines="none">
+
+   <div class="container" *ngIf="!isLoading; else emptyTemplate">
+    <ion-list lines="none" *ngIf="allUsers && allUsers.length > 0">
       <ion-item class="bg" *ngFor="let user of allUsers; let i = index" (click)="openChats(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
@@ -38,7 +39,14 @@
         </ion-label>
       </ion-item>
     </ion-list>
+
+    <div class="is-loading" *ngIf="allUsers && allUsers.length < 1">
+      <h1>You don't have chats available</h1>
+      <p>Start swipping, to start chatting with your match.</p>
+    </div>
   </div> 
+
+ 
 
  
 

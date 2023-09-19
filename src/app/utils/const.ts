@@ -65,6 +65,7 @@ export const STORAGE = {
     USER: 'user',
     USERS: 'users',
     SEEN_INTRO: 'seen-intro',
-    LOCATION: 'location'
+    LOCATION: 'location',
+    SWIPES: 'swipes'
     
 }
