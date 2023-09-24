@@ -4,12 +4,13 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signO
 import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, query, where, CollectionReference, addDoc } from '@angular/fire/firestore';
 import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult, deleteObject } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
-import { BehaviorSubject, from, map, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable, take } from 'rxjs';
 import { COLLECTION, STATUS, STORAGE, SWIPE_USER } from 'src/app/utils/const';
 import { Chat, Swipe, User } from 'src/app/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-// import { collection, query, limit, where } from "firebase/firestore";
 import { Timestamp } from 'firebase/firestore';
+import { ModalController } from '@ionic/angular';
+import { MatchPage } from '../pages/match/match.page';
 
 
 @Injectable({
@@ -17,9 +18,6 @@ import { Timestamp } from 'firebase/firestore';
 })
 export class FirebaseService {
   userData: any; 
-
-
-  aMatch$ = new BehaviorSubject(null);
 
   dummy: User[] = [{
     uid: "UUID-000-001",
@@ -154,16 +152,10 @@ export class FirebaseService {
     private auth: Auth,
     private firestore: Firestore,
     private storage: Storage,
-    private afs: AngularFirestore    
+    private afs: AngularFirestore,
+    private modalCtrl: ModalController 
   ) {}
-
-
-  // getDummyData() {
-  //   return new Promise<User[]> ((resolve) => {
-  //     resolve(this.dummy)
-  //   })
-  // }
-
+ 
   setStorage(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(data));
   } 
@@ -210,19 +202,14 @@ export class FirebaseService {
     return await this.addDocumentToFirebaseWithCustomID(COLLECTION.USERS, user);
   }
 
-
-
   async updateUserPhotoList(user: User, img: string) {
     console.log("User before", user);
-
     const deleted = user.images.splice(user.images.indexOf(img),1);
     console.log("Deleted after", deleted);
-
     return await this.addDocumentToFirebaseWithCustomID(COLLECTION.USERS, user);
   }
 
   async deletePhotoFromFirebaseStorage(user: User, img: string) {
-    
     const fileName = this.getImageNameFromFirebaseUrl(img);
     console.log(fileName);
 
@@ -234,15 +221,13 @@ export class FirebaseService {
     // Delete the file
     return await deleteObject(desertRef);
     
-    
   }
 
   getImageNameFromFirebaseUrl(imageUrl: string): string {
-
     const subPath = imageUrl.split(`${COLLECTION.IMAGES}%2F${this.auth.currentUser.uid}%2F`)[1];
     return subPath.split(".jpeg")[0]+'.jpeg';
-
   }
+
   // Save picture to file on device
   public async savePictureInFirebaseStorage(cameraPhoto: Photo) {
 
@@ -285,19 +270,36 @@ export class FirebaseService {
       return null
     }
   }
+ 
 
-  getChatById() {
+  getChatsFromMe(uid: string) {
     collectionData<Chat>(
       query<Chat>(
         collection(this.firestore, COLLECTION.CHATS) as CollectionReference<Chat>,
-        where('published', '==', true)
+        where('from', '==', uid)
       ), { idField: 'id' }
     );
   }
 
+  getChatsSendToMe(uid: string) {
+    return new Promise<any>((resolve)=> {
+      collectionData<Chat>(
+        query<Chat>(
+          collection(this.firestore, COLLECTION.CHATS) as CollectionReference<Chat>,
+          where('to', '==', uid),
+          where('from', '==', uid)
+        ), { idField: 'id' }
+      );
+    });
+  }
+ 
 
   async getAllUsers(){
     return this.afs.collection<User>(COLLECTION.USERS).get();
+  }
+
+  async getAllChats(){
+    return this.afs.collection<User>(COLLECTION.CHATS).get();
   }
 
   queryUsersByEmail(email: string) {
@@ -306,18 +308,37 @@ export class FirebaseService {
     });
   }
 
+  getChatsFrom(uid: string) {
+    return new Promise<any>((resolve)=> {
+      this.afs.collection(COLLECTION.CHATS, ref => ref.where('from', '==', uid)).valueChanges().subscribe(res => resolve(res))
+    });
+  }
+  getChatsTo(uid: string) {
+    return new Promise<any>((resolve)=> {
+      this.afs.collection(COLLECTION.CHATS, ref => ref.where('to', '==', uid)).valueChanges().subscribe(res => resolve(res))
+    });
+  }
+
   queryUsersByUid(collection: string, uid: string) {
     return new Promise<any>((resolve)=> {
       this.afs.collection(collection, ref => ref.where('uid', '==', uid).limit(1)).valueChanges().subscribe(user => resolve(user))
     });
-  }
-
+  } 
 
   async getMySwippes() {
     return await collectionData<Swipe>(
       query<Swipe>(
         collection(this.firestore, COLLECTION.SWIPES) as CollectionReference<Swipe>,
         where('swipperUid', '==', this.auth.currentUser.uid),
+      ), { idField: 'uid' }
+    );
+    
+  }
+
+  async getMyChats() {
+    return await collectionData<any>(
+      query<any>(
+        collection(this.firestore, COLLECTION.CHATS) as CollectionReference<any>,
       ), { idField: 'uid' }
     );
     
@@ -348,8 +369,7 @@ export class FirebaseService {
     );
 
     return new Promise<string>((resolve, reject) => {
-      ref.forEach(res => {
-       
+      ref.pipe(take(1)).forEach(res => {
         // No data, then am the first swipper
         if(!res || res.length < 1) {
           const swipeData: Swipe = {
@@ -371,9 +391,10 @@ export class FirebaseService {
             resDoc.match = true;
             const docRef = doc(this.firestore, COLLECTION.SWIPES, resDoc.uid);
             setDoc(docRef, resDoc, {merge: true});
+            console.log("We got a match");
            this.getDocumentFromFirebase(COLLECTION.USERS, resDoc.swipperUid).then(r => {
              if(r) {
-               this.aMatch$.next(r);
+              this.showMatchModal(r);
                console.log("Its a match", r);
               } else {
                 console.log("Could not get user");
@@ -390,8 +411,25 @@ export class FirebaseService {
       });
     })
   }
- 
 
+  private async showMatchModal(user){
+    console.log("match user", user);
+    
+    const modal = await this.modalCtrl.create({
+      component: MatchPage,
+      componentProps: { 
+        user,
+        me: this.auth.currentUser
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      console.log("confirmed");
+    }
+    
+  }
+ 
   private  getServerTimestamp() {
     return Timestamp.now().toMillis();
   }

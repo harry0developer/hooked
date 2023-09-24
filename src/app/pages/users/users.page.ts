@@ -64,7 +64,7 @@ export class UsersPage implements OnInit {
   ){}
     
  async ngOnInit() {  
- 
+
     // this.gestureCtrlService.unLiked$.subscribe(nl => {
     //   console.log(nl);
     // });
@@ -82,7 +82,7 @@ export class UsersPage implements OnInit {
 
     //1. Get all user
     await this.getAllUsers();
-    await this.initMySwipes(); 
+    // await this.initMySwipes(); 
 
     //2. Get current logged in user
     this.firebaseService.getCurrentUser().then((user: User) => {
@@ -101,52 +101,54 @@ export class UsersPage implements OnInit {
     // } 
   }
 
+ 
   async getAllUsers() {
     this.usersLoaded$.next(false);
-    let cachedUsers = this.firebaseService.getStorage('users');
-    if(cachedUsers && cachedUsers.length > 0 ) {
-      this.allUsers = cachedUsers;
-    } else {
-      this.chatService.getUsers().forEach(users => {
-        cachedUsers.push(users);
-        this.allUsers.push(users); 
-        this.firebaseService.setStorage('users', users);
+
+    this.users = [];
+    let usersEx = [];
+    await this.chatService.getData(COLLECTION.USERS, 100).forEach(users => {
+      this.chatService.getSwipes().forEach(matches => {
+        if(matches.length < 1) {
+          this.users = users;
+        } else {
+          usersEx = users;
+          matches.forEach(m => {    
+            usersEx.forEach(u => {
+              if(m.swippedUid === u.uid) {
+                usersEx.splice(usersEx.indexOf(u), 1);
+              }
+            })
+          });
+          this.users = usersEx;
+        }
+        this.usersLoaded$.next(true);
       });
-    }
+    });
+        
   }
 
   async initMySwipes() {
     await this.firebaseService.getMySwippes().then(matches => {
       matches.forEach(matchedUsers => {
-        this.mySwipes = matchedUsers; 
-        this.excludeSwippedUsers(this.allUsers, this.mySwipes); 
+        matchedUsers.forEach(m => {
+          this.users = this.allUsers.filter(u => u.uid !== m.swippedUid);
+        });
       });
-    }, () => {
+      if(this.users.length < 1) {
+        this.users = this.allUsers;   
+        
+      }
+      console.log("Users", this.users);
+      this.usersLoaded$.next(true);
+    }, () => {      
       this.usersLoaded$.next(true);
     });
-  }
-
-  private excludeSwippedUsers(users: any[], swipes: any[]){
-    users.forEach(u => {
-      swipes.forEach(s => {
-        if(u.uid === s.swippedUid) {
-          users.splice(this.allUsers.indexOf(u), 1);
-        }
-      });
-    });
-    this.users = [...new Map(users.map(item => [item['uid'], item])).values()];
- 
-    console.log("Users ex", this.users);
-    
-    // this.users =  [...new Map(users.map(item => [item['uid'], item])).values()];
-    // console.log("Users ", this.users);
-    // this.allUsers = this.users;
-    this.usersLoaded$.next(true);
-    // this.changeDetectorRef.detectChanges();
   } 
 
-  ngAfterViewInit() {
+   
 
+  ngAfterViewInit() {
     this.cards.changes.subscribe(r =>{
       const cardArray = this.cards.toArray();      
       this.gestureCtrlService.useSwiperGesture(cardArray); 

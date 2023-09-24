@@ -38,11 +38,7 @@ export class ChatPage implements OnInit {
       to: this.reciever.uid,
       createdAt: this.chatService.getServerTimestamp()
     } 
-
     console.log(newMessage);
-    
-    
-
     const newMessages: MessageObj = {
       messages: [
         ...this.messagesArray,
@@ -60,7 +56,6 @@ export class ChatPage implements OnInit {
   }
 
   getSentDate(msg) {
-    
     return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
   }
 
@@ -68,26 +63,18 @@ export class ChatPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params:any) => {
       this.reciever = JSON.parse(params.user);
-
       this.chatService.documentExists(COLLECTION.CHATS, this.reciever.uid);
-
       this.chatService.documentExist$.subscribe(status => {
-
         console.log("Document status", status);
-        
         this.chatsDocumentId = status;
         this.chatService.getOurMessages(status).then(msgs => {
            console.log("got new messages", msgs);
-           
             msgs.forEach(m => {
               if(m && m.messages) {
                 this.messagesArray = m.messages;
                 console.log(m.messages);
-                
               }
-              
             })
-          
         })
       });
    }); //route obs

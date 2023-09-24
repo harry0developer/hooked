@@ -19,7 +19,7 @@
         <h1>{{user.name}}, {{ getUserAge(user)}}</h1>
         <p>
           <ion-icon name="location-outline"></ion-icon>
-          12km away
+          {{user.location.distance || 0}}km away
         </p>
       </div>
 
@@ -40,39 +40,5 @@
   </ng-template>
  
 
-  <!-- show more modal -->
-  <!-- <ion-modal
-    trigger="open-showmore-modal"
-    [initialBreakpoint]=".8"
-    [breakpoints]="[0, .8]"
-    handleBehavior="cycle"
-  >
-    <ng-template>
-      <ion-content >
-        <div class="modal-container">
-          <ion-list lines="none"> 
-      
-            <ion-item class="edit-info">
-              <ion-avatar slot="start">
-                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </ion-avatar>
-              <ion-label>{{activeUser.name}}</ion-label>
-            </ion-item>
-            <ion-item class="edit-info">
-              <ion-label>
-                <h3> Show my gender Yes/No</h3>
-              </ion-label>
-            </ion-item>
-            <ion-item class="edit-info">
-              <ion-label>
-                <h3> Show my sexual orientation Yes/No</h3>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-          
-        </div>
-      </ion-content>
-    </ng-template>
-  </ion-modal> -->
 </ion-content>
  

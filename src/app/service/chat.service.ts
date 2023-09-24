@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { Auth} from '@angular/fire/auth'; 
 import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 import { COLLECTION } from 'src/app/utils/const';
-import { MessageObj, User } from 'src/app/models/User';
+import { MessageObj, Swipe, User } from 'src/app/models/User';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
 
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { query } from '@angular/fire/firestore';
 
 export interface docStatus {
   uid: string;
@@ -32,14 +33,6 @@ export class ChatService {
     private afs: AngularFirestore,
     private db: AngularFireDatabase
   ) {}
-
-  // getUser(text: string) {
-  //   this.db.list('/messages').push({
-  //     text,
-  //     createdAt: new Date().toString()
-  //   });
-  // }
- 
 
   async documentExists(collection: string, uid: string){
     const reciever_sender_uid = `${uid}__${this.auth.currentUser.uid}`; 
@@ -81,7 +74,6 @@ export class ChatService {
     return Timestamp.now().toMillis()
   }
   
-
   async addChatMessage(docId: string, msg: MessageObj, reciever_uid: string) {
     if(!docId) {
       docId = `${this.auth.currentUser.uid}__${reciever_uid}`
@@ -93,18 +85,24 @@ export class ChatService {
     return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).set(msg, {merge: true});
   }
 
-  getUsers() {
-    return this.afs.collection(COLLECTION.USERS).valueChanges({idField: 'uid'}) as Observable<User[]>
+  getData(collection: string, limit: number) {
+    return this.afs.collection<User>(collection, ref =>
+      ref.where("uid", "!=", this.auth.currentUser.uid).limit(limit)
+    ).valueChanges();
   }
  
- 
+  getUsers() {
+    return this.afs.collection(COLLECTION.USERS)
+    .valueChanges({idField: 'uid'}) as Observable<User[]>
+  }
 
+  getSwipes() {
+    return this.afs.collection(COLLECTION.SWIPES, ref => ref.where("swipperUid", "==", this.auth.currentUser.uid))
+    .valueChanges({idField: 'uid'}) as Observable<Swipe[]>
+  }
+  
   async getOurMessages(docId) {
     return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).valueChanges();
-  }
-
-
- 
-
+  } 
 
 }

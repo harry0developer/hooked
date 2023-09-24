@@ -7,28 +7,27 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-  <!-- <div class="users-wrapper">
-    <ul class="user" *ngIf="matchedUser && matchedUser.length > 0">
-      <div *ngFor="let user of matchedUser" class="item">
-        <img [src]="user.profile_picture" alt="" (click)="openChats(user)">
-        <p (click)="openChats(user)">Maphuti Stipane  {{user}}</p>
+  <div class="users-wrapper">
+    <ul class="user" *ngIf="matches && matches.length > 0">
+      <div *ngFor="let user of matches" class="item">
+        <ion-avatar (click)="openChats(user)">
+          <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
+        </ion-avatar>  
+        <p (click)="openChats(user)">{{user.name  | titlecase }}</p>
       </div> 
     </ul>
-    <ul class="user" *ngIf="matchedUser.length < 1">
+    <ul class="user" *ngIf="matches.length < 1">
       <div class="item">
         <img [src]="defaultImage" alt="" >
-        <p >Likes</p>
+        <p>Matches</p>
       </div> 
     </ul>
   </div>
-  -->
- 
 
-
+  
    <div class="container" *ngIf="!isLoading; else emptyTemplate">
-    <ion-list lines="none" *ngIf="allUsers && allUsers.length > 0">
-      <ion-item class="bg" *ngFor="let user of allUsers; let i = index" (click)="openChats(user)">
+    <ion-list lines="none" *ngIf="activeChats && activeChats.length > 0">
+      <ion-item class="bg" *ngFor="let user of activeChats; let i = index" (click)="openChats(user)">
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
         </ion-avatar>  
@@ -40,16 +39,12 @@
       </ion-item>
     </ion-list>
 
-    <div class="is-loading" *ngIf="allUsers && allUsers.length < 1">
+    <div class="is-loading" *ngIf="matches && matches.length < 1">
       <h1>You don't have chats available</h1>
       <p>Start swipping, to start chatting with your match.</p>
     </div>
   </div> 
-
  
-
- 
-
   <ng-template #emptyTemplate>
     <div class="is-loading">
       <img src="../../../assets/loading.gif" alt="">

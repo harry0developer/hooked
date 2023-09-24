@@ -22,7 +22,6 @@ export class IntroPage implements OnInit {
 
   goToLogin() {
     this.firebaseService.setStorage(STORAGE.SEEN_INTRO, true);
-    // this.router.navigate(['/signin']);
   }
 
 }

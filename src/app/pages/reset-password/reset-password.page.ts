@@ -40,7 +40,7 @@ export class ResetPasswordPage implements OnInit {
   }
 
   goSignInPage(){
-    this.router.navigate(["/signin"]);
+    this.router.navigate(["/auth"]);
   }
 
 }

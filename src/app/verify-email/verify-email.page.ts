@@ -20,7 +20,7 @@ export class VerifyEmailPage implements OnInit {
   }
 
   goLoginPage(){
-    this.router.navigate(["/signin"]);
+    this.router.navigate(["/auth"]);
   }
 
 

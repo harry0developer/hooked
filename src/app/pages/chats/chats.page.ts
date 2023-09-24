@@ -16,12 +16,13 @@ export class ChatsPage implements OnInit {
 
   defaultImage = '../../../assets/default/default.jpg';
 
-  matchedUser: User[] = [];
   currentUser: any;
   isLoading: boolean = true;
 
-  allUsers = [];
-
+  matchedUsers = [];
+  matches = [];
+  users = [];
+  activeChats = [];
 
   constructor(
     private router: Router, 
@@ -31,39 +32,61 @@ export class ChatsPage implements OnInit {
     private chatService: ChatService
   ) {}
 
-  ngOnInit(): void {
-
-    // this.firebaseService.getDummyData().then(r => this.allUsers = r);
-
-    // const users = this.firebaseService.getStorage(STORAGE.USERS);
-    // if(!users) {
-    //   console.log("Fetching users from firebase");
-      
-    //   this.chatService.getUsers().forEach(r => {
-    //     this.allUsers = r;
-    //     this.firebaseService.setStorage(STORAGE.USERS, r);
-    //     // this.usersLoaded$.next(true)
-    //   });
-    // } else {
-    //   this.allUsers = users;
-    // }
-
-    this.isLoading = true;
-
-    this.firebaseService.getMySwippes().then(matches => {
-      matches.forEach(m => {
-        this.allUsers = this.getMyMatches(m);
-        this.isLoading = false;
-      })
-      
-    }, () => {
-      this.isLoading = false;
-    })
-      
+  async ngOnInit() {
+    this.currentUser = this.auth.currentUser;
+    await this.getAllUsers();
+    await this.getMatchedUsers();
+    this.getChats();
   } 
 
-  getMyMatches(users: any[]) {
-    return users.filter(user => user.match);
+  async getAllUsers() {
+    this.isLoading = true;
+    let cachedUsers = this.firebaseService.getStorage(STORAGE.USERS);
+    if(cachedUsers && cachedUsers.length > 0 ) {
+      this.users = cachedUsers;
+    } else {
+      cachedUsers = [];
+      this.users = [];
+      await this.chatService.getUsers().forEach(users => {
+        this.users.push(users); 
+        this.firebaseService.setStorage(STORAGE.USERS, users);
+      });
+    }
+    this.isLoading = false;    
+  }
+
+  async getMatchedUsers() {
+    await this.firebaseService.getMySwippes().then(matches => {
+      matches.forEach(m => {
+        this.matchedUsers = m.filter(user => user.match);
+        this.getUsersInfo(this.users, this.matchedUsers);
+        this.isLoading = false;
+      });
+    }, () => {
+      this.isLoading = false;
+    });
+  }
+
+  async getChats() {
+    this.firebaseService.getMyChats().then(res => {
+      res.forEach(d => { 
+        console.log("Data ", d);
+      })
+    }); 
+  }
+
+  async getUsersInfo(users, matchedUsers) {
+    this.matches = [];
+    console.log("Matched user", matchedUsers);
+    
+    matchedUsers.forEach(m => {
+      users.forEach(u => {        
+        if(m.swippedUid === u.uid || m.swipperUid === u.uid ) {
+          this.matches.push(u);
+
+        }  
+      })
+    })
   }
 
   openChats(user) {

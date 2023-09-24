@@ -8,7 +8,7 @@ import { Camera,  CameraResultType, CameraSource } from '@capacitor/camera';
 import { Subscription } from 'rxjs';
 import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
-import { COLLECTION } from 'src/app/utils/const';
+import { COLLECTION, STORAGE } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
 var moment = require('moment'); // require
  
@@ -40,12 +40,20 @@ export class ProfilePage implements OnInit{
 
   ngOnInit(): void {
     this.currentUser = this.auth.currentUser;
-    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, this.currentUser.uid).then(user => {
+    const user = this.firebaseService.getStorage(STORAGE.USER);
+    if(user && user.uid) {
       this.user = user;
-      console.log(user);
       this.isLoading = false;
-    })
-   }
+
+    } else {
+      this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, this.currentUser.uid).then(user => {
+        this.user = user;
+        console.log(user);
+        this.firebaseService.setStorage(STORAGE.USER, user);
+        this.isLoading = false;
+      }, () => this.isLoading = false);
+    }
+  }
 
   async openModal() {
     const modal = await this.modalCtrl.create({
@@ -133,10 +141,7 @@ export class ProfilePage implements OnInit{
   private async deletePhoto(index: number) {
     const delLoading = await this.loadingCtrl.create({message: "Deleting photo, please wait..."});
     await delLoading.present();
-
-
     const updateLoading = await this.loadingCtrl.create({message: "Updating your profile, please wait..."});
-
     this.firebaseService.deletePhotoFromFirebaseStorage(this.user, this.user.images[index])
     .then((res) => {
       delLoading.dismiss();

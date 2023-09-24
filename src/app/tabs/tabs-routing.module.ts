@@ -22,14 +22,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/signin',
+        redirectTo: '/auth',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/signin',
+    redirectTo: '/auth',
     pathMatch: 'full'
   }
 ];
