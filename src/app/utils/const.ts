@@ -57,6 +57,7 @@ export const ROUTES = {
     SIGNUP: "signup",
     USERS: "tabs/users",
     CHATS: "tabs/chats",
+    CHAT: "/chat",
     PROFILE: "tabs/profile",
 }
 

@@ -7,10 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { MatchPageRoutingModule } from './match-routing.module';
 
 import { MatchPage } from './match.page';
-import { LottieComponent, LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
+import { LottieModule } from 'ngx-lottie';
 
-// Export this function
 export function playerFactory(): any {  
   return import('lottie-web');
 }
@@ -21,8 +19,7 @@ export function playerFactory(): any {
     FormsModule,
     IonicModule,
     MatchPageRoutingModule,
-    LottieModule.forRoot({ player: playerFactory }),  
-
+    LottieModule.forRoot({ player: playerFactory })
   ],
   declarations: [MatchPage],
   schemas: [NO_ERRORS_SCHEMA]

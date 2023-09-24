@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AnimationItem } from 'lottie-web';
 import { AnimationLoader, AnimationOptions, provideLottieOptions } from 'ngx-lottie';
 import { User } from 'src/app/models/User';
 import { FirebaseService } from 'src/app/service/firebase.service';
-import { STORAGE } from 'src/app/utils/const';
+import { ROUTES, STORAGE } from 'src/app/utils/const';
 
 @Component({
   selector: 'app-match',
@@ -25,7 +25,10 @@ export class MatchPage implements OnInit{
     path: '/assets/animations/fireworks.json'  
   };  
   
-  constructor(private modalCtrl: ModalController, private firebaseService: FirebaseService) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router,
+    private firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
     this.me = this.firebaseService.getStorage(STORAGE.USER);
@@ -44,6 +47,8 @@ export class MatchPage implements OnInit{
   }
 
   startChatting() {
-    return this.modalCtrl.dismiss(null, 'chat');
+    this.modalCtrl.dismiss(null, ROUTES.CHAT);
+    this.router.navigate([ROUTES.CHAT, this.user.uid, {user: JSON.stringify(this.user)}])
+  
   }
 }
