@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -36,6 +36,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { InternetPageModule } from './pages/internet/internet.module';
 import { LocationPageModule } from './pages/location/location.module';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -48,7 +49,6 @@ import { LocationPageModule } from './pages/location/location.module';
     HttpClientModule,
     IvyGalleryModule,
 
- 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
@@ -56,8 +56,6 @@ import { LocationPageModule } from './pages/location/location.module';
 
     InternetPageModule,
     LocationPageModule,
-
-
    //this was working but cannot get list of documents in a collection 
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

@@ -418,8 +418,7 @@ export class FirebaseService {
     const modal = await this.modalCtrl.create({
       component: MatchPage,
       componentProps: { 
-        user,
-        me: this.auth.currentUser
+        user
       }
     });
     modal.present();

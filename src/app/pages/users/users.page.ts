@@ -84,9 +84,12 @@ export class UsersPage implements OnInit {
     await this.getAllUsers();
     // await this.initMySwipes(); 
 
+    
+
     //2. Get current logged in user
     this.firebaseService.getCurrentUser().then((user: User) => {
       this.currentUser = user;
+      this.firebaseService.setStorage(STORAGE.USER, user);
       if(!user.profile_picture) {
         this.showAlert("Inclomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
       }
@@ -99,6 +102,23 @@ export class UsersPage implements OnInit {
     // if(!location || !location.lat || !location.lng) {
     //   this.openModal(SERVICE.LOCATION);
     // } 
+  }
+
+  private async showMatchModal(user){
+    console.log("match user", user);
+    
+    const modal = await this.modalCtrl.create({
+      component: MatchPage,
+      componentProps: { 
+        user
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      console.log("confirmed");
+    }
+    
   }
 
  
@@ -204,23 +224,24 @@ export class UsersPage implements OnInit {
 
   async showUserModal(user) {
 
-    const modal = await this.modalCtrl.create({
-      component: UserModalPage,
-      initialBreakpoint: 0.8,
-      breakpoints: [0, 0.8],
-      componentProps: { 
-        user
-      }
+    this.showMatchModal(user)
+    // const modal = await this.modalCtrl.create({
+    //   component: UserModalPage,
+    //   initialBreakpoint: 0.8,
+    //   breakpoints: [0, 0.8],
+    //   componentProps: { 
+    //     user
+    //   }
 
-    });
-    modal.present();
+    // });
+    // modal.present();
 
-    const { data, role } = await modal.onWillDismiss();
+    // const { data, role } = await modal.onWillDismiss();
 
-    if (role === 'confirm') {
-      console.log("confirmed");
+    // if (role === 'confirm') {
+    //   console.log("confirmed");
       
-    }
+    // }
   }
 
   async showAlert(header: string, message: string, btnText: string) {

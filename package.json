@@ -43,7 +43,9 @@
     "firebase": "^9.15.0",
     "hammerjs": "^2.0.8",
     "ionicons": "^6.0.3",
+    "lottie-web": "^5.12.2",
     "moment": "^2.29.4",
+    "ngx-lottie": "^10.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
