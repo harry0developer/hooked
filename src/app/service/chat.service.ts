@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth} from '@angular/fire/auth'; 
-import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, defer, forkJoin, from, map, Observable, Subject } from 'rxjs';
 import { COLLECTION } from 'src/app/utils/const';
 import { MessageObj, Swipe, User } from 'src/app/models/User';
 
@@ -85,6 +85,32 @@ export class ChatService {
     return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).set(msg, {merge: true});
   }
 
+  addTempUsers() {
+    let user: User  = { 
+      uid: "",
+      email: "wayne@test.com",
+      name: "Wayne",
+      gender: "Male",
+      want: ["ONS", "NSA", "FWB"],
+      with: [ "Female"],
+      dob: "1995-01-01T00:21:00+02:00",
+      verificationCode: "12345",
+      orientation: "Straight",
+      profile_picture: "https://firebasestorage.googleapis.com/v0/b/hooked-3b11c.appspot.com/o/images%2F0tLRwFVa0chqT18TF50IWtOnjaz2%2F1676667401059.jpeg?alt=media&token=64d04cd1-6624-4824-a00d-a9ed4989147e",
+      images: [],
+      password: "123456",
+      isVerified: false,
+      location: {
+        distance: "",
+        geo: {
+          lat: 0,
+          lng: 0
+        }
+      }
+    }; 
+    this.afs.collection<User>(COLLECTION.USERS).add(user)
+  }
+
   getData(collection: string, limit: number) {
     return this.afs.collection<User>(collection, ref =>
       ref.where("uid", "!=", this.auth.currentUser.uid).limit(limit)
@@ -96,8 +122,8 @@ export class ChatService {
     .valueChanges({idField: 'uid'}) as Observable<User[]>
   }
 
-  getSwipes() {
-    return this.afs.collection(COLLECTION.SWIPES, ref => ref.where("swipperUid", "==", this.auth.currentUser.uid))
+  getSwipesById(key: string, uid: string) {
+    return this.afs.collection(COLLECTION.SWIPES, ref => ref.where(key, "==", uid))
     .valueChanges({idField: 'uid'}) as Observable<Swipe[]>
   }
   
@@ -105,4 +131,19 @@ export class ChatService {
     return await this.afs.collection<MessageObj>(COLLECTION.CHATS).doc(docId).valueChanges();
   } 
 
+  getMySwipes(limit:number = 100){
+    let swipper = this.afs.collection<Swipe>(COLLECTION.SWIPES, ref =>
+      ref.where("swipperUid", "==", this.auth.currentUser.uid).limit(limit)
+    ).valueChanges();
+
+    let swipped = this.afs.collection<Swipe>(COLLECTION.SWIPES, ref =>
+      ref.where("swippedUid", "==", this.auth.currentUser.uid).limit(limit)
+    ).valueChanges();
+
+    return combineLatest({
+      swippers: swipper,
+      swipped: swipped
+    })
+    
+  }
 }

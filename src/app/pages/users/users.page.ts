@@ -46,7 +46,6 @@ export class UsersPage implements OnInit {
   usersLoaded$ = new BehaviorSubject(false);
   activeUser: User;
 
-  matchUserSubscription$: Subscription;
   mySwipes: any[] = [];
 
   @ViewChildren(IonCard, { read: ElementRef }) cards: QueryList<ElementRef>;
@@ -65,30 +64,25 @@ export class UsersPage implements OnInit {
     
  async ngOnInit() {  
 
-    // this.gestureCtrlService.unLiked$.subscribe(nl => {
-    //   console.log(nl);
-    // });
-    // this.gestureCtrlService.like$.subscribe(like => {
-    //   console.log(like);
-    // });
+    //1. Get current logged in user
+    await this.setCurrentUser();
 
-    // this.matchUserSubscription$ = this.firebaseService.aMatch$.subscribe(matchData => {
-    //   if(matchData && matchData.uid) {
-    //     console.log(matchData);
-    //     this.openModal(MODALS.MATCH,  matchData)
-    //   }
-    // })
-
-
-    //1. Get all user
+    //2. Get all user
     await this.getAllUsers();
-    // await this.initMySwipes(); 
 
-    
-
-    //2. Get current logged in user
-    this.firebaseService.getCurrentUser().then((user: User) => {
+  
+    //3. Get location from storage
+    // const location = this.firebaseService.getStorage(STORAGE.LOCATION);
+    // if(!location || !location.lat || !location.lng) {
+    //   this.openModal(SERVICE.LOCATION);
+    // } 
+  }
+ 
+  async setCurrentUser() {
+    await this.firebaseService.getCurrentUser().then((user: User) => {
       this.currentUser = user;
+      console.log("Current ", this.currentUser);
+      
       this.firebaseService.setStorage(STORAGE.USER, user);
       if(!user.profile_picture) {
         this.showAlert("Inclomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
@@ -96,54 +90,71 @@ export class UsersPage implements OnInit {
     }).catch(err => {
       console.log(err);
     });
-
-    //3. Get location from storage
-    // const location = this.firebaseService.getStorage(STORAGE.LOCATION);
-    // if(!location || !location.lat || !location.lng) {
-    //   this.openModal(SERVICE.LOCATION);
-    // } 
   }
 
-  private async showMatchModal(user){
-    console.log("match user", user);
-    
-    const modal = await this.modalCtrl.create({
-      component: MatchPage,
-      componentProps: { 
-        user
-      }
-    });
-    modal.present();
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'confirm') {
-      console.log("confirmed");
-    }
-    
-  }
 
- 
   async getAllUsers() {
     this.usersLoaded$.next(false);
-
     this.users = [];
     let usersEx = [];
     await this.chatService.getData(COLLECTION.USERS, 100).forEach(users => {
-      this.chatService.getSwipes().forEach(matches => {
-        if(matches.length < 1) {
+      console.log("Users", users);
+
+      //I want list
+      let wantList = [];
+      users.forEach(u => {
+        u.want.forEach(uw => {
+          if(this.currentUser.want.includes(uw)) {
+            wantList.push(u);
+          }
+        })
+      });
+
+      // With list 
+      let withList = [];
+      users.forEach(u => {
+        u.with.forEach(uw => {
+          if(this.currentUser.with.includes(uw)) {
+            withList.push(u);
+          }
+        })
+      });
+
+      wantList = [...new Set(wantList)];
+      withList = [...new Set(withList)];
+      const filtered =  [...wantList, ...withList];
+      users =[...new Set(filtered)];
+      
+      this.chatService.getMySwipes().forEach(s => {
+        const swipes = [...s.swippers, ...s.swipped];
+
+        if(swipes.length < 1) {
           this.users = users;
         } else {
           usersEx = users;
-          matches.forEach(m => {    
+          //exclude swipped
+          s.swipped.forEach(s => {    
+            usersEx.forEach(u => {
+              if(u.uid == s.swipperUid && s.match) {
+                usersEx.splice(usersEx.indexOf(u), 1);
+              } 
+            })
+          });
+
+          // exclude swipper
+          s.swippers.forEach(m => {    
             usersEx.forEach(u => {
               if(m.swippedUid === u.uid) {
                 usersEx.splice(usersEx.indexOf(u), 1);
               }
             })
           });
+
           this.users = usersEx;
         }
         this.usersLoaded$.next(true);
       });
+
     });
         
   }
@@ -166,8 +177,7 @@ export class UsersPage implements OnInit {
     });
   } 
 
-   
-
+  
   ngAfterViewInit() {
     this.cards.changes.subscribe(r =>{
       const cardArray = this.cards.toArray();      
@@ -223,25 +233,23 @@ export class UsersPage implements OnInit {
   }
 
   async showUserModal(user) {
+    const modal = await this.modalCtrl.create({
+      component: UserModalPage,
+      initialBreakpoint: 0.8,
+      breakpoints: [0, 0.8],
+      componentProps: { 
+        user
+      }
 
-    this.showMatchModal(user)
-    // const modal = await this.modalCtrl.create({
-    //   component: UserModalPage,
-    //   initialBreakpoint: 0.8,
-    //   breakpoints: [0, 0.8],
-    //   componentProps: { 
-    //     user
-    //   }
+    });
+    modal.present();
 
-    // });
-    // modal.present();
+    const { data, role } = await modal.onWillDismiss();
 
-    // const { data, role } = await modal.onWillDismiss();
-
-    // if (role === 'confirm') {
-    //   console.log("confirmed");
+    if (role === 'confirm') {
+      console.log("confirmed");
       
-    // }
+    }
   }
 
   async showAlert(header: string, message: string, btnText: string) {
@@ -254,9 +262,5 @@ export class UsersPage implements OnInit {
       this.router.navigateByUrl(ROUTES.PROFILE, {replaceUrl:true})
     });
   }
-
-  ngOnDestroy() {
-    this.matchUserSubscription$.unsubscribe();
-  }
-
+ 
 }
