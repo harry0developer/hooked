@@ -183,7 +183,6 @@ export class UsersPage implements OnInit {
       const cardArray = this.cards.toArray();      
       this.gestureCtrlService.useSwiperGesture(cardArray); 
     });
-    
   }
  
   filterUsers() {

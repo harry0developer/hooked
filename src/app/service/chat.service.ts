@@ -111,7 +111,7 @@ export class ChatService {
     this.afs.collection<User>(COLLECTION.USERS).add(user)
   }
 
-  getData(collection: string, limit: number) {
+  getData(collection: string, limit: number = 100) {
     return this.afs.collection<User>(collection, ref =>
       ref.where("uid", "!=", this.auth.currentUser.uid).limit(limit)
     ).valueChanges();
@@ -146,4 +146,10 @@ export class ChatService {
     })
     
   }
+
+  getMyChats(limit:number = 100){
+    return this.afs.collection(COLLECTION.CHATS)
+    .valueChanges({idField: 'uid'}) as Observable<User[]>
+  }
+
 }

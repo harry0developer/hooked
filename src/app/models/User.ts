@@ -34,6 +34,11 @@ export interface User {
     to: string;
  }
 
+ export interface MessageBase {
+   messages: Message[],
+   uid?: string;
+ }
+
  export interface Swipe {
    swipperUid: string;
    swippedUid: string;

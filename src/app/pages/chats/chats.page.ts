@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router'; 
 import { map, Observable, of } from 'rxjs';
-import { User } from 'src/app/models/User';
+import { Message, MessageBase, User } from 'src/app/models/User';
 import { ChatService } from 'src/app/service/chat.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { LocationService } from 'src/app/service/location.service';
-import { STORAGE } from 'src/app/utils/const';
+import { COLLECTION, STORAGE } from 'src/app/utils/const';
 @Component({
   selector: 'app-chats',
   templateUrl: 'chats.page.html',
@@ -35,44 +35,74 @@ export class ChatsPage implements OnInit {
   async ngOnInit() {
     this.currentUser = this.auth.currentUser;
     await this.getAllUsers();
-    await this.getMatchedUsers();
-    this.getChats();
+
   } 
+
 
   async getAllUsers() {
     this.isLoading = true;
-    let cachedUsers = this.firebaseService.getStorage(STORAGE.USERS);
-    if(cachedUsers && cachedUsers.length > 0 ) {
-      this.users = cachedUsers;
-    } else {
-      cachedUsers = [];
-      this.users = [];
-      await this.chatService.getUsers().forEach(users => {
-        this.users.push(users); 
-        this.firebaseService.setStorage(STORAGE.USERS, users);
-      });
-    }
-    this.isLoading = false;    
-  }
-
-  async getMatchedUsers() {
-    await this.firebaseService.getMySwippes().then(matches => {
-      matches.forEach(m => {
-        this.matchedUsers = m.filter(user => user.match);
-        this.getUsersInfo(this.users, this.matchedUsers);
+    this.users = [];
+    let matchList = [];
+    await this.chatService.getData(COLLECTION.USERS).forEach(users => {  
+      
+      this.chatService.getMySwipes().forEach(s => {
+        const swipes = [...s.swippers, ...s.swipped];
+         
+        const matches = swipes.filter(s => s.match) || [];
+        s.swippers.forEach(ss => {
+          users.forEach(u => {
+            if(u.uid == ss.swippedUid) {
+              matchList.push(u);
+            }
+          })
+        });
+        s.swipped.forEach(sp => {
+          users.forEach(u => {
+            if(u.uid == sp.swipperUid) {
+              matchList.push(u);
+            }
+          })
+        });
+        this.matches = [...new Set(matchList)];
         this.isLoading = false;
+        this.getChats();
       });
-    }, () => {
-      this.isLoading = false;
-    });
+
+    });  
+
+
   }
 
-  async getChats() {
-    this.firebaseService.getMyChats().then(res => {
-      res.forEach(d => { 
-        console.log("Data ", d);
-      })
-    }); 
+ 
+   async getChats() {
+    let myMessages:MessageBase[] = [];
+    let activeChatsTmp = [];
+    
+    await this.firebaseService.getMyChats().then(res => {
+      res.forEach((chats: any) => { 
+
+        console.log("Matches ", this.matches);
+        
+        myMessages = chats.filter(c => c.uid.split("__")[0] === this.currentUser.uid || c.uid.split("__")[1] === this.currentUser.uid);
+        console.log("MSGS ", myMessages);
+        myMessages.forEach(msg => {          
+          if(msg.uid.split("__")[0] === this.currentUser.uid ) {
+            activeChatsTmp.push(this.getUserById(msg.uid.split("__")[1]));
+
+          } else {
+            activeChatsTmp.push(this.getUserById(msg.uid.split("__")[0]));
+          }
+        });
+        this.activeChats = [...new Set(activeChatsTmp)];
+      });
+
+      
+    });  
+    
+  }
+
+  getUserById(uid: string): User {
+    return this.matches.filter(m => m.uid === uid)[0];
   }
 
   async getUsersInfo(users, matchedUsers) {
