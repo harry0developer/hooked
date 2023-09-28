@@ -3,6 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router'; 
 import { Message, MessageBase, Swipe, User } from 'src/app/models/User';
 import { ChatService } from 'src/app/service/chat.service';
+import { DataService } from 'src/app/service/data.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { LocationService } from 'src/app/service/location.service';
 import { COLLECTION, STORAGE } from 'src/app/utils/const';
@@ -28,13 +29,13 @@ export class ChatsPage implements OnInit {
     private firebaseService: FirebaseService,
     private auth: Auth,
     private locationService: LocationService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private dataService: DataService
   ) {}
 
   async ngOnInit() {
     this.currentUser = this.auth.currentUser;
     await this.getAllUsers();
-    
   } 
 
 
@@ -44,9 +45,7 @@ export class ChatsPage implements OnInit {
     let matchList: User[] = [];
     await this.chatService.getData(COLLECTION.USERS).forEach(users => {  
       
-      this.chatService.getMySwipes().forEach(s => {
-        const swipes = [...s.swippers, ...s.swipped];
-         
+      this.chatService.getMySwipes().forEach(s => {         
         s.swippers.forEach(ss => {
           users.forEach(u => {
             if(u.uid == ss.swippedUid) {
@@ -83,15 +82,21 @@ export class ChatsPage implements OnInit {
             user = this.getUserById(msg.uid.split("__")[1]);
             this.setUserLastMessage(msg.uid.split("__")[1], msg.messages[msg.messages.length - 1]); 
             activeChatsTmp.push(user);
-            this.activeChats.push(this.matches.splice(this.matches.indexOf(user), 1));
+            const remove = this.matches.splice(this.matches.indexOf(user), 1)[0];
+            if(remove)
+            this.activeChats.push(remove);
           } else {
             user = this.getUserById(msg.uid.split("__")[0]);
             this.setUserLastMessage(msg.uid.split("__")[0], msg.messages[msg.messages.length - 1]); 
             activeChatsTmp.push(user);
-            this.activeChats.push(this.matches.splice(this.matches.indexOf(user), 1));
+            const remove = this.matches.splice(this.matches.indexOf(user), 1)[0];
+            if(remove) this.activeChats.push(remove);
           }
         });
-        this.activeChats = [...new Set(activeChatsTmp)];
+        this.activeChats = [...new Set(this.activeChats)];
+        console.log("this active chats ", this.activeChats);
+        this.dataService.setNewMessage(true);
+        
       });
     });  
   }
@@ -110,14 +115,11 @@ export class ChatsPage implements OnInit {
   }
 
   async getUsersInfo(users, matchedUsers) {
-    this.matches = [];
-    console.log("Matched user", matchedUsers);
-    
+    this.matches = [];    
     matchedUsers.forEach(m => {
       users.forEach(u => {        
         if(m.swippedUid === u.uid || m.swipperUid === u.uid ) {
           this.matches.push(u);
-
         }  
       })
     })

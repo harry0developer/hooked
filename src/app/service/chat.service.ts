@@ -59,10 +59,10 @@ export class ChatService {
       }),
     ).subscribe((results) => {
       if(results[0].exists) {
-        this.documentExist$.next(results[0].uid)
+        this.documentExist$.next(results[0].uid);
         
       } else if(results[1]) {
-        this.documentExist$.next(results[1].uid)
+        this.documentExist$.next(results[1].uid);
 
       } 
     })
@@ -151,5 +151,6 @@ export class ChatService {
     return this.afs.collection(COLLECTION.CHATS)
     .valueChanges({idField: 'uid'}) as Observable<User[]>
   }
+
 
 }

@@ -33,7 +33,6 @@ export class ChatPage implements OnInit {
     private dataService: DataService
   ) { }
   
-
   sendMessage() {
     const newMessage:Message = {
       msg: this.newMsg,
@@ -50,10 +49,7 @@ export class ChatPage implements OnInit {
     } 
     this.chatService.addChatMessage(this.chatsDocumentId, newMessages, this.reciever.uid).then(() => {
       this.newMsg = "",
-      this.content.scrollToBottom();
-
-      console.log("Message added");
-      
+      this.content.scrollToBottom();      
     });
     
   }
@@ -61,17 +57,15 @@ export class ChatPage implements OnInit {
   getSentDate(msg) {
     return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
   }
-
   
   ngOnInit() {
+    this.dataService.setNewMessage(false);
     this.route.params.subscribe((params:any) => {
       this.reciever = JSON.parse(params.user);
       this.chatService.documentExists(COLLECTION.CHATS, this.reciever.uid);
       this.chatService.documentExist$.subscribe(status => {
-        console.log("Document status", status);
         this.chatsDocumentId = status;
         this.chatService.getOurMessages(status).then(msgs => {
-           console.log("got new messages", msgs);
             msgs.forEach(m => {
               if(m && m.messages) {
                 this.messagesArray = m.messages;
@@ -81,7 +75,7 @@ export class ChatPage implements OnInit {
             })
         })
       });
-   }); //route obs
+   }); 
   }
 
   fromMe(message: Message): boolean {

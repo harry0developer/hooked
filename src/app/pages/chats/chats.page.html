@@ -18,8 +18,10 @@
     </ul>
     <ul class="user" *ngIf="matches.length < 1">
       <div class="item">
-        <img [src]="defaultImage" alt="" >
-        <p>Matches</p>
+        <ion-avatar>
+          <img [src]="defaultImage" />
+          <p>Matches</p>
+        </ion-avatar>  
       </div> 
     </ul>
   </div>

@@ -7,6 +7,7 @@
     </ion-tab-button>
 
     <ion-tab-button tab="chats">
+      <ion-badge color="danger" *ngIf="dataService.newMessage$ | async"></ion-badge>
       <ion-icon name="chatbubbles-outline"></ion-icon>
       <ion-label>Chats</ion-label>
     </ion-tab-button>
