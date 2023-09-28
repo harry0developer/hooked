@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
@@ -24,7 +24,7 @@ export class ChatPage implements OnInit {
   newMsg = "";
 
   chatsDocumentId: string = "";
-  
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   constructor(
     private route: ActivatedRoute,
     private router: Router, 
@@ -33,6 +33,30 @@ export class ChatPage implements OnInit {
     private dataService: DataService
   ) { }
   
+  
+  ngOnInit() {
+    // window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    this.dataService.setNewMessage(false);
+    this.route.params.subscribe((params:any) => {
+      this.reciever = JSON.parse(params.user);
+      this.chatService.documentExists(COLLECTION.CHATS, this.reciever.uid);
+      this.chatService.documentExist$.subscribe(status => {
+        this.chatsDocumentId = status;
+        this.chatService.getOurMessages(status).then(msgs => {
+            msgs.forEach(m => {
+              if(m && m.messages) {
+                this.messagesArray = m.messages;
+                console.log(m.messages);
+                this.dataService.setChats(m.messages);
+                this.content.scrollToBottom();      
+              }
+            })
+        })
+      });
+   }); 
+  }
+
   sendMessage() {
     const newMessage:Message = {
       msg: this.newMsg,
@@ -58,29 +82,13 @@ export class ChatPage implements OnInit {
     return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
   }
   
-  ngOnInit() {
-    this.dataService.setNewMessage(false);
-    this.route.params.subscribe((params:any) => {
-      this.reciever = JSON.parse(params.user);
-      this.chatService.documentExists(COLLECTION.CHATS, this.reciever.uid);
-      this.chatService.documentExist$.subscribe(status => {
-        this.chatsDocumentId = status;
-        this.chatService.getOurMessages(status).then(msgs => {
-            msgs.forEach(m => {
-              if(m && m.messages) {
-                this.messagesArray = m.messages;
-                console.log(m.messages);
-                this.dataService.setChats(m.messages);
-              }
-            })
-        })
-      });
-   }); 
-  }
 
   fromMe(message: Message): boolean {
     return message.from === this.auth.currentUser.uid;
   }
+
+  
+ 
 
 
 }

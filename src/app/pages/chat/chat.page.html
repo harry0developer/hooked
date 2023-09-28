@@ -9,7 +9,7 @@
 
 <ion-content>
 
-  <div class="messages-container" *ngIf="messagesArray && messagesArray.length > 0" >
+  <div class="messages-container"  #scrollMe *ngIf="messagesArray && messagesArray.length > 0" >
     <div class="imessage" *ngFor="let m of messagesArray">
       
       <div class="from-me-date" *ngIf="fromMe(m)">{{getSentDate(m)}}</div>
