@@ -234,8 +234,8 @@ export class UsersPage implements OnInit {
   async showUserModal(user) {
     const modal = await this.modalCtrl.create({
       component: UserModalPage,
-      initialBreakpoint: 0.8,
-      breakpoints: [0, 0.8],
+      // initialBreakpoint: ,
+      // breakpoints: [0, 1],
       componentProps: { 
         user
       }
