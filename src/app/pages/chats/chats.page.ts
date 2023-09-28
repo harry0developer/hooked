@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router'; 
-import { map, Observable, of } from 'rxjs';
-import { Message, MessageBase, User } from 'src/app/models/User';
+import { Message, MessageBase, Swipe, User } from 'src/app/models/User';
 import { ChatService } from 'src/app/service/chat.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { LocationService } from 'src/app/service/location.service';
@@ -20,7 +19,7 @@ export class ChatsPage implements OnInit {
   isLoading: boolean = true;
 
   matchedUsers = [];
-  matches = [];
+  matches: User[] = [];
   users = [];
   activeChats = [];
 
@@ -35,20 +34,19 @@ export class ChatsPage implements OnInit {
   async ngOnInit() {
     this.currentUser = this.auth.currentUser;
     await this.getAllUsers();
-
+    
   } 
 
 
   async getAllUsers() {
     this.isLoading = true;
     this.users = [];
-    let matchList = [];
+    let matchList: User[] = [];
     await this.chatService.getData(COLLECTION.USERS).forEach(users => {  
       
       this.chatService.getMySwipes().forEach(s => {
         const swipes = [...s.swippers, ...s.swipped];
          
-        // const matches = swipes.filter(s => s.match) || [];
         s.swippers.forEach(ss => {
           users.forEach(u => {
             if(u.uid == ss.swippedUid) {
@@ -75,40 +73,36 @@ export class ChatsPage implements OnInit {
   async getChats() {
     let myMessages:MessageBase[] = [];
     let activeChatsTmp = [];
-    
+
     await this.firebaseService.getMyChats().then(res => {
+      let user: User;
       res.forEach((chats: any) => { 
-        console.log("Matches ", this.matches);
         myMessages = chats.filter(c => c.uid.split("__")[0] === this.currentUser.uid || c.uid.split("__")[1] === this.currentUser.uid);
-        console.log("MSGS ", myMessages);
         myMessages.forEach(msg => {          
           if(msg.uid.split("__")[0] === this.currentUser.uid ) {
-            activeChatsTmp.push(this.getUserById(msg.uid.split("__")[1]));
+            user = this.getUserById(msg.uid.split("__")[1]);
+            this.setUserLastMessage(msg.uid.split("__")[1], msg.messages[msg.messages.length - 1]); 
+            activeChatsTmp.push(user);
+            this.activeChats.push(this.matches.splice(this.matches.indexOf(user), 1));
           } else {
-            activeChatsTmp.push(this.getUserById(msg.uid.split("__")[0]));
+            user = this.getUserById(msg.uid.split("__")[0]);
+            this.setUserLastMessage(msg.uid.split("__")[0], msg.messages[msg.messages.length - 1]); 
+            activeChatsTmp.push(user);
+            this.activeChats.push(this.matches.splice(this.matches.indexOf(user), 1));
           }
         });
-        const tmpMatches = this.matches;
-        myMessages.forEach(mm => {
-          this.matches.forEach(m => {
-            let uidTo = `${m.uid}__${this.currentUser.uid}`;
-            let uidFrom = `${this.currentUser.uid}__${m.uid}`;
-            if(uidTo === mm.uid || uidFrom === mm.uid) {
-              tmpMatches.splice(this.matches.indexOf(m), 1);
-            }
-          })
-        })
-
-        this.matches = tmpMatches;
-        console.log("Matches ", this.matches);
-        
-        
         this.activeChats = [...new Set(activeChatsTmp)];
       });
-
-      
     });  
-    
+  }
+
+  setUserLastMessage(uid: string, msg: Message): User[] { 
+    for(let i=0; i<this.matches.length; i++) {
+      if(this.matches[i].uid == uid) {
+        this.matches[i].lastMsg = msg;
+      }
+    }
+    return this.matches;
   }
 
   getUserById(uid: string): User {

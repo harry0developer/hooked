@@ -23,6 +23,13 @@ ion-item {
             font-weight: bold;
         }
     }
+
+    .sent-message {
+        ion-icon {
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+    }
 } 
  
 .users-wrapper {

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { Message, MessageObj, User } from 'src/app/models/User'; 
 import { ChatService } from 'src/app/service/chat.service';
+import { DataService } from 'src/app/service/data.service';
+
 import { COLLECTION } from 'src/app/utils/const';
 var moment = require('moment');
 
@@ -27,7 +29,8 @@ export class ChatPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router, 
     private chatService: ChatService,
-    private auth: Auth
+    private auth: Auth,
+    private dataService: DataService
   ) { }
   
 
@@ -73,6 +76,7 @@ export class ChatPage implements OnInit {
               if(m && m.messages) {
                 this.messagesArray = m.messages;
                 console.log(m.messages);
+                this.dataService.setChats(m.messages);
               }
             })
         })

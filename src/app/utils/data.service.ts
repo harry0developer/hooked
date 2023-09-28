@@ -11,7 +11,7 @@ import { concatMap, filter, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 
-export class DataService {
+export class XDataService {
   public photos: string[] = [];
 
   private friendsDataStore: DataStore<ImageListingModel>;

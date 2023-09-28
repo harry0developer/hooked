@@ -31,10 +31,10 @@
         <ion-avatar slot="start" >
           <img [alt]="user?.name" [src]="user?.profile_picture ? user.profile_picture : defaultImage" />
         </ion-avatar>  
-        <p slot="end">12:35</p>
+        <!-- <p slot="end">12:35</p> -->
         <ion-label>
           <h3>{{user?.name}}</h3>
-          <p>last message</p>
+          <p class="sent-message"> <ion-icon *ngIf="user?.lastMsg?.from === currentUser.uid" slot="start" name="return-up-back-outline"></ion-icon>{{user?.lastMsg?.msg}}</p>
         </ion-label>
       </ion-item>
     </ion-list>

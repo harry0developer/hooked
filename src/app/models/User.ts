@@ -16,6 +16,7 @@ export interface User {
     dateCreated?: string;
     compensation?: string;
     verificationCode?: string;
+    lastMsg?: Message;
     location: {
         distance: string;
         geo: Geo
