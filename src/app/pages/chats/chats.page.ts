@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router'; 
-import { Message, MessageBase, Swipe, User } from 'src/app/models/User';
+import { Message, MessageBase, User } from 'src/app/models/User';
 import { ChatService } from 'src/app/service/chat.service';
 import { DataService } from 'src/app/service/data.service';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { LocationService } from 'src/app/service/location.service';
-import { COLLECTION, STORAGE } from 'src/app/utils/const';
+import { COLLECTION } from 'src/app/utils/const';
+import Methods from 'src/app/utils/helper/funtions';
+
 @Component({
   selector: 'app-chats',
   templateUrl: 'chats.page.html',
@@ -30,7 +32,7 @@ export class ChatsPage implements OnInit {
     private auth: Auth,
     private locationService: LocationService,
     private chatService: ChatService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {}
 
   async ngOnInit() {
@@ -135,6 +137,9 @@ export class ChatsPage implements OnInit {
     this.router.navigateByUrl('tabs/users', {replaceUrl: true});
   }
 
+  getLastSendDate(user: User): string {
+    return Methods.getSendDate(user.lastMsg.createdAt);
+  }
 
 
 }

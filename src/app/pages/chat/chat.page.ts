@@ -5,9 +5,8 @@ import { IonContent } from '@ionic/angular';
 import { Message, MessageObj, User } from 'src/app/models/User'; 
 import { ChatService } from 'src/app/service/chat.service';
 import { DataService } from 'src/app/service/data.service';
-
 import { COLLECTION } from 'src/app/utils/const';
-var moment = require('moment');
+import Methods from 'src/app/utils/helper/funtions';
 
 @Component({
   selector: 'app-chat',
@@ -30,8 +29,7 @@ export class ChatPage implements OnInit {
     private router: Router, 
     private chatService: ChatService,
     private auth: Auth,
-    private dataService: DataService
-  ) { }
+    private dataService: DataService  ) { }
   
   
   ngOnInit() {
@@ -79,7 +77,8 @@ export class ChatPage implements OnInit {
   }
 
   getSentDate(msg) {
-    return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
+    Methods.getSendDate(msg.createdAt);
+    // return moment(new Date(msg.createdAt), "YYYYMMDD").fromNow();
   }
   
 

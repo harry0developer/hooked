@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/User';
 import { Gallery } from 'angular-gallery';
-var moment = require('moment'); // require
+import Methods from 'src/app/utils/helper/funtions';
 
 @Component({
   selector: 'app-user-modal',
@@ -14,10 +14,12 @@ export class UserModalPage implements OnInit {
   user: User;
   extras: string[] = [];
  
-  constructor(private gallery: Gallery, private modalCtrl: ModalController) { }
+  constructor(
+    private gallery: Gallery, 
+    private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.extras = [...this.user.want,...this.user.with];
+    this.extras = [...this.user.want,...this.user.with]
   }
 
   showGallery(index: number) {
@@ -40,6 +42,6 @@ export class UserModalPage implements OnInit {
 
   
   getUserAge(user: User) : string{
-    return  moment().diff(user.dob, 'years');
+    return Methods.getUserAge(user);
   }
 }
