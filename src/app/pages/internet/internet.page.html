@@ -5,12 +5,11 @@
     <div class="permissions">
       <img src="../../../assets/permissions/internet.svg" alt="">
       <h1>Connection Lost</h1>
-      <p>Oops, seems like you lost connection to the world. Please check your internet connection and try again.</p>
+      <p>Oops, seems like you lost connection to the world. Please check your internet connection and try again <span *ngIf="errorCount">({{errorCount}})</span>.</p>
     </div>
-
+    
     <div class="btn-group">
-      <ion-button shape="round" color="secondary" expand="block" fill="solid" (click)="dismiss()">Dismiss</ion-button>
-      <ion-button shape="round" color="secondary" expand="block" fill="clear" (click)="tryAgain()">Try again</ion-button>
+      <ion-button shape="round" fill="outline" expand="block" color="white" (click)="tryAgain()">Try again</ion-button>
     </div>
   </div>
 </ion-content>

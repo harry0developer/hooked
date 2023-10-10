@@ -42,20 +42,21 @@
     <div class="settings">
       <ion-item-divider class="divider">
         <ion-label>My Preference</ion-label>
+        <ion-icon slot="end" name="create-outline" (click)="openPreferencesModal()"></ion-icon>
       </ion-item-divider>
  
-      <ion-item detail="true">
+      <ion-item>
         <ion-icon slot="start" name="heart-outline"></ion-icon>
         <ion-label>
           <p class="title">Looking for</p>
           <ul class="looking-for">
-            <li *ngFor="let item of wantList">{{item}}</li>
+            <li *ngFor="let item of user?.want">{{item}}</li>
           </ul>
         </ion-label>
       </ion-item>
-      <ion-item detail="true">
-        <ion-icon slot="start" name="heart-outline"></ion-icon>
 
+      <ion-item>
+        <ion-icon slot="start" name="heart-outline"></ion-icon>
         <ion-label>
           <p class="title">With</p>
           <ul class="looking-for">
@@ -63,10 +64,10 @@
           </ul>
         </ion-label>
       </ion-item>
-     
     </div>
-
-
+ 
+  
+    
     <div class="settings">
       <ion-item-divider class="divider">
         <ion-label>General</ion-label>

@@ -1,27 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-internet',
   templateUrl: './internet.page.html',
   styleUrls: ['./internet.page.scss'],
 })
-export class InternetPage implements OnInit {
+export class InternetPage{
 
+  errorCount: number = 0;
   constructor(private modalCtrl: ModalController) { }
-
-  ngOnInit() {
-  }
-
-  openChats() {}
-
+ 
   dismiss() {
     return this.modalCtrl.dismiss(null, 'none');
   }
 
   tryAgain() {
-    return this.modalCtrl.dismiss(null, 'try');
-  }
-
+    this.logCurrentNetworkStatus().then((status) => {
+      this.errorCount = ++this.errorCount;
+      if(status.connected) {
+        this.dismiss();
+      }
+    });
+  } 
+ 
+  logCurrentNetworkStatus = async () => {
+    return await Network.getStatus();
+  };
  
 }

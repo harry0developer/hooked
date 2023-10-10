@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.charcoal.snuggle;
 
 import com.getcapacitor.BridgeActivity;
 

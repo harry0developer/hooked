@@ -10,6 +10,7 @@ import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
 import { COLLECTION, STORAGE } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
+import { User } from 'src/app/models/User';
 var moment = require('moment'); // require
  
 @Component({
@@ -38,21 +39,17 @@ export class ProfilePage implements OnInit{
     ) {}
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.isLoading = true;
     this.currentUser = this.auth.currentUser;
-    const user = this.firebaseService.getStorage(STORAGE.USER);
-    if(user && user.uid) {
+    await this.firebaseService.getCurrentUser().then((user: User) => {
       this.user = user;
+      console.log(user);
       this.isLoading = false;
-
-    } else {
-      this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, this.currentUser.uid).then(user => {
-        this.user = user;
-        console.log(user);
-        this.firebaseService.setStorage(STORAGE.USER, user);
-        this.isLoading = false;
-      }, () => this.isLoading = false);
-    }
+    }).catch(err => {
+      console.log(err);
+      this.isLoading = false;
+    }); 
   }
 
   async openModal() {

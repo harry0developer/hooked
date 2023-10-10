@@ -21,6 +21,9 @@
       </div>
       <div class="user-info">
         <h1>{{user?.name}}, {{getUserAge()}}</h1>
+        <ion-badge *ngIf="!user?.isVerified" class="badge unverified">Unverified</ion-badge>
+        <ion-badge *ngIf="user?.isVerified" class="badge verified">verified</ion-badge>
+
         <!-- <ion-button (click)="openModal()" shape="round">Edit Profile</ion-button> -->
       </div>
     </div>

@@ -36,6 +36,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { InternetPageModule } from './pages/internet/internet.module';
 import { LocationPageModule } from './pages/location/location.module';
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -64,13 +65,13 @@ import { LocationPageModule } from './pages/location/location.module';
     provideStorage(() => getStorage())
   ],
   providers: [
-
-    SplashScreen,
     StatusBar,
     NativeGeocoder,
     FirebaseService,
     LocationService,
     ChatService,
+    SplashScreen,
+    LottieSplashScreen,
     {
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 

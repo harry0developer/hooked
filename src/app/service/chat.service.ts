@@ -91,7 +91,7 @@ export class ChatService {
       email: "wayne@test.com",
       name: "Wayne",
       gender: "Male",
-      want: ["ONS", "NSA", "FWB"],
+      want: ["Friends With Benefits", "One Night Stand", "No Strings Attached"],
       with: [ "Female"],
       dob: "1995-01-01T00:21:00+02:00",
       verificationCode: "12345",

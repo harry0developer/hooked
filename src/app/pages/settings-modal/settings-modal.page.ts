@@ -4,6 +4,7 @@ import { ActionSheetController, ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/User';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
+import { PreferencesModalPage } from '../preferences-modal/preferences-modal.page';
 
 @Component({
   selector: 'app-settings-modal',
@@ -18,20 +19,27 @@ export class SettingsModalPage implements OnInit {
   withList = [];
   dateOfBirth: string = "";
  
-
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
     public actionSheetController: ActionSheetController,
     private firebaseService: FirebaseService) {
-    this.user = this.firebaseService.getStorage(STORAGE.USER);
   }
 
-  
-  
-  ngOnInit() {
-    this.init();
-    
+  ngOnInit() {}
+
+  async openPreferencesModal() {
+    const modal = await this.modalCtrl.create({
+      component: PreferencesModalPage,
+      componentProps: {
+        "user": this.user
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'save') {
+      console.log("applied");
+    }
   }
 
   async presentActionSheet() {
@@ -66,23 +74,7 @@ export class SettingsModalPage implements OnInit {
   confirm() {
     return this.modalCtrl.dismiss(this.name, 'confirm');
   }
-
-  init() {
-    this.wantList = [];
-    this.user.want.forEach(a => {
-      if(a.toLocaleUpperCase() === "NSA") {
-        this.wantList.push("No string attached");
-      } else if(a.toLocaleUpperCase() === "FWB") {
-        this.wantList.push("Friends with benefits");
-      }
-      else if(a.toLocaleUpperCase() === "ONS") {
-        this.wantList.push("One night stand");
-      }
-    }); 
-
-    this.dateOfBirth = this.user.dob.split("T")[0];
-
-  }
+ 
   async logout() {
     await this.firebaseService.signout().then(() => {
       this.cancel();

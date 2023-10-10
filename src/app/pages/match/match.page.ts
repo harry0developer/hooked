@@ -30,10 +30,14 @@ export class MatchPage implements OnInit{
     private router: Router,
     private firebaseService: FirebaseService) { }
 
-  ngOnInit(): void {
-    this.me = this.firebaseService.getStorage(STORAGE.USER);
-    console.log("Components props, USER: ", this.user);
-    console.log("Components props, ME: ", this.me);
+  async ngOnInit() {
+ 
+    await this.firebaseService.getCurrentUser().then((user: User) => {
+      this.me = user;
+    }).catch(err => {
+      console.log(err);
+    });
+    
   }
  
   openChats() {}

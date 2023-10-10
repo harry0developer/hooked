@@ -34,6 +34,16 @@
                 margin: 0;
                 padding: 0;
             }
+            .badge{
+                padding: 4px 10px;
+                font-size: 14px;
+            }
+            .verified {
+                background-color: green;
+            }
+            .unverified {
+                background-color: grey;
+            }
         }
     }
 

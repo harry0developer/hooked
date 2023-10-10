@@ -162,13 +162,6 @@ export class DataService {
   constructor() { }
 
 
-  setItem(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-  getItem(key: string) {
-    JSON.parse(localStorage.getItem(key) || '{}');
-  }
-
   addLikedUser(id: string) {
     this.likedUsers.next(this.getUser(id));
     this.userCount.next(--this.count);

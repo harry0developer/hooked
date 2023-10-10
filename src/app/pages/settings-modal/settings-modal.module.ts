@@ -6,12 +6,14 @@ import { IonicModule } from '@ionic/angular';
 
 
 import { SettingsModalPage } from './settings-modal.page';
+import { PreferencesModalPageModule } from '../preferences-modal/preferences-modal.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    PreferencesModalPageModule
   ],
   declarations: [SettingsModalPage]
 })

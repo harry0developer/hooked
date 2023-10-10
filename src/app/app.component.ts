@@ -1,12 +1,13 @@
 import { Component } from '@angular/core'; 
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { InternetPage } from './pages/internet/internet.page';
-import { Network } from '@capacitor/network';
 import { LocationService } from './service/location.service';
 import { Location } from './models/Location';
 import { LocationPage } from './pages/location/location.page';
 import { COLLECTION, SERVICE, STORAGE } from './utils/const';
 import { FirebaseService } from './service/firebase.service';
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-root',
@@ -19,18 +20,36 @@ export class AppComponent{
     private locationService: LocationService,
     private loadingCtrl:LoadingController,
     private firebaseService: FirebaseService,
+    private lottieSplashScreen: LottieSplashScreen,
+    private platform: Platform,
     private modalCtrl: ModalController) {
 
-      // Network.addListener('networkStatusChange', status => {
-      //   console.log('Network status changed', status);
-      //   if(!status.connected) {
-      //     this.openModal(SERVICE.CONNECTION)
-      //   }
-      // });
+      this.platform.ready().then(() => {
+
+        Network.addListener('networkStatusChange', status => {
+          console.log('Network status changed', status);
+          if(!status.connected) {
+            this.openModal(SERVICE.CONNECTION);
+            console.log("No netork");
+          } 
+        }); 
+      })
+      
 
       // this.getLocation();
   }
 
+  logCurrentNetworkStatus = async () => {
+    return await Network.getStatus();
+  };
+
+  init(){
+    this.platform.ready().then(() => {
+      setTimeout(() => {
+        this.lottieSplashScreen.hide();
+      }, 6000)
+    })
+  }
 
   async openModal(name: string) {
     let genericModal;

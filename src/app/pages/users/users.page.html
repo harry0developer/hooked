@@ -14,9 +14,12 @@
 <ion-content> 
   <div id="parent" class="user-card-container" *ngIf="usersLoaded$ | async; else loadingTemplate">
     <ion-card class="card user-card" *ngFor="let user of users; let i =index"  id="{{'card-' + user.uid}}">
-      <img [src]="user.profile_picture" />
+      <img class="swipe-img" [src]="user.profile_picture" />
       <div class="user-info">
-        <h1>{{user.name}}, {{ getUserAge(user)}}</h1>
+        <h1>
+          {{user.name}}, {{ getUserAge(user)}}
+          <img *ngIf="user?.isVerified" class="verified" src="../../../assets/generic/verify.png" alt="">
+        </h1>
         <p>
           <ion-icon name="location-outline"></ion-icon>
           {{user.location.distance || 0}}km away
@@ -26,7 +29,8 @@
       <div class="show-more">
         <ion-icon color="primary" (click)="showUserModal(user)" name="arrow-up-circle-outline"></ion-icon>
       </div>
-        <ion-icon name="heart-dislike" class="icon" id="rejected-icon"></ion-icon>
+        <!-- <ion-icon name="heart-dislike" class="icon" id="rejected-icon"></ion-icon> -->
+        <ion-icon name="close-outline" class="icon"  id="rejected-icon"></ion-icon>
         <ion-icon name="heart" class="icon" id="accepted-icon"></ion-icon>
     </ion-card>
   </div>
