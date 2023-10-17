@@ -11,12 +11,11 @@ import {
 
 import { GestureCtrlService } from "src/app/service/gesture-ctrl.service";
 import { AlertController, IonCard, ModalController } from "@ionic/angular";
-import { BehaviorSubject, Observable, Subscribable, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import { Geo, User } from '../../models/User';
 import { FilterPage } from "../filter/filter.page";
 import { Router } from "@angular/router";
-import { COLLECTION, MODALS, ROUTES, SERVICE, STORAGE } from "src/app/utils/const";
+import { COLLECTION, MODALS, ROUTES, STORAGE } from "src/app/utils/const";
 import { FirebaseService } from "src/app/service/firebase.service";
 import { ChatService } from "src/app/service/chat.service";
 import { LocationPage } from "../location/location.page";
@@ -24,6 +23,7 @@ import { CameraPage } from "../camera/camera.page";
 import { UserModalPage } from "../user-modal/user-modal.page";
 import { Auth, user } from "@angular/fire/auth";
 import { MatchPage } from "../match/match.page";
+import { Geo, User } from "src/app/models/models";
 var moment = require('moment'); // require
 
 @Component({

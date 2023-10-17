@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
-import { User } from 'src/app/models/User';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
 import { PreferencesModalPage } from '../preferences-modal/preferences-modal.page';
+import { User } from 'src/app/models/models';
 
 @Component({
   selector: 'app-settings-modal',

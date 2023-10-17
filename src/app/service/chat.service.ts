@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth} from '@angular/fire/auth'; 
-import { BehaviorSubject, combineLatest, defer, forkJoin, from, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject } from 'rxjs';
 import { COLLECTION } from 'src/app/utils/const';
-import { MessageObj, Swipe, User } from 'src/app/models/User';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
 
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { query } from '@angular/fire/firestore';
+import { MessageObj, Swipe, User } from '../models/models';
 
 export interface docStatus {
   uid: string;

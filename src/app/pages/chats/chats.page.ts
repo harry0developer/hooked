@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router'; 
-import { Message, MessageBase, User } from 'src/app/models/User';
+import { Message, MessageBase, User } from 'src/app/models/models';
 import { ChatService } from 'src/app/service/chat.service';
 import { DataService } from 'src/app/service/data.service';
 import { FirebaseService } from 'src/app/service/firebase.service';

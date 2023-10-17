@@ -10,7 +10,7 @@ import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
 import { COLLECTION, STORAGE } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/models/models';
 var moment = require('moment'); // require
  
 @Component({

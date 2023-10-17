@@ -1,0 +1,58 @@
+@import "../../../theme/colors.scss";
+
+::-webkit-scrollbar {
+    display: none;
+} 
+ 
+   
+.modal-form {
+    width: 100%;
+    padding: 20px; 
+}
+  
+.btn-group {
+    float: right;
+    margin-top: 40px;
+    ion-button {
+      min-width: 140px;
+      height: 50px;
+    }
+}
+ 
+.country-code, .phone-number{
+  border: 2px solid #000;
+  border-radius: 4px;
+}
+ 
+  
+ion-modal::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+}
+
+ion-modal ion-toolbar {
+    --background: rgb(102, 63, 89);
+    --color: white;
+}
+
+p.signin {
+    padding-top: 10px !important;
+}
+
+::ng-deep  {
+  .alert-checkbox-label {
+      overflow-wrap: normal;
+      white-space: break-spaces !important;
+  }
+  .alert-wrapper {
+      width: 100% !important;
+  }
+
+  .cancel {
+    margin-top: 100px;
+  }
+}
+  
+  
+  
+  

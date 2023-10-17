@@ -1,5 +1,8 @@
 @import "../../../theme/colors.scss";
 
+.title {
+  text-shadow: 0 2px 0 #000;
+ }
 ::-webkit-scrollbar {
   display: none;
 }
@@ -24,7 +27,7 @@
       width: 100vw;
       object-fit: center;
       object-position: top;
-      mask-image: linear-gradient(to bottom, #000, #000, transparent);
+      // mask-image: linear-gradient(to bottom, #000, #000, transparent);
     }
     .user-info {
       position: absolute;

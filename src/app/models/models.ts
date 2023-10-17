@@ -1,3 +1,16 @@
+export interface Country {
+    dialCode: string,
+    flag: string,
+    name: string
+    code: string;
+}
+
+export interface Flags {
+    flags: string,
+    country: string;
+    code: string;
+}
+
 
 export interface User {
     uid: string;
@@ -49,13 +62,23 @@ export interface User {
  }
  
 
- export interface MessageObj {
+export interface MessageObj {
     messages: Message[];
- }
+}
 
  export interface Chat {
     senderUid: string;
     recieverUid: string;
     message: string;
     timestamp: any;
- }
+}
+
+ export interface Location {
+    lat: number;
+    lng: number;
+}
+
+export interface Filter {
+    category: string;
+    distance: number;
+}

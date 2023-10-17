@@ -3,7 +3,7 @@ import {
   Component, 
   Input,
 } from "@angular/core";
-import { User } from '../../models/User';
+import { User } from "src/app/models/models";
 
 var moment = require('moment');
 

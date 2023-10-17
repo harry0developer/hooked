@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { AnimationLoader, AnimationOptions, provideLottieOptions } from 'ngx-lottie';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
 

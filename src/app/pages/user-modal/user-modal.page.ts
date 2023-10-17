@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { User } from 'src/app/models/User';
 import { Gallery } from 'angular-gallery';
+import { User } from 'src/app/models/models';
 import Methods from 'src/app/utils/helper/funtions';
 
 @Component({

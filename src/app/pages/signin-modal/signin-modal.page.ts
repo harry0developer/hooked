@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
-import { map } from 'rxjs';
-import { User } from 'src/app/models/User';
 import { FirebaseService } from 'src/app/service/firebase.service';
-import { COLLECTION, FIREBASE_ERROR, ROUTES, STATUS } from 'src/app/utils/const';
+import { FIREBASE_ERROR, ROUTES, STATUS } from 'src/app/utils/const';
 
 @Component({
   selector: 'app-signin-modal',

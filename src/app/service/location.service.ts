@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { Observable, of } from 'rxjs';
-import { User } from '../models/User';
- 
+import { Observable, of } from 'rxjs'; 
+import { User } from '../models/models';
 //export ANDROID_HOME=$HOME/Android/Sdk
 //ionic cap run android -l --external
 

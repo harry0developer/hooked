@@ -6,6 +6,7 @@ import { SignupModalPage } from '../signup-modal/signup-modal.page';
 import { SigninModalPage } from '../signin-modal/signin-modal.page';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
+import { PhoneModalPage } from '../phone-modal/phone-modal.page';
   
 @Component({
   selector: 'app-auth',
@@ -30,6 +31,21 @@ export class AuthPage implements OnInit {
   async openSignupModal() {
     const modal = await this.modalCtrl.create({
       component: SignupModalPage,
+      initialBreakpoint: 0.8,
+      breakpoints: [0, 0.8],
+      backdropBreakpoint: 0,
+      backdropDismiss: false
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      console.log("confirmed");
+    }
+  }
+
+  async openPhoneModal() {
+    const modal = await this.modalCtrl.create({
+      component: PhoneModalPage,
       initialBreakpoint: 0.8,
       breakpoints: [0, 0.8],
       backdropBreakpoint: 0,

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { COLLECTION } from 'src/app/utils/const';
 

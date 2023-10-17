@@ -1,4 +1,5 @@
-import { User } from "src/app/models/User";
+import { User } from "src/app/models/models";
+
 var moment = require('moment'); // require
 
 export default class Methods {

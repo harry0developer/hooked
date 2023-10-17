@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { InternetPage } from './pages/internet/internet.page';
 import { LocationService } from './service/location.service';
-import { Location } from './models/Location';
 import { LocationPage } from './pages/location/location.page';
-import { COLLECTION, SERVICE, STORAGE } from './utils/const';
+import { SERVICE, STORAGE } from './utils/const';
 import { FirebaseService } from './service/firebase.service';
 import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 import { Network } from '@capacitor/network';
@@ -15,7 +14,7 @@ import { Network } from '@capacitor/network';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent{
-  location: Location;
+  location: any;
   constructor(
     private locationService: LocationService,
     private loadingCtrl:LoadingController,

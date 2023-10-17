@@ -1,12 +1,12 @@
 import { Injectable, NgZone } from "@angular/core";
 import { GestureController, Platform } from "@ionic/angular";
 import { BehaviorSubject, map, Observable } from "rxjs";
-import { Swipe, User } from "../models/User";
 import { COLLECTION } from "../utils/const";
 import { ChatService } from "./chat.service";
 import { FirebaseService } from "./firebase.service";
 import { LocationService } from "./location.service";
 import { Auth } from '@angular/fire/auth'; 
+import { User } from "../models/models";
 
 @Injectable({
   providedIn: "root",

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
-import { User } from 'src/app/models/User';
+import { User } from 'src/app/models/models';
 import { FirebaseService } from 'src/app/service/firebase.service';
-import { COLLECTION, FIREBASE_ERROR, ROUTES } from 'src/app/utils/const';
+import { COLLECTION, ROUTES } from 'src/app/utils/const';
 var moment = require('moment'); // require
 
 @Component({

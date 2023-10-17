@@ -1,0 +1,46 @@
+
+<ion-header> </ion-header>
+
+<ion-content class="modal-container ion-padding"> 
+  <div class="counter" >Sign in</div>
+
+  <div class="container" *ngIf="activeStep == 0">
+    <div class="title">
+      <h1>Phone number login</h1>
+      <p>Sign in with your mobile number</p>
+    </div>
+    <form class="modal-form" [formGroup]="phone_number_form">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4">
+            <ion-item class="country-code">
+              <ion-input type="text" formControlName="code" (click)="openCountryCodeModal()"  [(ngModel)]="selectedCountryCode"></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="8">
+            <ion-item class="phone-number">
+              <ion-input required type="text" formControlName="phone"  placeholder="Phone number"
+               [brmasker]="{mask:'000 0000 000', len:15,  type:'num'}" ></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="btn-group">
+        <ion-button fill="outline" shape="round" (click)="cancel()">
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          Cancel
+        </ion-button>
+
+        <ion-button shape="round" [disabled]="!phone_number_form.valid" (click)="signin()">
+          Next
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
+    </form>
+  </div>
+ 
+ 
+
+</ion-content>

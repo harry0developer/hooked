@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
-import { Message, MessageObj, User } from 'src/app/models/User'; 
+import { Message, MessageObj, User } from 'src/app/models/models';
 import { ChatService } from 'src/app/service/chat.service';
 import { DataService } from 'src/app/service/data.service';
 import { COLLECTION } from 'src/app/utils/const';

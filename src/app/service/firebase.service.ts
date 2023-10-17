@@ -6,11 +6,11 @@ import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, S
 import { Photo } from '@capacitor/camera';
 import { BehaviorSubject, from, map, Observable, take } from 'rxjs';
 import { COLLECTION, STATUS, STORAGE, SWIPE_USER } from 'src/app/utils/const';
-import { Chat, Swipe, User } from 'src/app/models/User';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
 import { MatchPage } from '../pages/match/match.page';
+import { Chat, Swipe, User } from '../models/models';
 
 
 @Injectable({

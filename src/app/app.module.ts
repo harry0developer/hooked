@@ -37,6 +37,9 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { InternetPageModule } from './pages/internet/internet.module';
 import { LocationPageModule } from './pages/location/location.module';
 import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
+import { BrMaskerModule } from 'br-mask';
+import { WindowProvider } from './service/window.service';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -58,7 +61,7 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
     InternetPageModule,
     LocationPageModule,
    //this was working but cannot get list of documents in a collection 
-    
+    BrMaskerModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
@@ -72,6 +75,7 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
     ChatService,
     SplashScreen,
     LottieSplashScreen,
+    WindowProvider,
     {
       provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
