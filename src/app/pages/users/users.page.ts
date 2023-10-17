@@ -33,9 +33,7 @@ var moment = require('moment'); // require
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-
 export class UsersPage implements OnInit {
- 
   users$;
   currentUser;
   defaultImage = '../../../assets/default/default.jpg';
@@ -91,7 +89,6 @@ export class UsersPage implements OnInit {
       console.log(err);
     });
   }
-
 
   async getAllUsers() {
     this.usersLoaded$.next(false);

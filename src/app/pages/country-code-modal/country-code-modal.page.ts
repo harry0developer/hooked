@@ -3,6 +3,7 @@ import { ModalController, NavController, NavParams } from '@ionic/angular';
  import { FormControl } from '@angular/forms';
 import { DataService } from 'src/app/service/data.service';
 import { debounceTime } from 'rxjs';
+import { Country, Flags } from 'src/app/models/models';
 
 @Component({
   selector: 'app-country-code-modal',
@@ -16,7 +17,9 @@ export class CountryCodeModalModalPage implements OnInit{
   searching: any = false; 
   searchTerm: string = '';
   items: any;
+  flags: any;
 
+  
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -27,18 +30,17 @@ export class CountryCodeModalModalPage implements OnInit{
 
   ngOnInit(): void {
     this.dataService.getCountries();
-  }
- 
+  } 
  
   ionViewWillEnter() {
-      this.setFilteredItems();      
-      this.searchControl.valueChanges
-      .pipe(debounceTime(400)
-      ).subscribe(search => {
-        this.searchTerm = search
-          this.searching = false;
-          this.setFilteredItems();
-      });
+    this.setFilteredItems();      
+    this.searchControl.valueChanges
+    .pipe(debounceTime(400)
+    ).subscribe(search => {
+      this.searchTerm = search
+        this.searching = false;
+        this.setFilteredItems();
+    });
   }
 
   onSearchInput(){

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'; 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '../models/models';
+import { Country, Flags, Message } from '../models/models';
 
 @Injectable({
     providedIn: 'root',
@@ -16,20 +16,40 @@ export class DataService {
 
   countries;
   flags
-  constructor(public http: HttpClient) {
-     
-   }
+  constructor(public http: HttpClient) {}
 
   getCountries() {
-    return this.http.get('assets/countries.json').forEach(c => {
-      this.countries = c;      
-    })
+    this.http.get('assets/countries.json').forEach(c => {
+      this.countries = c;   
+    });
   }
 
-  getFlags() {
-    return this.http.get('assets/flags.json').forEach(f => {
-      this.flags = f;      
-    })
+  // async getCountries() {
+  //   this.countries = [];
+  //   await this.http.get('assets/flags.json').forEach(flags => {
+  //     this.flags = flags;
+  //   });
+  //   await this.http.get('assets/countries.json').forEach(c => {
+  //     this.countriesWithoutFlags = c;   
+  //   });
+
+  //   console.log("Flags", this.flags);
+  //   console.log("Countries", this.countriesWithoutFlags);
+    
+  //   this.flags.forEach(f => {
+  //     this.countriesWithoutFlags.forEach(c => {
+  //       if(f.code.toLocaleLowerCase() === c.code.toLocaleLowerCase()) {
+  //         c.flag = f.flag;
+  //         this.countries.push(c);
+  //       }
+  //     })
+  //   })
+  // }
+
+
+
+  getFlags(): Observable<Flags> {
+    return this.http.get('assets/flags.json') as Observable<Flags>;
   }
   
   setChats(chats: Message[]) {

@@ -1,10 +1,14 @@
 
 <ion-header> </ion-header>
 
-<ion-content class="modal-container ion-padding"> 
-  <div class="counter" >Sign in</div>
+<ion-content class="modal-container"> 
 
-  <div class="container" *ngIf="activeStep == 0">
+  <div id="recaptcha-container"></div>
+
+  <div class="counter" *ngIf="!OTPCodeActive">Sign in</div>
+  <div class="counter-otp" *ngIf="OTPCodeActive">OPT Verification</div>
+
+  <div class="container" *ngIf="!OTPCodeActive">
     <div class="title">
       <h1>Phone number login</h1>
       <p>Sign in with your mobile number</p>
@@ -20,10 +24,20 @@
           <ion-col size="8">
             <ion-item class="phone-number">
               <ion-input required type="text" formControlName="phone"  placeholder="Phone number"
-               [brmasker]="{mask:'000 0000 000', len:15,  type:'num'}" ></ion-input>
+               [brmasker]="{mask:'00 0000 000', len:15,  type:'num'}"></ion-input>
             </ion-item>
           </ion-col>
-        </ion-row>
+        </ion-row> 
+
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of phone_number_validation.phone">
+            <div class="error-message"
+              *ngIf="phone_number_form.get('phone').hasError(validation.type) && (phone_number_form.get('phone').dirty || phone_number_form.get('phone').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div> 
+
       </ion-grid>
 
       <div class="btn-group">
@@ -39,6 +53,49 @@
       </div>
       
     </form>
+  </div>
+
+  <div class="container" *ngIf="OTPCodeActive">
+    <div class="title">
+      <h1>Enter OTP Code</h1>
+      <p>A 6 digit code was sent to: {{phoneNumber}}</p>
+    </div>
+    <form class="modal-form" [formGroup]="otp_code_form">
+      <ion-col size="8">
+        <ion-item class="otp-code">
+          <ion-input required type="text" formControlName="otp"  placeholder="OTP Code"
+           [brmasker]="{mask:'0 0 0 0 0 0', len:11,  type:'num'}"></ion-input>
+        </ion-item>
+      </ion-col>
+    </form>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of otp_validation.otp">
+        <div class="error-message"
+          *ngIf="otp_code_form.get('otp').hasError(validation.type) && (otp_code_form.get('otp').dirty || otp_code_form.get('otp').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div> 
+
+    <div class="btn-group">
+      <ion-button fill="outline" shape="round" (click)="resendOTPCode()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Resend code
+      </ion-button>
+
+      <ion-button shape="round" [disabled]="!otp_code_form.valid" (click)="verifyLoginCode()">
+        <span *ngIf="!isLoading"> Verify code</span>
+        <ion-icon *ngIf="!isLoading" slot="end" name="arrow-forward-outline"></ion-icon>
+        <ion-spinner *ngIf="isLoading" slot="end" name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+
+    <ion-button class="cancel-btn" fill="clear"  expand="block" shape="round" (click)="cancel()">
+      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      Cancel
+    </ion-button>
+    
   </div>
  
  

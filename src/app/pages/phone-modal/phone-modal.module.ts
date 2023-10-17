@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { PhoneModalPage } from './phone-modal.page';
 import { BrMaskerModule } from 'br-mask';
 import { CountryCodeModalPageModule } from '../country-code-modal/country-code-modal.module';
+import { SignupPhoneModalPageModule } from '../signup-phone-modal/signup-phone-modal.module';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { CountryCodeModalPageModule } from '../country-code-modal/country-code-m
     ReactiveFormsModule,
     IonicModule,
     BrMaskerModule,
+    SignupPhoneModalPageModule,
     CountryCodeModalPageModule
   ],
   declarations: [PhoneModalPage],

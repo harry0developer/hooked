@@ -116,29 +116,7 @@ export class GestureCtrlService {
       console.log( "DONE XXXXXXXXX: ", res);
     }).catch(err => console.log(err))
   }
-
-  private getLikedUserFromElementA(card) {
-    const uid = card.nativeElement.id.split("card-")[1];
-    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, uid).then(user => {
-      this.likes.push(user);
-      this.like$.next(this.likes);
-
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-
-  private getUnLikedUserFromElement(card) {
-    const uid = card.nativeElement.id.split("card-")[1];
-    this.firebaseService.getDocumentFromFirebase(COLLECTION.USERS, uid).then(user => {
-      this.unLiked.push(user);
-      this.unLiked$.next(this.unLiked);
-
-    }).catch(err => {
-      console.log(err);
-    });
-  }
-
+  
   // STYLE OF CARD WHEN GESTURE START
   setCardColor(x: any, element: any) {
     let color = "";

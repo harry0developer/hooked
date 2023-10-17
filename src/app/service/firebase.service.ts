@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut, signInWithPhoneNumber, ApplicationVerifier, getAuth
+} from '@angular/fire/auth';
 import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, query, where, CollectionReference, addDoc } from '@angular/fire/firestore';
 import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult, deleteObject } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
@@ -163,6 +165,7 @@ export class FirebaseService {
   getStorage(key: string) {
     return JSON.parse(localStorage.getItem(key));
   }
+  
  
   //new
   async register(email: string, password: string)  {
@@ -174,7 +177,6 @@ export class FirebaseService {
     }
   } 
 
-
   //new
   async login(email: string, password: string) {
     try {
@@ -184,6 +186,14 @@ export class FirebaseService {
         return error;
     }
   } 
+
+  async signInWithPhoneNumber(phone: string, verifier: ApplicationVerifier) {
+    try {
+      return await signInWithPhoneNumber(this.auth, phone, verifier)
+    } catch (error) {
+        return error;
+    }
+  }
 
   //new
   signout() {
@@ -292,6 +302,8 @@ export class FirebaseService {
       );
     });
   }
+ 
+
  
 
   async getAllUsers(){
@@ -466,6 +478,38 @@ export class FirebaseService {
     await setDoc(docRef, data, {merge: true});
   }
 
+  async createAccountWithMobile(collection: string, user: any) {
+    const data: User = {
+      uid: "",
+      name: "",
+      email: "",
+      password: "",
+      gender: "",
+      want: [],
+      with: [],
+      dob: "",
+      phone: user.phoneNumber,
+      orientation: "",
+      images: [],
+      profile_picture: "",
+      isVerified: true, 
+      location: {
+          distance: "",
+          geo: {
+            lat: 0,
+            lng: 0
+          }
+      }
+    };
+    
+    const docRef = doc(this.firestore, collection, user.uid);
+    await setDoc(docRef, data, {merge: true});
+  }
+
+  async updateUserProfile(collection: string, user: User) {
+    const docRef = doc(this.firestore, collection, user.uid);
+    await setDoc(docRef, user, {merge: true});
+  }
 
   async addDocToFirebasetWithAutoGenID(col: string, data) {
     return await this.afs.collection(col).add(data);

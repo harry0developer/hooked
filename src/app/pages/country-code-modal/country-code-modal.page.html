@@ -17,6 +17,7 @@
   </div>
   <ion-list>
     <ion-item detail="true" *ngFor="let country of countries">
+      <!-- <img class="flag" [src]="country?.flag" alt="country?.name"> -->
       <ion-label (click)="selectCountry(country)">{{ country.name }} ({{ country.dial_code }})</ion-label>
     </ion-item>
   </ion-list>
