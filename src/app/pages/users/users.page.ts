@@ -83,7 +83,7 @@ export class UsersPage implements OnInit {
       
       this.firebaseService.setStorage(STORAGE.USER, user);
       if(!user.profile_picture) {
-        this.showAlert("Inclomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
+        this.showAlert("Incomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
       }
     }).catch(err => {
       console.log(err);

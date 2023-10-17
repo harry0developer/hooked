@@ -1,25 +1,34 @@
 <ion-header> </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
 
-  <div class="signup-intro">
+  <div class="auth-page" >
     <div class="logo">
-      <img src="../../../assets/snuggle-primary.png" alt="">
+      <img src="../../../assets/snuggle-white.png" alt="">
     </div>
+  
  
-    <div>
-      <div class="main">
-        <img src="../../../assets/intro/1.svg">
-      </div> 
-      
-      <div class="bottom">
-        <h1>Let's get started</h1>
-        <p>Complete few steps and you should be good to go</p>
+    <div class="bottom">
+      <div class="padding">
+        <h1>Welcome</h1>
+        <p>Complete few easy steps and you should be good to go</p>
         
-        <ion-button fill="solid" expand="block" (click)="openSignupModal()">Create Account</ion-button>
-        <ion-button fill="solid" expand="block" (click)="openPhoneModal()">Phone number mobile</ion-button>
-        <ion-button fill="solid" expand="block" (click)="openSigninModal()">Sign In</ion-button>
+        <ion-button fill="solid" shape="round" expand="block" (click)="createAccountActionSheet()">Create Account</ion-button>
+        <ion-button fill="solid" shape="round" expand="block" (click)="loginActionSheet()">Login</ion-button>
+
+        <!-- <div class="or">Or sign in with</div> -->
       </div>
+      <!-- <div class="btn-group">
+        <ion-button fill="outline" shape="round" (click)="openPhoneModal()">
+          <ion-icon class="signin-icon" slot="start" name="call-outline"></ion-icon>
+          Phone number
+        </ion-button>
+
+        <ion-button fill="outline" shape="round" (click)="openSigninModal()">
+          <ion-icon class="signin-icon" slot="start" name="mail-outline"></ion-icon>
+          Email address
+        </ion-button> 
+      </div>  -->
     </div> 
   </div>
 

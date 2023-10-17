@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, FormControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs'; 
@@ -65,13 +65,7 @@ export class PhoneModalPage implements OnInit {
      { type: 'minlength', message: 'Phone number must be at least 9 characters long.' }
     ]
   };
-
-  otp_validation = {
-    'otp': [
-     { type: 'required', message: 'OTP Code is required.' },
-     { type: 'minlength', message: 'OTP code must be 6 characters long.' }
-    ]
-  };
+ 
    
   country: Country = {
     name: "South Africa",
@@ -95,9 +89,7 @@ export class PhoneModalPage implements OnInit {
   get phone() {
     return this.phone_number_form.get('phone')?.value;
   } 
-  get otp() {
-    return this.otp_code_form.get('otp')?.value;
-  } 
+ 
 
   ngOnInit() {    
     this.windowRef = this.win.windowRef;
@@ -144,15 +136,18 @@ export class PhoneModalPage implements OnInit {
     })
   } 
 
-  verifyLoginCode() {
-    this.isLoading = true;
-    const otp = this.otp.trim().replace(/\s+/g, '');
+  async verifyLoginCode(form: NgForm) {
+    const loading = await this.loadingCtrl.create({message: "Verifying code, please wait..."});
+    await loading.present();
+
+    const frm = form.value;
+    const otp = [...frm.otp1, ...frm.otp2, ...frm.otp3, ...frm.otp4, ...frm.otp5, ...frm.otp6].join('');
     this.windowRef.confirmationResult.confirm(otp).then((result) => {
+      loading.dismiss();
       this.addUserIntoFirestore(result.user);
-      this.isLoading = false;
     }).catch(() => {
+      loading.dismiss();
       this.showAlert("Incorrect OTP", "The verification code entered is incorrect");
-      this.isLoading = false;
     });
   }
 
@@ -244,6 +239,23 @@ export class PhoneModalPage implements OnInit {
   handleChange(e) {
     console.log("Event ", e);
     this.selectedCountryCode = e.detail.value
-    
   }
+  
+  otpController(event, next, prev) {
+    if(isNaN(event.target.value)) {
+      event.target.value = "";
+      return 0;
+    } else {
+      if (event.target.value.length < 1 && prev) {
+        prev.setFocus();
+        return 0;
+      } else if (next && event.target.value.length > 0) {
+        next.setFocus();
+        return 0;
+      } else {
+        return 0;
+      }
+    }
+  }
+ 
 }

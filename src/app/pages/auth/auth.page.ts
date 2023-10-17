@@ -28,7 +28,7 @@ export class AuthPage implements OnInit {
     }
   } 
 
-  async openSignupModal() {
+  async openEmailSignupModal() {
     const modal = await this.modalCtrl.create({
       component: SignupModalPage,
       initialBreakpoint: 0.8,
@@ -58,7 +58,7 @@ export class AuthPage implements OnInit {
     }
   }
 
-  async openSigninModal() {
+  async openEmailSigninModal() {
     const modal = await this.modalCtrl.create({
       component: SigninModalPage,
       initialBreakpoint: 0.8,
@@ -71,5 +71,54 @@ export class AuthPage implements OnInit {
     if (role === 'confirm') {
       console.log("confirmed");
     }
+  }
+
+  
+  async loginActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Login with",
+      buttons: [{
+        text: 'Phone number',
+        handler: () => {
+          this.openPhoneModal();
+        }
+      },
+      {
+        text: 'Email and password',
+        handler: () => {
+          this.openEmailSigninModal();
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  async createAccountActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Create account with",
+      buttons: [{
+        text: 'Phone number',
+        handler: () => {
+          this.openPhoneModal();
+        }
+      },
+      {
+        text: 'Email and password',
+        handler: () => {
+          this.openEmailSignupModal();
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+      ]
+    });
+    await actionSheet.present();
   }
 }

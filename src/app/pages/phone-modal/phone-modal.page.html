@@ -59,35 +59,47 @@
     <div class="title">
       <h1>Enter OTP Code</h1>
       <p>A 6 digit code was sent to: {{phoneNumber}}</p>
-    </div>
-    <form class="modal-form" [formGroup]="otp_code_form">
-      <ion-col size="8">
-        <ion-item class="otp-code">
-          <ion-input required type="text" formControlName="otp"  placeholder="OTP Code"
-           [brmasker]="{mask:'0 0 0 0 0 0', len:11,  type:'num'}"></ion-input>
-        </ion-item>
-      </ion-col>
-    </form>
-
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of otp_validation.otp">
-        <div class="error-message"
-          *ngIf="otp_code_form.get('otp').hasError(validation.type) && (otp_code_form.get('otp').dirty || otp_code_form.get('otp').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
     </div> 
+    
+    <form #form="ngForm" class="otp-form">
+      <div class="otp-item">
+        <ion-input #otp1 ngModel name="otp1" required maxLength="1" (keyup)="otpController($event,otp2,'')"></ion-input>
+      </div>
 
+      <div class="otp-item">
+        <ion-input #otp2 ngModel name="otp2" required maxLength="1" (keyup)="otpController($event,otp3,otp1)">  </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp3 ngModel name="otp3" required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
+        </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp4 ngModel name="otp4" required maxLength="1" (keyup)="otpController($event,otp5,otp3)">
+        </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp5 ngModel name="otp5" required maxLength="1" (keyup)="otpController($event,otp6,otp4)">
+        </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp6 ngModel name="otp6" required maxLength="1" (keyup)="otpController($event,'',otp5)">
+        </ion-input>
+      </div> 
+    </form>
+  
     <div class="btn-group">
       <ion-button fill="outline" shape="round" (click)="resendOTPCode()">
         <ion-icon slot="start" name="refresh-outline"></ion-icon>
         Resend code
       </ion-button>
 
-      <ion-button shape="round" [disabled]="!otp_code_form.valid" (click)="verifyLoginCode()">
-        <span *ngIf="!isLoading"> Verify code</span>
-        <ion-icon *ngIf="!isLoading" slot="end" name="arrow-forward-outline"></ion-icon>
-        <ion-spinner *ngIf="isLoading" slot="end" name="crescent"></ion-spinner>
+      <ion-button shape="round" [disabled]="!form.valid" (click)="verifyLoginCode(form)">
+         Verify code
+        <ion-icon  slot="end" name="arrow-forward-outline"></ion-icon> 
       </ion-button>
     </div>
 
