@@ -4,7 +4,6 @@
     display: none;
 }  
 
-
 .modal-form {
   width: 100%;
   padding-bottom: 20px; 
@@ -15,19 +14,19 @@
 }
 
 .otp-form {
-display: flex;
-justify-content: space-evenly;
-margin: 20px 0;
-.otp-item {
-  background-color: #f2f2f2;
-  width: 50px;
-  height: 50px; 
-  border-radius: 4px; 
-  padding: 4px 4px 0 10px;
-  font-size: 21px;
-  font-weight: bold;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0;
+  .otp-item {
+    background-color: #f2f2f2;
+    width: 50px;
+    height: 50px; 
+    border-radius: 4px; 
+    padding: 4px 4px 0 10px;
+    font-size: 21px;
+    font-weight: bold;
 
-}
+  }
 }
 
 .modal-container {
@@ -39,7 +38,7 @@ margin: 20px 0;
   font-size: 16px;
   font-weight: bold;
   padding: 10px;
-  background-color: $primary;
+  background-color: $highlight;
   color: white;;
 }
 
@@ -63,13 +62,13 @@ margin: 20px 0;
     }
     
   } 
+
   ion-input.border, ion-select  { 
     margin: 4px 0;
-    border: 2px solid #f2f2f2;
+    border: 2px solid $primary;
     border-radius: 6px;
-    font-size: 20px;
+    font-size: 18px;
     --padding-start: 10px;
-    
   }
 
   ion-select {
@@ -81,7 +80,6 @@ margin: 20px 0;
     font-size: 18px;
     font-weight: bold;
   }
-
   
   .validation-errors {
     padding-left: 20px;
@@ -107,22 +105,6 @@ margin: 20px 0;
           font-size: 16px;
       }
     }
-  }
-
-  .upload-image {
-    margin-top: 20px;
-    .preview {
-      width: 150px;
-      height: 150px;
-      overflow: hidden;
-      border-radius: 100%;
-      margin: 0 auto;
-      border: 4px solid $primary;
-    }
-    .upload-btn {
-      text-align: center;
-    }
-    
   }
 }
 

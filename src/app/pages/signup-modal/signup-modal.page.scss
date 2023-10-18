@@ -5,12 +5,12 @@
 } 
  
 .modal-form {
-    width: 100%;
-    padding-bottom: 20px; 
+  width: 100%;
+  padding-bottom: 20px; 
 }
 
 .summary.btn-group {
-    height: 90px;
+  height: 90px;
 }
 
 .otp-form {
@@ -38,7 +38,7 @@
     font-size: 16px;
     font-weight: bold;
     padding: 10px;
-    background-color: $primary;
+    background-color: $highlight;
     color: white;;
   }
 
@@ -51,7 +51,6 @@
         padding: 0;
         font-size: 24px;
         font-weight: bold;
-        color: $primary;
         line-height: 1;
       }
       p {
@@ -62,11 +61,12 @@
       }
       
     } 
+
     ion-input.border, ion-select  { 
       margin: 4px 0;
-      border: 2px solid #f2f2f2;
+      border: 2px solid $primary;
       border-radius: 6px;
-      font-size: 20px;
+      font-size: 18px;
       --padding-start: 10px;
       
     }
@@ -106,23 +106,7 @@
             font-size: 16px;
         }
       }
-    }
-
-    .upload-image {
-      margin-top: 20px;
-      .preview {
-        width: 150px;
-        height: 150px;
-        overflow: hidden;
-        border-radius: 100%;
-        margin: 0 auto;
-        border: 4px solid $primary;
-      }
-      .upload-btn {
-        text-align: center;
-      }
-      
-    }
+    } 
 }
 
 .btn-group {

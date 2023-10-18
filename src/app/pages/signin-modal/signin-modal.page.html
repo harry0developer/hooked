@@ -6,13 +6,13 @@
 
   <div class="container" *ngIf="activeStep == 0">
     <div class="title">
-      <h1>Sign in</h1>
-      <p>Use your registered email and password</p>
+      <h1>Sign in with email address</h1>
+      <p>Use your registered email address and password</p>
     </div>
     <form class="modal-form" [formGroup]="validations_form">
       <ion-item mode="ios" lines="none">
         <ion-label position="stacked" color="primary">Email</ion-label>
-        <ion-input type="text" formControlName="email"></ion-input>
+        <ion-input class="border" type="text" formControlName="email"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.email">
@@ -25,7 +25,7 @@
 
       <ion-item mode="ios" lines="none">
         <ion-label position="stacked" color="primary">Password</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-input class="border" type="password" formControlName="password"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.password">
@@ -39,25 +39,20 @@
         <label class="error-message">{{errorMessage}}</label>
       </div>
 
-      <p class="forgot-password">Don't remember your password?
-        <br>
-        <ion-button fill="clear" shape="round" (click)="resetPassword()">
-          Reset password
-        </ion-button> 
-      </p>
       <div class="btn-group">
         <ion-button fill="outline" shape="round" (click)="cancel()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Cancel
         </ion-button>
-
         <ion-button shape="round" [disabled]="!validations_form.valid" (click)="signin()">
-          Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+          Sign In
         </ion-button>
       </div>
-      
     </form>
+    
+    <ion-button class="reset-password" expand="block" fill="clear" shape="round" (click)="resetPassword()">
+      Reset password
+    </ion-button> 
+    
   </div>
  
 
@@ -69,7 +64,7 @@
     <form class="modal-form" [formGroup]="validations_form">
       <ion-item mode="ios" lines="none">
         <ion-label position="stacked" color="primary">Email</ion-label>
-        <ion-input type="text" formControlName="email"></ion-input>
+        <ion-input class="border" type="text" formControlName="email"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.email">
@@ -81,13 +76,11 @@
       </div> 
       <div class="btn-group">
         <ion-button fill="outline" shape="round" (click)="cancel()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
           Cancel
         </ion-button>
 
-        <ion-button shape="round" [disabled]="!validations_form.get('email').valid" (click)="sendNewPassword()">
+        <ion-button class="reset-password" shape="round" [disabled]="!validations_form.get('email').valid" (click)="sendNewPassword()">
           Reset password
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
         </ion-button>
       </div>
       

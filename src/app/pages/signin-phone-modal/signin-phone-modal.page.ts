@@ -11,15 +11,13 @@ import { Country, User } from 'src/app/models/models';
 import { getAuth, RecaptchaVerifier } from '@angular/fire/auth';
 import { COLLECTION, ROUTES, STORAGE } from 'src/app/utils/const';
 import { SignupPhoneModalPage } from '../signup-phone-modal/signup-phone-modal.page';
-import { ChatService } from 'src/app/service/chat.service';
-
  
 @Component({
-  selector: 'app-phone-modal',
-  templateUrl: './phone-modal.page.html',
-  styleUrls: ['./phone-modal.page.scss'],
+  selector: 'app-signin-phone-modal',
+  templateUrl: './signin-phone-modal.page.html',
+  styleUrls: ['./signin-phone-modal.page.scss'],
 })
-export class PhoneModalPage implements OnInit {
+export class SigninPhoneModalPage implements OnInit {
 
   validations_form: FormGroup;
   phone_number_form: FormGroup;

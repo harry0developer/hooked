@@ -9,31 +9,7 @@
   
 <ion-content class="ion-padding preferences">
  
-  <h1>Preferences </h1>
-  
-  <!-- <ion-item class="item-choose"> 
-    <ion-label>
-      Looking for
-    </ion-label>
-    <ion-select 
-      [multiple]="true"
-      interface="action-sheet" 
-      placeholder="Select gender">
-        <ion-select-option [value]="opt" *ngFor="let opt of user?.want">{{opt}}</ion-select-option> 
-    </ion-select>
-  </ion-item>
-
-  <ion-item class="item-choose"> 
-    <ion-label>
-      With
-    </ion-label>
-    <ion-select 
-      [multiple]="true"
-      interface="action-sheet" 
-      placeholder="Select gender">
-        <ion-select-option [value]="opt" *ngFor="let opt of user?.with">{{opt}}</ion-select-option> 
-    </ion-select>
-  </ion-item> -->
+  <h1>Preferences </h1> 
 
   <form class="modal-form" [formGroup]="preferencesForm">
     <div class="preference-item">
@@ -58,9 +34,11 @@
           formControlName="with"
           interface="action-sheet"
           placeholder="With who"
-          [multiple]="true">
+          [multiple]="true"> 
             <ion-select-option value="Male">Male</ion-select-option>
             <ion-select-option value="Female">Female</ion-select-option>
+            <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
+            <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
             <ion-select-option value="Transgender">Transgender</ion-select-option> 
         </ion-select>
       </ion-item> 

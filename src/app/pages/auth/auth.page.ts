@@ -6,9 +6,8 @@ import { SignupModalPage } from '../signup-modal/signup-modal.page';
 import { SigninModalPage } from '../signin-modal/signin-modal.page';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
-import { PhoneModalPage } from '../phone-modal/phone-modal.page';
-import { SignupPhoneModalPage } from '../signup-phone-modal/signup-phone-modal.page';
-  
+import { SigninPhoneModalPage } from '../signin-phone-modal/signin-phone-modal.page';
+ 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
@@ -46,7 +45,7 @@ export class AuthPage implements OnInit {
 
   async openPhoneModal(isLogin:boolean) {
     const modal = await this.modalCtrl.create({
-      component: PhoneModalPage,
+      component: SigninPhoneModalPage,
       componentProps: {
         "isLogin": isLogin
       },

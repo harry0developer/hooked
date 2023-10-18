@@ -11,10 +11,9 @@
 
   <div class="container" *ngIf="!OTPCodeActive">
     <div class="title">
-      <h1 *ngIf="isLogin">Phone Number Sign In</h1>
-      <h1 *ngIf="!isLogin">Phone Number Sign Up</h1>
-      <p *ngIf="isLogin">Sign in with your mobile number</p>
-      <p *ngIf="!isLogin">Sign up with your mobile number</p>
+      <h1 *ngIf="isLogin">Sign in with phone number</h1>
+      <h1 *ngIf="!isLogin">Sign up with phone number</h1>
+      <p>Select your country code and enter your phone number</p>
     </div>
     <form class="modal-form" [formGroup]="phone_number_form">
       <ion-grid>

@@ -8,7 +8,11 @@
     height: 45vh; 
     img {
       width: 160px;
-      margin-top: 8vh;
+      margin-top: 10vh;
+    }
+    .tagline {
+      color: white;
+      margin: 0 40px;
     }
   } 
 
@@ -36,6 +40,10 @@
       --background: #fff;
       --color:#762b69;
       font-weight: bold;
+    }
+    .terms-conditions {
+      color: #ab4699;
+      margin: 20px 40px;
     }
   }
 }
