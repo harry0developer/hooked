@@ -2,7 +2,7 @@
 <ion-header> </ion-header>
 
 <ion-content class="modal-container"> 
-  <div class="counter" *ngIf="activeStep <= 7">Step {{activeStep + 1}}/7</div>
+  <div class="counter" *ngIf="activeStep <= 6">Step {{activeStep + 1}}/6</div>
 
   <!-- Step one  -->
   <div class="container" *ngIf="activeStep == 0">
@@ -120,12 +120,13 @@
         <ion-select 
           formControlName="gender"
           interface="action-sheet" 
-          placeholder="Select gender">
-            <ion-select-option value="Male">Male</ion-select-option>
-            <ion-select-option value="Female">Female</ion-select-option>
-            <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
-            <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
-            <ion-select-option value="Non-binary">Nonbinary</ion-select-option>
+          placeholder="Select gender"> 
+          <ion-select-option value="Male">Male</ion-select-option>
+          <ion-select-option value="Female">Female</ion-select-option>
+          <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
+          <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
+          <ion-select-option value="Transgender">Transgender</ion-select-option> 
+          <ion-select-option value="Non-Binary">Non-Binary</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >
@@ -140,7 +141,7 @@
   </div>
 
   <!-- Step 5 -->
-  <div class="container" *ngIf="activeStep == 4">
+  <!-- <div class="container" *ngIf="activeStep == 4">
     <div class="title">
       <h1>What's your sexual orientation?</h1>
       <p>This helps us find the right match for you</p>
@@ -168,11 +169,11 @@
         </ion-button>
       </div>
     </form>
-  </div>
+  </div> -->
 
 
-  <!-- Step 6 -->
-  <div class="container" *ngIf="activeStep == 5">
+  <!-- Step 5 -->
+  <div class="container" *ngIf="activeStep == 4">
     <div class="title">
       <h1>What are you looking for?</h1>
       <p>These preferences can be changed, once logged in</p>
@@ -206,6 +207,7 @@
             <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
             <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
             <ion-select-option value="Transgender">Transgender</ion-select-option> 
+            <ion-select-option value="Non-Binary">Non-Binary</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >
@@ -218,8 +220,9 @@
       </div> 
     </form>
   </div>
-  <!-- Step 7 OTP -->
-  <div class="container" *ngIf="activeStep == 6">
+
+  <!-- Step 6 OTP -->
+  <div class="container" *ngIf="activeStep == 5">
     <div class="title">
       <h1>We have sent a verification code to {{email}}</h1>
       <p>Please enter the verification code below:</p>

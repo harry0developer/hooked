@@ -55,9 +55,7 @@ export class SignupPhoneModalPage implements OnInit {
   get gender() {
     return this.signup_form.get('gender')?.value;
   }
-  get orientation() {
-    return this.signup_form.get('orientation')?.value;
-  }
+ 
   get name() {
     return this.signup_form.get('name')?.value;
   }

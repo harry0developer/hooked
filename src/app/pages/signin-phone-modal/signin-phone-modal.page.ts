@@ -203,7 +203,6 @@ export class SigninPhoneModalPage implements OnInit {
         want: [],
         with: [],
         dob: "",
-        orientation: "",
         images: [],
         profile_picture: "",
         isVerified: true, 

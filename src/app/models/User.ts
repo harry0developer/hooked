@@ -9,7 +9,6 @@ export interface User {
     with: string[];
     dob: string;
     phone?: string;
-    orientation: string;
     images: string[];
     profile_picture: string;
     isVerified: boolean;

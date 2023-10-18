@@ -30,7 +30,6 @@ export class FirebaseService {
     name: "Nelisiwe XX",
     dob: "09/05/2005", //moment().format('L');    // 01/19/2023
     gender: "Female",
-    orientation: "LGBTQ",
     want: ['ONS'],
     with: ['male'],
     profile_picture: "../../../assets/users/user2/1.jpg",
@@ -51,7 +50,6 @@ export class FirebaseService {
     name: "Brian King",
     dob: "19/09/2000", //moment().format('L');    // 01/19/2023
     gender: "Male",
-    orientation: "Straight",
     want: ['ONS'],
     with: ['Female'],
     profile_picture: "../../../assets/users/user6/1.jpg",
@@ -72,7 +70,6 @@ export class FirebaseService {
     name: "Leean Ass",
     dob: "12/08/1998", //moment().format('L');    // 01/19/2023
     gender: "Female",
-    orientation: "Straight",
     want: ['ONS'],
     with: ['Male', 'Transgender'],
     profile_picture: "../../../assets/users/user2/2.jpg",
@@ -93,7 +90,6 @@ export class FirebaseService {
     name: "Melisa",
     dob: "12/08/1998", //moment().format('L');    // 01/19/2023
     gender: "Female",
-    orientation: "LGBTQ",
     want: ['ONS', 'NSA'],
     with: ['Female', 'Transgender'],
     profile_picture: "../../../assets/users/user8/2.jpg",
@@ -114,7 +110,6 @@ export class FirebaseService {
     name: "Tracy Lacey",
     dob: "12/08/1996", //moment().format('L');    // 01/19/2023
     gender: "Female",
-    orientation: "LGBTQ",
     want: ['ONS', 'NSA'],
     with: ['Male', 'Transgender'],
     profile_picture: "../../../assets/users/user4/2.jpg",
@@ -135,7 +130,6 @@ export class FirebaseService {
     name: "Kegan",
     dob: "Ryan/08/1998", //moment().format('L');    // 01/19/2023
     gender: "Male",
-    orientation: "LGBTQ",
     want: ['ONS', 'NSA'],
     with: ['Male', 'Transgender'],
     profile_picture: "../../../assets/users/user9/2.jpg",
@@ -499,7 +493,6 @@ export class FirebaseService {
       with: [],
       dob: "",
       phone: user.phoneNumber,
-      orientation: "",
       images: [],
       profile_picture: "",
       isVerified: true, 

@@ -39,18 +39,19 @@
           </ion-label>
         </ion-item>
         <ion-item >
-          <ion-icon slot="start" class="gender icon" name="man-outline" *ngIf="user.gender == 'Male' "></ion-icon>
+          <ion-icon slot="start" class="gender icon" name="man-outline" *ngIf="user.gender == 'Male'  "></ion-icon>
           <ion-icon slot="start" class="gender icon" name="woman-outline" *ngIf="user.gender == 'Female' "></ion-icon>
+          <ion-icon slot="start" class="gender icon" name="grid-outline" *ngIf="user.gender == 'Gay Couple' || user.gender == 'Lesbian Couple' "></ion-icon>
           <ion-label>
             <h3>{{user?.gender}}</h3>
           </ion-label>
         </ion-item>
-        <ion-item >
+        <!-- <ion-item >
           <ion-icon slot="start"  class="icon" name="transgender-outline"></ion-icon>
           <ion-label>
             <h3> {{user?.orientation}}</h3>
           </ion-label>
-        </ion-item>
+        </ion-item> -->
       </ion-list>
       
 

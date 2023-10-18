@@ -2,9 +2,9 @@
 <ion-header> </ion-header>
 
 <ion-content class="modal-container ion-padding"> 
-  <div class="counter" *ngIf="activeStep <= 5">Step {{activeStep + 1}}/5</div>
+  <div class="counter" *ngIf="activeStep <= 4">Step {{activeStep + 1}}/4</div>
  
-  <!-- Step 2 But Step 1 for phone login -->
+  <!-- Step 1 -->
   <div class="container" *ngIf="activeStep == 0">
     <div class="title">
       <h1>What's your name?</h1>
@@ -35,8 +35,7 @@
     </form>
   </div>
 
-
-  <!-- Step 3 -->
+  <!-- Step 2 -->
   <div class="container" *ngIf="activeStep == 1">
     <div class="title">
       <h1>What's your date of birth</h1>
@@ -61,7 +60,7 @@
     </form>
   </div>
 
-  <!-- Step 4 -->
+  <!-- Step 3 -->
   <div class="container" *ngIf="activeStep == 2">
     <div class="title">
       <h1>What's your gender?</h1>
@@ -73,10 +72,13 @@
         <ion-select 
           formControlName="gender"
           interface="action-sheet" 
-          placeholder="Select gender">
+          placeholder="Select gender"> 
             <ion-select-option value="Male">Male</ion-select-option>
             <ion-select-option value="Female">Female</ion-select-option>
-            <ion-select-option value="Non-binary">Nonbinary</ion-select-option>
+            <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
+            <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
+            <ion-select-option value="Transgender">Transgender</ion-select-option> 
+            <ion-select-option value="Non-Binary">Non-Binary</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >
@@ -92,6 +94,7 @@
 
 
   <!-- Step 5 -->
+<!--   
   <div class="container" *ngIf="activeStep == 3">
     <div class="title">
       <h1>What's your sexual orientation?</h1>
@@ -120,13 +123,13 @@
         </ion-button>
       </div>
     </form>
-  </div>
+  </div> -->
 
-  <!-- Step 6 -->
-  <div class="container" *ngIf="activeStep == 4">
+  <!-- Step 4 -->
+  <div class="container" *ngIf="activeStep == 3">
     <div class="title">
       <h1>What are you looking for?</h1>
-      <p>These preferences can be changed, once logged in, in the profile page</p>
+      <p>These preferences can be changed, once logged in</p>
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
@@ -154,7 +157,10 @@
           [multiple]="true">
             <ion-select-option value="Male">Male</ion-select-option>
             <ion-select-option value="Female">Female</ion-select-option>
+            <ion-select-option value="Gay Couple">Gay Couple</ion-select-option>
+            <ion-select-option value="Lesbian Couple">Lesbian Couple</ion-select-option>
             <ion-select-option value="Transgender">Transgender</ion-select-option> 
+            <ion-select-option value="Non-Binary">Non-Binary</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >

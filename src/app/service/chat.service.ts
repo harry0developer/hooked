@@ -94,7 +94,6 @@ export class ChatService {
       with: [ "Female"],
       dob: "1995-01-01T00:21:00+02:00",
       verificationCode: "12345",
-      orientation: "Straight",
       profile_picture: "https://firebasestorage.googleapis.com/v0/b/hooked-3b11c.appspot.com/o/images%2F0tLRwFVa0chqT18TF50IWtOnjaz2%2F1676667401059.jpeg?alt=media&token=64d04cd1-6624-4824-a00d-a9ed4989147e",
       images: [],
       password: "123456",

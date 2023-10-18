@@ -75,9 +75,7 @@ export class SignupModalPage implements OnInit {
   get gender() {
     return this.signup_form.get('gender')?.value;
   }
-  get orientation() {
-    return this.signup_form.get('orientation')?.value;
-  }
+ 
   get name() {
     return this.signup_form.get('name')?.value;
   }
@@ -111,10 +109,7 @@ export class SignupModalPage implements OnInit {
       ])), 
       dob: new FormControl('', Validators.compose([
         Validators.required
-      ])),
-      orientation: new FormControl('', Validators.compose([
-        Validators.required
-      ])),
+      ])), 
       want: new FormControl('', Validators.compose([
         Validators.required
       ])),
@@ -144,9 +139,7 @@ export class SignupModalPage implements OnInit {
     this.selectedDate = m.format();    
   }
  
-
 	async createAccount(otp: string) { 
-
     if(otp !== this.code) { 
       this.showAlert("Account Verification", "Verification code does not match");
     } else {
@@ -159,7 +152,6 @@ export class SignupModalPage implements OnInit {
         with: this.with,
         dob: this.dob,
         verificationCode: otp,
-        orientation: this.orientation,
         profile_picture: "",
         images: [],
         password: this.password,
