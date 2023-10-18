@@ -2,16 +2,19 @@
 <ion-header> </ion-header>
 
 <ion-content class="modal-container"> 
-
   <div id="recaptcha-container"></div>
 
-  <div class="counter" *ngIf="!OTPCodeActive">Sign in</div>
+  <div class="counter" *ngIf="!OTPCodeActive && isLogin">Sign in</div>
+  <div class="counter" *ngIf="!OTPCodeActive && !isLogin">Sign up</div>
+
   <div class="counter-otp" *ngIf="OTPCodeActive">OPT Verification</div>
 
   <div class="container" *ngIf="!OTPCodeActive">
     <div class="title">
-      <h1>Phone number login</h1>
-      <p>Sign in with your mobile number</p>
+      <h1 *ngIf="isLogin">Phone Number Sign In</h1>
+      <h1 *ngIf="!isLogin">Phone Number Sign Up</h1>
+      <p *ngIf="isLogin">Sign in with your mobile number</p>
+      <p *ngIf="!isLogin">Sign up with your mobile number</p>
     </div>
     <form class="modal-form" [formGroup]="phone_number_form">
       <ion-grid>
@@ -24,7 +27,7 @@
           <ion-col size="8">
             <ion-item class="phone-number">
               <ion-input required type="text" formControlName="phone"  placeholder="Phone number"
-               [brmasker]="{mask:'00 0000 000', len:15,  type:'num'}"></ion-input>
+              [brmasker]="{mask:'00 0000 000', len:15,  type:'num'}"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row> 
@@ -42,22 +45,23 @@
 
       <div class="btn-group">
         <ion-button fill="outline" shape="round" (click)="cancel()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          <!-- <ion-icon slot="start" name="arrow-back-outline"></ion-icon> -->
           Cancel
         </ion-button>
 
         <ion-button shape="round" [disabled]="!phone_number_form.valid" (click)="signin()">
           Next
-          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+          <!-- <ion-icon slot="end" name="arrow-forward-outline"></ion-icon> -->
         </ion-button>
       </div>
       
     </form>
   </div>
 
+
   <div class="container" *ngIf="OTPCodeActive">
     <div class="title">
-      <h1>Enter OTP Code</h1>
+      <h1>Enter Verification Code</h1>
       <p>A 6 digit code was sent to: {{phoneNumber}}</p>
     </div> 
     
@@ -93,23 +97,16 @@
   
     <div class="btn-group">
       <ion-button fill="outline" shape="round" (click)="resendOTPCode()">
-        <ion-icon slot="start" name="refresh-outline"></ion-icon>
         Resend code
       </ion-button>
 
       <ion-button shape="round" [disabled]="!form.valid" (click)="verifyLoginCode(form)">
-         Verify code
-        <ion-icon  slot="end" name="arrow-forward-outline"></ion-icon> 
+        Verify code
       </ion-button>
     </div>
 
     <ion-button class="cancel-btn" fill="clear"  expand="block" shape="round" (click)="cancel()">
-      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
       Cancel
     </ion-button>
-    
   </div>
- 
- 
-
 </ion-content>

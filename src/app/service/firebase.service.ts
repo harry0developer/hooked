@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, signOut, signInWithPhoneNumber, ApplicationVerifier, getAuth
+import { 
+  Auth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, signOut,
+  signInWithPhoneNumber, ApplicationVerifier, sendPasswordResetEmail
 } from '@angular/fire/auth';
-import { doc,setDoc, docData, Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, query, where, CollectionReference, addDoc } from '@angular/fire/firestore';
+import { doc,setDoc,Firestore, getDoc, collection, collectionData, docSnapshots, onSnapshot, query, where, CollectionReference, addDoc } from '@angular/fire/firestore';
 import { ref, Storage, UploadResult, uploadString, getStorage, getDownloadURL, StorageReference, listAll, ListResult, deleteObject } from '@angular/fire/storage';
 import { Photo } from '@capacitor/camera';
-import { BehaviorSubject, from, map, Observable, take } from 'rxjs';
+import { from, map, Observable, take } from 'rxjs';
 import { COLLECTION, STATUS, STORAGE, SWIPE_USER } from 'src/app/utils/const';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
@@ -190,6 +192,14 @@ export class FirebaseService {
   async signInWithPhoneNumber(phone: string, verifier: ApplicationVerifier) {
     try {
       return await signInWithPhoneNumber(this.auth, phone, verifier)
+    } catch (error) {
+        return error;
+    }
+  }
+
+  async forgotPassword(phone: string) {
+    try {
+      return await sendPasswordResetEmail(this.auth, phone);
     } catch (error) {
         return error;
     }

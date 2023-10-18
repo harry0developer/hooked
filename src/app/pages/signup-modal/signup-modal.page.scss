@@ -6,117 +6,134 @@
  
 .modal-form {
     width: 100%;
-    padding: 20px; 
-}
-  
-.btn-group {
-    float: right;
-    margin-top: 40px;
-    ion-button {
-      min-width: 140px;
-      height: 50px;
-    }
+    padding-bottom: 20px; 
 }
 
 .summary.btn-group {
     height: 90px;
 }
+
+.otp-form {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0;
+  .otp-item {
+    background-color: #f2f2f2;
+    width: 50px;
+    height: 50px; 
+    border-radius: 4px; 
+    padding: 4px 4px 0 10px;
+    font-size: 21px;
+    font-weight: bold;
+
+  }
+}
+
 .modal-container {
 
-    .counter {
-      width: 100px;
-      border-radius: 0 40px 40px 0;
-      margin: 20px 0;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 10px;
-      background-color: $primary;
-      color: white;;
-    }
-  
-    .container {
-      .title {
-        padding-left: 40px;
+  .counter {
+    width: 100px;
+    border-radius: 0 40px 40px 0;
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: $primary;
+    color: white;;
+  }
+
+  .container {
+    .title {
+      padding: 20px;
+      
+      h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
+        font-weight: bold;
+        color: $primary;
         line-height: 1;
-        h1 {
-          margin: 0;
-          padding: 0;
-          font-size: 24px;
-          font-weight: bold;
-        }
-        p {
-          margin: 0;
-          padding: 0;
-          font-size: 16px;
-        }
-       
       }
-  
-      .item-choose {
-        font-size: 20px;
-        margin: 20px;
-      }
-  
-      ion-select {
-        width: 100%;
-      }
-  
-      ion-input {
-        margin: 4px 0;
-        border-bottom: 1px solid #292929; 
-    
-      }
-    
-      ion-label {
-        color: #292929;
-      }
-      ion-select {
-        border-bottom: 1px solid #292929;
-    
+      p {
+        margin: 0;
+        padding: 4px 0;
+        font-size: 16px;
+        line-height: 1;
       }
       
-      .validation-errors {
-        padding-left: 20px;
-        .error-message {
+    } 
+    ion-input.border, ion-select  { 
+      margin: 4px 0;
+      border: 2px solid #f2f2f2;
+      border-radius: 6px;
+      font-size: 20px;
+      --padding-start: 10px;
+      
+    }
+
+    ion-select {
+      width: 100%;
+    }
+
+    ion-label {
+      color: $primary;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    
+    .validation-errors {
+      padding-left: 20px;
+      .error-message {
+          font-size: 16px;
+          color: $primary;
+          line-height: 1 !important;
+        }
+      }
+    }
+    .summary { 
+      .item {
+        margin: 10px 20px;
+        .gender {
+            padding-right: 16px;
+            font-size: 30px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        p {
             font-size: 16px;
-            color: $primary;
-            line-height: 1 !important;
-          }
         }
       }
-      .summary { 
-        .item {
-          margin: 10px 20px;
-          .gender {
-              padding-right: 16px;
-              font-size: 30px;
-          }
-          h1 {
-              font-size: 18px;
-              font-weight: bold;
-          }
-          p {
-              font-size: 16px;
-          }
-        }
+    }
+
+    .upload-image {
+      margin-top: 20px;
+      .preview {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 100%;
+        margin: 0 auto;
+        border: 4px solid $primary;
       }
-  
-      .upload-image {
-        margin-top: 20px;
-        .preview {
-          width: 150px;
-          height: 150px;
-          overflow: hidden;
-          border-radius: 100%;
-          margin: 0 auto;
-          border: 4px solid $primary;
-        }
-        .upload-btn {
-          text-align: center;
-        }
-       
+      .upload-btn {
+        text-align: center;
       }
- }
+      
+    }
+}
+
+.btn-group {
+  text-align: center;
+  margin-top: 40px;
+  ion-button {
+    min-width: 140px;
+    height: 50px;
+  }
+}
+
   
   
 ion-modal::part(backdrop) {

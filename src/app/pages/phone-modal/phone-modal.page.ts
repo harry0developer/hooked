@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
@@ -9,8 +9,9 @@ import { CountryCodeModalModalPage } from '../country-code-modal/country-code-mo
 import { WindowProvider } from 'src/app/service/window.service';
 import { Country, User } from 'src/app/models/models';
 import { getAuth, RecaptchaVerifier } from '@angular/fire/auth';
-import { COLLECTION, STORAGE } from 'src/app/utils/const';
+import { COLLECTION, ROUTES, STORAGE } from 'src/app/utils/const';
 import { SignupPhoneModalPage } from '../signup-phone-modal/signup-phone-modal.page';
+import { ChatService } from 'src/app/service/chat.service';
 
  
 @Component({
@@ -74,6 +75,8 @@ export class PhoneModalPage implements OnInit {
     dialCode: "+27"
   };
 
+  @Input() isLogin: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
@@ -82,7 +85,6 @@ export class PhoneModalPage implements OnInit {
     private modalCtrl: ModalController,
     public actionSheetController: ActionSheetController,
     private loadingCtrl:LoadingController,
-    private dataService: DataService,
     private win: WindowProvider
   ) { } 
 
@@ -144,14 +146,49 @@ export class PhoneModalPage implements OnInit {
     const otp = [...frm.otp1, ...frm.otp2, ...frm.otp3, ...frm.otp4, ...frm.otp5, ...frm.otp6].join('');
     this.windowRef.confirmationResult.confirm(otp).then((result) => {
       loading.dismiss();
-      this.addUserIntoFirestore(result.user);
+      this.user = result.user;
+      if(this.isLogin) {
+        this.loginWithPhoneNumber(result.user.uid); 
+      } else {
+        this.addUserIntoFirestore(result.user);
+      }
     }).catch(() => {
       loading.dismiss();
       this.showAlert("Incorrect OTP", "The verification code entered is incorrect");
     });
   }
 
-  
+  private async loginWithPhoneNumber(uid: string) {
+    const loading = await this.loadingCtrl.create({message: "Fetching your info, please wait..."});
+    await loading.present();
+    this.firebaseService.queryUsersByUid(COLLECTION.USERS, uid).then(user => {
+      loading.dismiss();
+      console.log("Found User", user);
+      
+      if(user && user.length > 0 && user[0].gender && user[0].dob) {
+        this.modalCtrl.dismiss().then(() => {
+          this.router.navigateByUrl(ROUTES.USERS);
+        });
+      } else {
+        this.showCreatePhoneProfileAlert("Profile not found", "Please complete your profile to start matching", "Complete Profile");
+      }
+    }).catch(err => {
+      console.log("Error ", err);
+      loading.dismiss();
+    })
+  }
+
+  async showCreatePhoneProfileAlert(header: string, message: string, btnText: string) {
+    const alert = await this.alertCtrl.create({
+      header, message, buttons: [btnText], 
+       backdropDismiss: true
+    });
+    await alert.present();
+    alert.onDidDismiss().then(() => {
+      this.addUserIntoFirestore(this.user);
+    });
+  }
+
   private async addUserIntoFirestore(user: any) {
     const loading = await this.loadingCtrl.create({message: "Setting you up, please wait..."});
     await loading.present();

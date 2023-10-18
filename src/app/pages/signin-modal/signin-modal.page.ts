@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { FIREBASE_ERROR, ROUTES, STATUS } from 'src/app/utils/const';
 
@@ -38,6 +38,7 @@ export class SigninModalPage implements OnInit {
     private modalCtrl: ModalController,
     public actionSheetController: ActionSheetController,
     private loadingCtrl:LoadingController,
+    private toastController: ToastController
   ) { } 
 
   get email() {
@@ -61,7 +62,6 @@ export class SigninModalPage implements OnInit {
     });
   }
   
-
   async signin() {
     const loading = await this.loadingCtrl.create( {message:"Signing in, please wait..."});
     await loading.present();
@@ -94,8 +94,39 @@ export class SigninModalPage implements OnInit {
     const alert = await this.alertCtrl.create({
       header, message, buttons: ['Dismiss']
     })
-
     await alert.present();
+  }
+
+  resetPassword() {
+    this.activeStep = 1;
+  }
+
+
+  async presentToast(msg: string,position: 'top' | 'middle' | 'bottom') {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 6000,
+      position: position,
+    });
+
+    await toast.present();
+  }
+  
+ async sendNewPassword() {
+    const loading = await this.loadingCtrl.create({message: "Sending an email. please wait..."});
+    await loading.present();
+    this.firebaseService.forgotPassword(this.email).then((res) => {
+      console.log(res) ;
+      loading.dismiss();
+      if(res.includes("auth/user-not-found")) {
+        this.showAlert("Email not registered", "Please provide an email address that is registered");
+      } else {
+        this.presentToast("Password reset link sent to your email address", 'bottom');
+      }
+    }).catch(err => {
+      loading.dismiss();
+      this.presentToast("An error occured, please try again", 'bottom');
+    })
   }
 
   cancel() {

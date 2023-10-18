@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, FormControl, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { User } from 'src/app/models/models';
@@ -49,6 +49,7 @@ export class SignupModalPage implements OnInit {
   minDate: any;
   maxDate: any;
 
+  verificationCode: string;
   constructor(
     private formBuilder: FormBuilder,
     private firebaseService: FirebaseService,
@@ -86,10 +87,7 @@ export class SignupModalPage implements OnInit {
   get with() {
     return this.signup_form.get('with')?.value;
   }
-  get verificationCode() {
-    return this.signup_form.get('verificationCode')?.value;
-  } 
-
+ 
   ngOnInit() {    
     this.setMaxDate();
     this.validations_form = this.formBuilder.group({
@@ -123,11 +121,7 @@ export class SignupModalPage implements OnInit {
       with: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      verificationCode: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(5)
-      ]))
+    
     });
   }
 
@@ -151,8 +145,9 @@ export class SignupModalPage implements OnInit {
   }
  
 
-	async createAccount() { 
-    if(this.verificationCode !== this.code) { 
+	async createAccount(otp: string) { 
+
+    if(otp !== this.code) { 
       this.showAlert("Account Verification", "Verification code does not match");
     } else {
       this.user  = { 
@@ -163,7 +158,7 @@ export class SignupModalPage implements OnInit {
         want: this.want,
         with: this.with,
         dob: this.dob,
-        verificationCode: this.verificationCode,
+        verificationCode: otp,
         orientation: this.orientation,
         profile_picture: "",
         images: [],
@@ -235,7 +230,7 @@ export class SignupModalPage implements OnInit {
 
   sendVerificationCode() {
     this.next();
-    this.code = ""+Math.floor(Math.random()*100000+1);
+    this.code = ""+Math.floor(Math.random()*1000000+1);
     console.log("Cocde: ", this.code);
   }
 
@@ -248,5 +243,28 @@ export class SignupModalPage implements OnInit {
   cancelCreateAccount() {
     this.router.navigateByUrl(ROUTES.SIGNUP, {replaceUrl: true})
   } 
+
+  otpController(event, next, prev) {
+    if(isNaN(event.target.value)) {
+      event.target.value = "";
+      return 0;
+    } else {
+      if (event.target.value.length < 1 && prev) {
+        prev.setFocus();
+        return 0;
+      } else if (next && event.target.value.length > 0) {
+        next.setFocus();
+        return 0;
+      } else {
+        return 0;
+      }
+    }
+  }
+  
+  async verifyLoginCode(form: NgForm) {
+    const frm = form.value;
+    const otp = [...frm.otp1, ...frm.otp2, ...frm.otp3, ...frm.otp4, ...frm.otp5, ...frm.otp6].join('');
+   this.createAccount(otp);
+  }
 
 }

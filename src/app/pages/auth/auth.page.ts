@@ -7,6 +7,7 @@ import { SigninModalPage } from '../signin-modal/signin-modal.page';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
 import { PhoneModalPage } from '../phone-modal/phone-modal.page';
+import { SignupPhoneModalPage } from '../signup-phone-modal/signup-phone-modal.page';
   
 @Component({
   selector: 'app-auth',
@@ -43,9 +44,12 @@ export class AuthPage implements OnInit {
     }
   }
 
-  async openPhoneModal() {
+  async openPhoneModal(isLogin:boolean) {
     const modal = await this.modalCtrl.create({
       component: PhoneModalPage,
+      componentProps: {
+        "isLogin": isLogin
+      },
       initialBreakpoint: 0.8,
       breakpoints: [0, 0.8],
       backdropBreakpoint: 0,
@@ -80,7 +84,7 @@ export class AuthPage implements OnInit {
       buttons: [{
         text: 'Phone number',
         handler: () => {
-          this.openPhoneModal();
+          this.openPhoneModal(true);
         }
       },
       {
@@ -104,7 +108,7 @@ export class AuthPage implements OnInit {
       buttons: [{
         text: 'Phone number',
         handler: () => {
-          this.openPhoneModal();
+          this.openPhoneModal(false);
         }
       },
       {

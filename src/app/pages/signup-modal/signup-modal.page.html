@@ -2,18 +2,18 @@
 <ion-header> </ion-header>
 
 <ion-content class="modal-container"> 
-  <div class="counter" *ngIf="activeStep <= 7">Step {{activeStep + 1}}/6</div>
+  <div class="counter" *ngIf="activeStep <= 7">Step {{activeStep + 1}}/7</div>
 
   <!-- Step one  -->
   <div class="container" *ngIf="activeStep == 0">
     <div class="title">
-      <h1>Sign up</h1>
+      <h1>Email Sign Up</h1>
       <p>Use your email address and create a new password</p>
     </div>
     <form class="modal-form" [formGroup]="validations_form">
       <ion-item mode="ios" lines="none">
         <ion-label position="stacked" color="primary">Email</ion-label>
-        <ion-input type="text" formControlName="email"></ion-input>
+        <ion-input class="border" type="text" formControlName="email"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.email">
@@ -26,7 +26,7 @@
 
       <ion-item mode="ios" lines="none">
         <ion-label position="stacked" color="primary">Password</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-input class="border" type="password" formControlName="password"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.password">
@@ -52,7 +52,6 @@
     </form>
   </div>
 
-
   <!-- Step 2 -->
   <div class="container" *ngIf="activeStep == 1">
     <div class="title">
@@ -62,7 +61,7 @@
 
     <form class="modal-form" [formGroup]="signup_form">
       <ion-item  mode="ios" lines="none">
-        <ion-input placeholder="Enter your name" type="text" formControlName="name"></ion-input>
+        <ion-input class="border" placeholder="Enter your name" type="text" formControlName="name"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.name">
@@ -83,7 +82,6 @@
       </div>
     </form>
   </div>
-
 
   <!-- Step 3 -->
   <div class="container" *ngIf="activeStep == 2">
@@ -118,7 +116,7 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select 
           formControlName="gender"
           interface="action-sheet" 
@@ -139,7 +137,6 @@
     </form>
   </div>
 
-
   <!-- Step 5 -->
   <div class="container" *ngIf="activeStep == 4">
     <div class="title">
@@ -148,13 +145,16 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="orientation"
           interface="action-sheet"
           placeholder="Select sexual orientation">
             <ion-select-option value="Straight">Straight</ion-select-option>
-            <ion-select-option value="LGBT">Lesbian, Gay, Bi, Transgender (LGBT)</ion-select-option>
+            <ion-select-option value="Lesbian">Lesbian</ion-select-option>
+            <ion-select-option value="Gay">Gay</ion-select-option>
+            <ion-select-option value="Bi">Bi</ion-select-option>
+            <ion-select-option value="Transgender">Transgender</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >
@@ -169,7 +169,6 @@
   </div>
 
 
-
   <!-- Step 6 -->
   <div class="container" *ngIf="activeStep == 5">
     <div class="title">
@@ -178,7 +177,7 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="want"
           interface="action-sheet"
@@ -194,7 +193,7 @@
         <h1>With</h1>
       </div>
 
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="with"
           interface="action-sheet"
@@ -210,12 +209,11 @@
           Back
         </ion-button>
         <ion-button shape="round" [disabled]="!signup_form.get('with').valid" (click)="sendVerificationCode()">
-          Verify
+          Next
         </ion-button>
       </div> 
     </form>
   </div>
-
   <!-- Step 7 OTP -->
   <div class="container" *ngIf="activeStep == 6">
     <div class="title">
@@ -223,42 +221,50 @@
       <p>Please enter the verification code below:</p>
     </div>
 
-    <form class="modal-form" [formGroup]="signup_form">
-      <ion-item  mode="ios" lines="none">
-        <ion-input placeholder="Enter verification code" type="text" formControlName="verificationCode"></ion-input>
-      </ion-item>
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.verificationCode">
-          <div class="error-message"
-            *ngIf="signup_form.get('verificationCode').hasError(validation.type) && (signup_form.get('verificationCode').dirty || signup_form.get('verificationCode').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
+    <form #form="ngForm" class="otp-form">
+      <div class="otp-item">
+        <ion-input #otp1 ngModel name="otp1" required maxLength="1" (keyup)="otpController($event,otp2,'')"></ion-input>
+      </div>
 
-        <ng-container  *ngIf="verificationCodeError">
-          <div class="error-message">
-            {{ verificationCodeError}}
-          </div>
-        </ng-container>
+      <div class="otp-item">
+        <ion-input #otp2 ngModel name="otp2" required maxLength="1" (keyup)="otpController($event,otp3,otp1)">  </ion-input>
       </div>
-      <div class="btn-group" >
-        <ion-button shape="round" fill="outline" (click)="resedCode()">
-          Resend Code
-        </ion-button>
-        <ion-button shape="round" [disabled]="!signup_form.get('verificationCode').valid" (click)="createAccount()">
-          Verify Code
-        </ion-button>
+
+      <div class="otp-item">
+        <ion-input #otp3 ngModel name="otp3" required maxLength="1" (keyup)="otpController($event,otp4,otp2)">
+        </ion-input>
       </div>
-    </form>     
-    
+
+      <div class="otp-item">
+        <ion-input #otp4 ngModel name="otp4" required maxLength="1" (keyup)="otpController($event,otp5,otp3)">
+        </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp5 ngModel name="otp5" required maxLength="1" (keyup)="otpController($event,otp6,otp4)">
+        </ion-input>
+      </div>
+
+      <div class="otp-item">
+        <ion-input #otp6 ngModel name="otp6" required maxLength="1" (keyup)="otpController($event,'',otp5)">
+        </ion-input>
+      </div> 
+    </form>
+
+    <div class="btn-group" >
+      <ion-button shape="round" fill="outline" (click)="resedCode()">
+        Resend Code
+      </ion-button>
+      <ion-button shape="round"  [disabled]="!form.valid" (click)="verifyLoginCode(form)">
+        Verify Code
+      </ion-button>
+    </div> 
     <div class="cancel">
       <ion-button shape="round" fill="clear" (click)="cancelCreateAccount()">
         Cancel creating account
       </ion-button> 
     </div>
-
   </div>
-
  
 
 </ion-content>

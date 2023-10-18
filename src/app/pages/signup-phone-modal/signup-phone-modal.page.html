@@ -13,7 +13,7 @@
 
     <form class="modal-form" [formGroup]="signup_form">
       <ion-item  mode="ios" lines="none">
-        <ion-input placeholder="Enter your name" type="text" formControlName="name"></ion-input>
+        <ion-input class="border" placeholder="Enter your name" type="text" formControlName="name"></ion-input>
       </ion-item>
       <div class="validation-errors">
         <ng-container *ngFor="let validation of validation_messages.name">
@@ -69,7 +69,7 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose"  lines="none"> 
         <ion-select 
           formControlName="gender"
           interface="action-sheet" 
@@ -99,13 +99,16 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="orientation"
           interface="action-sheet"
           placeholder="Select sexual orientation">
-            <ion-select-option value="Straight">Straight</ion-select-option>
-            <ion-select-option value="LGBT">Lesbian, Gay, Bi, Transgender (LGBT)</ion-select-option>
+          <ion-select-option value="Straight">Straight</ion-select-option>
+          <ion-select-option value="Lesbian">Lesbian</ion-select-option>
+          <ion-select-option value="Gay">Gay</ion-select-option>
+          <ion-select-option value="Bi">Bi</ion-select-option>
+          <ion-select-option value="Transgender">Transgender</ion-select-option>
         </ion-select>
       </ion-item>
       <div class="btn-group" >
@@ -119,8 +122,6 @@
     </form>
   </div>
 
-
-
   <!-- Step 6 -->
   <div class="container" *ngIf="activeStep == 4">
     <div class="title">
@@ -129,7 +130,7 @@
     </div>
 
     <form class="modal-form" [formGroup]="signup_form">
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="want"
           interface="action-sheet"
@@ -145,7 +146,7 @@
         <h1>With</h1>
       </div>
 
-      <ion-item class="item-choose"> 
+      <ion-item class="item-choose" lines="none"> 
         <ion-select
           formControlName="with"
           interface="action-sheet"
