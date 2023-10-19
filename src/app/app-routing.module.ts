@@ -43,6 +43,11 @@ const routes: Routes = [
     path: 'preferences',
     loadChildren: () => import('./pages/preferences-modal/preferences-modal.module').then(m => m.PreferencesModalPageModule)
   },
+  {
+    path: 'terms',
+    loadChildren: () => import('./pages/tc/tc.module').then(m => m.TermsModule)
+  },
+  
 ];
 @NgModule({
   imports: [

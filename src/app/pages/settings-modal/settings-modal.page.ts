@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { ROUTES, STORAGE } from 'src/app/utils/const';
 import { PreferencesModalPage } from '../preferences-modal/preferences-modal.page';
 import { User } from 'src/app/models/models';
+import { TermsPage } from '../tc/tc.page';
+import { SafetyTipsPage } from '../safety-tips/safety-tips.page';
+import { SupportPage } from '../support/support.page';
 
 @Component({
   selector: 'app-settings-modal',
@@ -75,6 +78,34 @@ export class SettingsModalPage implements OnInit {
     return this.modalCtrl.dismiss(this.name, 'confirm');
   }
  
+
+  async openModal(compRef) {
+    const modal = await this.modalCtrl.create({
+      component: compRef,
+      componentProps: {
+        "user": this.user
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      console.log("confirmed");
+    }
+  }
+
+  openTermsAndConditionsModal() {
+    this.openModal(TermsPage);
+  }
+
+  openSafetyTipsModal() {
+    this.openModal(SafetyTipsPage);
+  }
+
+  openSupportModal() {
+    this.openModal(SupportPage);
+  }
+
+
   async logout() {
     await this.firebaseService.signout().then(() => {
       this.cancel();

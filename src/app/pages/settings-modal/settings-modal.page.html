@@ -73,7 +73,7 @@
         <ion-label>General</ion-label>
       </ion-item-divider>
       
-      <ion-item detail="true">
+      <ion-item detail="true" (click)="openSupportModal()">
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label text-wrap>
           <p class="title">Help & Support</p>
@@ -81,7 +81,7 @@
         </ion-label>
       </ion-item>
       
-      <ion-item detail="true">
+      <ion-item detail="true" (click)="openSafetyTipsModal()">
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label text-wrap>
           <p class="title">Safety tips</p>
@@ -89,14 +89,7 @@
         </ion-label>
       </ion-item> 
 
-      <ion-item detail="true">
-        <ion-icon slot="start" name="information-circle-outline"></ion-icon>
-        <ion-label text-wrap>
-          <p class="title">Licences</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item detail="true">
+      <ion-item detail="true" (click)="openTermsAndConditionsModal()">
         <ion-icon slot="start" name="information-circle-outline"></ion-icon>
         <ion-label text-wrap>
           <p class="title">Terms of service</p>

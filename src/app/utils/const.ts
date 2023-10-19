@@ -59,6 +59,7 @@ export const ROUTES = {
     CHATS: "tabs/chats",
     CHAT: "/chat",
     PROFILE: "tabs/profile",
+    TERMS: "tabs/terms",
     PREFERENCES: "preferences",
     INTRO: "intro",
 }

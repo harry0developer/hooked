@@ -52,7 +52,7 @@ export class ProfilePage implements OnInit{
     }); 
   }
 
-  async openModal() {
+  async openSettingsModal() {
     const modal = await this.modalCtrl.create({
       component: SettingsModalPage,
       componentProps: {
