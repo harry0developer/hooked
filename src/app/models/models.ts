@@ -81,3 +81,7 @@ export interface Filter {
     category: string;
     distance: number;
 }
+
+export interface Preferences {
+    distance: string;
+}

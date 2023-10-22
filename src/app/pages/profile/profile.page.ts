@@ -6,9 +6,8 @@ import { SettingsModalPage } from '../settings-modal/settings-modal.page';
 import { ActionSheetController } from '@ionic/angular';
 import { Camera,  CameraResultType, CameraSource } from '@capacitor/camera';
 import { Subscription } from 'rxjs';
-import { ImageListingModel } from '../../utils/models/image-listing.model';
 import { Auth } from '@angular/fire/auth';
-import { COLLECTION, STORAGE } from 'src/app/utils/const';
+import { COLLECTION } from 'src/app/utils/const';
 import { FirebaseService } from 'src/app/service/firebase.service';
 import { User } from 'src/app/models/models';
 var moment = require('moment'); // require
@@ -25,7 +24,6 @@ export class ProfilePage implements OnInit{
   profilePicture: string;
   currentUser: any;
   isLoading: boolean = true;
-  files: ImageListingModel;
   private subs: Subscription[] = [];
   constructor(
     private gallery: Gallery, 

@@ -2,7 +2,8 @@ export const COLLECTION = {
     USERS: 'users',
     SWIPES: 'swipes',
     IMAGES: 'images',
-    CHATS: 'chats'
+    CHATS: 'chats',
+    PREFERENCES: 'preferences'
 }
 
 export const SERVICE = {
@@ -70,6 +71,7 @@ export const STORAGE = {
     USERS: 'users',
     SEEN_INTRO: 'seen-intro',
     LOCATION: 'location',
-    SWIPES: 'swipes'
-    
+    SWIPES: 'swipes',
+    PREFERENCES: 'preferences'
 }
+ 

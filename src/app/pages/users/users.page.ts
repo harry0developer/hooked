@@ -5,12 +5,12 @@ import {
   QueryList,
   ViewChildren, 
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  NgZone
+  NgZone,
+  ChangeDetectorRef
 } from "@angular/core";
 
 import { GestureCtrlService } from "src/app/service/gesture-ctrl.service";
-import { AlertController, IonCard, ModalController } from "@ionic/angular";
+import { AlertController, IonCard, LoadingController, ModalController } from "@ionic/angular";
 import { BehaviorSubject } from 'rxjs';
 
 import { FilterPage } from "../filter/filter.page";
@@ -21,9 +21,10 @@ import { ChatService } from "src/app/service/chat.service";
 import { LocationPage } from "../location/location.page";
 import { CameraPage } from "../camera/camera.page";
 import { UserModalPage } from "../user-modal/user-modal.page";
-import { Auth, user } from "@angular/fire/auth";
+import { Auth } from "@angular/fire/auth";
 import { MatchPage } from "../match/match.page";
-import { Geo, User } from "src/app/models/models";
+import { Geo, Preferences, User } from "src/app/models/models";
+import { LocationService } from "src/app/service/location.service";
 var moment = require('moment'); // require
 
 @Component({
@@ -33,6 +34,8 @@ var moment = require('moment'); // require
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
+// TODO FILTER USERD
+// LOCATION CALCULATE
 export class UsersPage implements OnInit {
   users$;
   currentUser;
@@ -40,9 +43,17 @@ export class UsersPage implements OnInit {
   location: Geo;
   allUsers = [];
   users = [];
+  usersWithDistance: User[] = [];
   toBeRemoved: any[] = [];
   usersLoaded$ = new BehaviorSubject(false);
   activeUser: User;
+  distanceFilter = {
+    min: 1,
+    max: 120,
+    value: 50
+  };
+
+  userPreferences: Preferences;
 
   mySwipes: any[] = [];
 
@@ -56,31 +67,34 @@ export class UsersPage implements OnInit {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private chatService: ChatService,
-    private changeDetectorRef: ChangeDetectorRef,
-    public zone: NgZone
+    private locationService: LocationService,
+    public zone: NgZone,
+    private loadingCtrl: LoadingController,
+    private cdr: ChangeDetectorRef
   ){}
     
  async ngOnInit() {  
-
+ 
+    this.getUserPreferences();
     //1. Get current logged in user
     await this.setCurrentUser();
 
     //2. Get all user
     await this.getAllUsers();
 
+    //get user preferences
   
-    //3. Get location from storage
+    // 3. Get location from storage
     // const location = this.firebaseService.getStorage(STORAGE.LOCATION);
     // if(!location || !location.lat || !location.lng) {
     //   this.openModal(SERVICE.LOCATION);
     // } 
+    
   }
  
   async setCurrentUser() {
     await this.firebaseService.getCurrentUser().then((user: User) => {
       this.currentUser = user;
-      console.log("Current ", this.currentUser);
-      
       this.firebaseService.setStorage(STORAGE.USER, user);
       if(!user.profile_picture) {
         this.showAlert("Incomplete profile", "Please add your profile picture before you can start swiping", "Go to profile")
@@ -95,8 +109,8 @@ export class UsersPage implements OnInit {
     this.users = [];
     let usersEx = [];
     await this.chatService.getData(COLLECTION.USERS, 100).forEach(users => {
-      console.log("Users", users);
-
+      // console.log("Users", users);
+      
       //I want list
       let wantList = [];
       users.forEach(u => {
@@ -125,8 +139,11 @@ export class UsersPage implements OnInit {
       this.chatService.getMySwipes().forEach(s => {
         const swipes = [...s.swippers, ...s.swipped];
 
+        this.getUsersWithLocation(users);
+
         if(swipes.length < 1) {
           this.users = users;
+          this.usersWithDistance = this.users.filter(u => parseInt(u.location.distance) < this.distanceFilter.value);
         } else {
           usersEx = users;
           //exclude swipped
@@ -148,7 +165,12 @@ export class UsersPage implements OnInit {
           });
 
           this.users = usersEx;
+          this.usersWithDistance = this.users.filter(u => parseInt(u.location.distance) < this.distanceFilter.value);
+          
         }
+        console.log("User with D", this.usersWithDistance);
+        console.log("Users", this.users);
+
         this.usersLoaded$.next(true);
       });
 
@@ -156,22 +178,28 @@ export class UsersPage implements OnInit {
         
   }
 
-  async initMySwipes() {
-    await this.firebaseService.getMySwippes().then(matches => {
-      matches.forEach(matchedUsers => {
-        matchedUsers.forEach(m => {
-          this.users = this.allUsers.filter(u => u.uid !== m.swippedUid);
-        });
-      });
-      if(this.users.length < 1) {
-        this.users = this.allUsers;   
-        
+  getUserPreferences() {
+    const prefs = this.firebaseService.getStorage(STORAGE.PREFERENCES);
+    console.log("No prefs", prefs);
+    if(prefs && prefs.distance) {
+      this.userPreferences = prefs;
+      this.distanceFilter.value = prefs.distance;
+    } else {
+      this.distanceFilter.value = 0;
+      this.userPreferences = {
+        distance: "0"
       }
-      console.log("Users", this.users);
-      this.usersLoaded$.next(true);
-    }, () => {      
-      this.usersLoaded$.next(true);
+    }
+  
+  }
+  async getUsersWithLocation(users: User[]) {
+    
+    const loc = {lat: -26.004472, lng: 28.0042447};
+    this.locationService.applyHaversine(users, loc.lat, loc.lng).forEach(u => {
+      this.users = u;
     });
+    console.log("WITH DISTANCE ", this.users);
+    
   } 
 
   
@@ -181,9 +209,38 @@ export class UsersPage implements OnInit {
       this.gestureCtrlService.useSwiperGesture(cardArray); 
     });
   }
+
+  async updateUserPreference(pref: string) {    
+    const loading = await this.loadingCtrl.create({message: "Applying filter..."});
+    await loading.present();
+
+    this.userPreferences.distance = pref;
+    this.firebaseService.setUserPreferences(this.userPreferences).then(() => {
+      console.log("User preference updated");
+      this.distanceFilter.value = parseInt(pref);
+      this.firebaseService.setStorage(STORAGE.PREFERENCES, this.userPreferences);
+      this.usersWithDistance =  this.users.filter(u => parseInt(u.location.distance) < this.distanceFilter.value);
+      this.cdr.detectChanges();
+      loading.dismiss();
+     });
+  }
+  
+  pinFormatter(value: number) {
+    return `${value} km`;
+  }
+  
  
   filterUsers() {
     console.log("Filtering..");
+  }
+
+  filterChange(event) {
+    this.distanceFilter.value = event.detail.value;
+  }
+
+  applyDistanceFilter() {
+    console.log("apply distance filter", this.distanceFilter.value);
+    this.updateUserPreference(this.distanceFilter.value + "");
   }
 
   async openModal(name: string, user?) {
@@ -191,6 +248,9 @@ export class UsersPage implements OnInit {
     if(name == MODALS.FILTER) {
       genericModal = await this.modalCtrl.create({
         component: FilterPage,
+        componentProps: {
+          "distance": this.userPreferences.distance
+        }
       });
     }
     else if(name == MODALS.CAMERA) {
@@ -215,6 +275,9 @@ export class UsersPage implements OnInit {
     const { data, role } = await genericModal.onWillDismiss();
     if (role === 'confirm') {
       console.log("confirmed");
+    } else if(role === 'filter') {
+      this.updateUserPreference(data);
+      
     }
   } 
 

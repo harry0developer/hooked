@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { ModalController, RangeCustomEvent } from '@ionic/angular';
 import { RangeValue } from '@ionic/core';
+import { Preferences } from 'src/app/models/models';
 
 @Component({
   selector: 'app-filter',
@@ -10,28 +11,42 @@ import { RangeValue } from '@ionic/core';
 })
 export class FilterPage implements OnInit {
 
-  min: number = 18;
-  max: number = 60;
+  @Input() distance: string;
 
   ageRange: any;
-  distance: RangeValue = 50;
+  // distance: RangeValue;
 
+  distanceFilter = {
+    min: 1,
+    max: 120,
+    value: 50
+  };
+
+  currentDistance: number;
   constructor(
     private modalCtrl: ModalController,
-    ) { }
+    ) { 
+      
+    }
 
   onIonChangeDistance(ev: any) {
-    this.distance = (ev as RangeCustomEvent).detail.value;
+    // this.distance = (ev as RangeCustomEvent).detail.value;
+    this.distanceFilter.value = ev.detail.value;
   }
 
-  onIonChangeAge(ev){
-    this.ageRange = (ev as RangeCustomEvent).detail.value;
-    this.min = this.ageRange.lower;
-    this.max = this.ageRange.upper;
-  } 
+  filterChange(event) {
+    this.distanceFilter.value = event.detail.value;
+  }
+
+  pinFormatter(value: number) {
+    return `${value} km`;
+  }
+  
   
   applyFilter() {
-
+    console.log("Filter by", this.distanceFilter.value);
+    this.modalCtrl.dismiss(this.distanceFilter.value, "filter");
+    
   }
 
   cancel() {
@@ -39,12 +54,16 @@ export class FilterPage implements OnInit {
   }
 
   resetFilter() {
-    this.min = 18;
-    this.max = 60;
-    this.distance = 50;
+    this.distanceFilter = {
+      min: 1,
+      max: 120,
+      value: 50
+    }
+    // this.distance = 50;
   }
 
   ngOnInit() {
   }
+
 
 }

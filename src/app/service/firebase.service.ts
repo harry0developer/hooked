@@ -14,7 +14,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Timestamp } from 'firebase/firestore';
 import { ModalController } from '@ionic/angular';
 import { MatchPage } from '../pages/match/match.page';
-import { Chat, Swipe, User } from '../models/models';
+import { Chat, Swipe, User, Preferences } from '../models/models';
 
 
 @Injectable({
@@ -22,128 +22,6 @@ import { Chat, Swipe, User } from '../models/models';
 })
 export class FirebaseService {
   userData: any; 
-
-  dummy: User[] = [{
-    uid: "UUID-000-001",
-    email: "user1@test.com",
-    phone: "+27821003000",
-    name: "Nelisiwe XX",
-    dob: "09/05/2005", //moment().format('L');    // 01/19/2023
-    gender: "Female",
-    want: ['ONS'],
-    with: ['male'],
-    profile_picture: "../../../assets/users/user2/1.jpg",
-    images: ["../../../assets/users/user2/1.jpg", "../../../assets/users/user2/2.jpg"],
-    isVerified: false,
-    location: {
-      distance: '42',
-      geo: {
-          lat: -26.2200,
-          lng: 28.4435
-      }
-    }
-  },
-  {
-    uid: "UUID-000-0012",
-    email: "brian@test.com",
-    phone: "+27821003000",
-    name: "Brian King",
-    dob: "19/09/2000", //moment().format('L');    // 01/19/2023
-    gender: "Male",
-    want: ['ONS'],
-    with: ['Female'],
-    profile_picture: "../../../assets/users/user6/1.jpg",
-    images: ["../../../assets/users/user6/1.jpg", "../../../assets/users/user6/2.jpg", "../../../assets/users/user6/3.jpg"],
-    isVerified: false,
-    location: {
-      distance: '16',
-      geo: {
-          lat: -26.4200,
-          lng: 28.9435
-      }
-    }
-  },
-  {
-    uid: "UUID-000-0013",
-    email: "lean@test.com",
-    phone: "+27821003000",
-    name: "Leean Ass",
-    dob: "12/08/1998", //moment().format('L');    // 01/19/2023
-    gender: "Female",
-    want: ['ONS'],
-    with: ['Male', 'Transgender'],
-    profile_picture: "../../../assets/users/user2/2.jpg",
-    images: ["../../../assets/users/user2/1.jpg", "../../../assets/users/user2/2.jpg", "../../../assets/users/user2/3.jpg"],
-    isVerified: false,
-    location: {
-      distance: '22',
-      geo: {
-          lat: -27.0200,
-          lng: 28.9435
-      }
-    }
-  },
-  {
-    uid: "UUID-000-0014",
-    email: "kegan@test.com",
-    phone: "+2776002300",
-    name: "Melisa",
-    dob: "12/08/1998", //moment().format('L');    // 01/19/2023
-    gender: "Female",
-    want: ['ONS', 'NSA'],
-    with: ['Female', 'Transgender'],
-    profile_picture: "../../../assets/users/user8/2.jpg",
-    images: ["../../../assets/users/user8/1.jpg", "../../../assets/users/user8/2.jpg", "../../../assets/users/user8/3.jpg"],
-    isVerified: false,
-    location: {
-      distance: '22',
-      geo: {
-          lat: -27.0200,
-          lng: 28.9435
-      }
-    }
-  },
-  {
-    uid: "UUID-000-0015",
-    email: "tracy@test.com",
-    phone: "+2776002300",
-    name: "Tracy Lacey",
-    dob: "12/08/1996", //moment().format('L');    // 01/19/2023
-    gender: "Female",
-    want: ['ONS', 'NSA'],
-    with: ['Male', 'Transgender'],
-    profile_picture: "../../../assets/users/user4/2.jpg",
-    images: ["../../../assets/users/user4/1.jpg", "../../../assets/users/user4/2.jpg", "../../../assets/users/user4/3.jpg"],
-    isVerified: false,
-    location: {
-      distance: '26',
-      geo: {
-          lat: -27.0200,
-          lng: 28.9435
-      }
-    }
-  },
-  {
-    uid: "UUID-000-0016",
-    email: "ryan@test.com",
-    phone: "+2776002300",
-    name: "Kegan",
-    dob: "Ryan/08/1998", //moment().format('L');    // 01/19/2023
-    gender: "Male",
-    want: ['ONS', 'NSA'],
-    with: ['Male', 'Transgender'],
-    profile_picture: "../../../assets/users/user9/2.jpg",
-    images: ["../../../assets/users/user9/1.jpg", "../../../assets/users/user9/2.jpg", "../../../assets/users/user9/3.jpg"],
-    isVerified: false,
-    location: {
-      distance: '12',
-      geo: {
-          lat: -27.0200,
-          lng: 28.9435
-      }
-    }
-  },
-]
 
   constructor( 
     public router: Router,
@@ -205,6 +83,15 @@ export class FirebaseService {
       this.removeStorageItem(STORAGE.USERS);
     })
   }
+
+  //User preferences
+  setUserPreferences(prefs: Preferences) {
+    let preferences: Preferences = {
+      distance: prefs.distance
+    }; 
+    return this.addDocumentToFirebaseWithCustomID(COLLECTION.PREFERENCES, preferences);
+  }
+
  
 
   removeStorageItem(key: string) {

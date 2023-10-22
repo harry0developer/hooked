@@ -50,14 +50,17 @@
 
 .no-swipes {
   text-align: center;
-  height: 50vh;
-  margin-top: 25vh;
+  // height: 70vh;
+  margin-top: 10vh;
   padding: 20px;
   
   h1 {
     text-align: center;
     font-weight: bold;
     font-size: 20px;
+  }
+  p {
+    margin-bottom: 40px;
   }
 }
 
